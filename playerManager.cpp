@@ -42,7 +42,6 @@ void playerManager::update()
 	}
 
 
-
 }
 
 void playerManager::render()

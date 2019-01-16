@@ -153,6 +153,15 @@
     <ClInclude Include="playerManager.h">
       <Filter>PlayGround\playerManager</Filter>
     </ClInclude>
+    <ClInclude Include="olaf.h">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="baleog.h">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="eric.h">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -231,6 +240,15 @@
       <Filter>PlayGround\sceen</Filter>
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="olaf.cpp">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="baleog.cpp">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="eric.cpp">
       <Filter>PlayGround\playerManager</Filter>
     </ClCompile>
   </ItemGroup>
