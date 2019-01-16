@@ -16,6 +16,13 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 
+	_menu = new menu;
+	SCENEMANAGER->addScene("menu", _menu);
+	_stage1 = new stage1;
+	SCENEMANAGER->addScene("stage1", _stage1);
+
+	SCENEMANAGER->changeScene("stage1");
+
 
 	return S_OK;
 }
@@ -25,6 +32,7 @@ void playGround::release()
 {
 	gameNode::release();
 
+	SCENEMANAGER->release();
 
 }
 
@@ -32,10 +40,10 @@ void playGround::release()
 void playGround::update()
 {
 	gameNode::update();
-
+	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) PostQuitMessage(0);
 	
 	
-	
+	SCENEMANAGER->update();
 }
 
 
@@ -43,7 +51,9 @@ void playGround::update()
 void playGround::render()
 {
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
-	
+	//===========================================================
+	SCENEMANAGER->render();
+
 
 	TIMEMANAGER->render(getMemDC());
 	//===========================================================

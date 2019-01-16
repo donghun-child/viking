@@ -1,5 +1,7 @@
 #pragma once
-class menu
+#include "gameNode.h"
+
+class menu : public gameNode
 {
 public:
 	menu();
