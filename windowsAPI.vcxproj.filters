@@ -52,6 +52,9 @@
     <Filter Include="2DFramework\action">
       <UniqueIdentifier>{29ce7e2b-17af-439c-a519-f3ca2bf12ff1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlayGround\camera">
+      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="keyAniManager.h">
       <Filter>2DFramework\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>PlayGround\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="keyAniManager.cpp">
       <Filter>2DFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>PlayGround\camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
