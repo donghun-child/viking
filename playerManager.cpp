@@ -166,9 +166,9 @@ void playerManager::pixelCollisionYellow()
 	//왼쪽벽
 
 	//벨로그
-	for (int i = _prove_X[BALEOG] ; i > _prove_X[BALEOG] - 5; --i)
+	for (int i = _prove_X[BALEOG]; i > _prove_X[BALEOG] - 5; --i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[BALEOG] +50);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[BALEOG] + 50);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -182,7 +182,7 @@ void playerManager::pixelCollisionYellow()
 		}
 	}
 	//에릭
-	for (int i = _prove_X[ERIC] ; i > _prove_X[ERIC] - 5; --i)
+	for (int i = _prove_X[ERIC]; i > _prove_X[ERIC] - 5; --i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[ERIC] + 50);
 
@@ -198,7 +198,7 @@ void playerManager::pixelCollisionYellow()
 		}
 	}
 	//올라프
-	for (int i = _prove_X[OLAF] ; i > _prove_X[OLAF] - 5; --i)
+	for (int i = _prove_X[OLAF]; i > _prove_X[OLAF] - 5; --i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[OLAF] + 50);
 
