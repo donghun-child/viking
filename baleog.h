@@ -49,10 +49,8 @@ public:
 	void render();
 
 	//콜백함수 불러올 함수
-	static void rightArrowFire(void* obj);
-	static void leftArrowFire(void* obj);
-	static void rightSwordFire(void* obj);
-	static void leftSwordFire(void* obj);
+	static void rightFire(void* obj);
+	static void leftFire(void* obj);
 
 	//벨로그 상태 접근자 설정자
 	BALEOGSTATE getBaleogState() { return _baleogState; }

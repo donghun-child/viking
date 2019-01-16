@@ -40,7 +40,7 @@ void arrow::arrowFire(float x, float y, float angle, float speed)
 	arrow.x = arrow.fireX = x;
 	arrow.y = arrow.fireY = y;
 	arrow.angle = angle;
-	arrow.radius = 
+	arrow.radius = 10;
 }
 
 void arrow::arrowMove()

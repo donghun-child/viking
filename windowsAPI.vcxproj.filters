@@ -61,6 +61,9 @@
     <Filter Include="PlayGround\sceen\camera">
       <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlayGround\playerManager\baleog">
+      <UniqueIdentifier>{6a7f129c-ab3f-4d6c-8291-a167091f150b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -156,11 +159,14 @@
     <ClInclude Include="olaf.h">
       <Filter>PlayGround\playerManager</Filter>
     </ClInclude>
-    <ClInclude Include="baleog.h">
-      <Filter>PlayGround\playerManager</Filter>
-    </ClInclude>
     <ClInclude Include="eric.h">
       <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="baleog.h">
+      <Filter>PlayGround\playerManager\baleog</Filter>
+    </ClInclude>
+    <ClInclude Include="arrow.h">
+      <Filter>PlayGround\playerManager\baleog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,11 +251,14 @@
     <ClCompile Include="olaf.cpp">
       <Filter>PlayGround\playerManager</Filter>
     </ClCompile>
-    <ClCompile Include="baleog.cpp">
-      <Filter>PlayGround\playerManager</Filter>
-    </ClCompile>
     <ClCompile Include="eric.cpp">
       <Filter>PlayGround\playerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="baleog.cpp">
+      <Filter>PlayGround\playerManager\baleog</Filter>
+    </ClCompile>
+    <ClCompile Include="arrow.cpp">
+      <Filter>PlayGround\playerManager\baleog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

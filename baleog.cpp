@@ -96,6 +96,7 @@ void baleog::update()
 		_baleogPlayer.x -= _baleogPlayer.speed;
 		break;
 	case BALEOG_RIGHT_ARROW_ATTACK:
+
 	}
 
 
