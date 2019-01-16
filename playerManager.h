@@ -13,6 +13,7 @@ class playerManager : public gameNode
 private:
 	RECT _rc[3];
 
+	bool _isDebug;
 
 
 

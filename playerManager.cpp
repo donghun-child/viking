@@ -17,6 +17,7 @@ HRESULT playerManager::init()
 	_rc[ERIC] = RectMake(130, 30, 157, 157);
 	_rc[OLAF] = RectMake(250, 30, 160, 160);
 
+	_isDebug = false;
 
 
 	return S_OK;
@@ -28,7 +29,17 @@ void playerManager::release()
 
 void playerManager::update()
 {
-	
+	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD1))
+	{
+		if (_isDebug)
+		{
+			_isDebug = false;
+		}
+		else
+		{
+			_isDebug = true;
+		}
+	}
 
 
 
@@ -36,8 +47,11 @@ void playerManager::update()
 
 void playerManager::render()
 {
-	for (int i = 0; i < 3; ++i)
+	if (_isDebug)
 	{
-		Rectangle(getMemDC(), _rc[i]);
+		for (int i = 0; i < 3; ++i)
+		{
+			Rectangle(getMemDC(), _rc[i]);
+		}
 	}
 }

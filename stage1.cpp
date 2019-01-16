@@ -22,6 +22,8 @@ HRESULT stage1::init()
 	_playerManager = new playerManager;
 	_playerManager->init();
 
+	_isPixel = false;
+
 	return S_OK;
 }
 
@@ -36,12 +38,26 @@ void stage1::update()
 	_camera->update();
 	_playerManager->update();
 
+	//픽셀보이기용
+	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD0))
+	{
+		if (_isPixel)
+		{
+			_isPixel = false;
+		}
+		else
+		{
+			_isPixel = true;
+		}
+	}
+
+
 }
 
 void stage1::render()
 {
 	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
-	if (KEYMANAGER->isToggleKey(VK_SHIFT))
+	if (_isPixel)
 	{
 		IMAGEMANAGER->render("pixel", getMemDC(), -50, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX + 50, WINSIZEY);
 	}

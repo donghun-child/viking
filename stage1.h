@@ -8,6 +8,10 @@ class stage1 : public gameNode
 private:
 	camera* _camera;
 	playerManager* _playerManager;
+
+	bool _isPixel;
+
+
 public:
 	stage1();
 	~stage1();
