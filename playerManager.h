@@ -16,8 +16,8 @@ private:
 	bool _isDebug;
 
 
-	float _x[3];
-	float _y[3];
+	int _x[3];
+	int _y[3];
 	int _prove_X[3];
 	int _prove_Y[3];
 

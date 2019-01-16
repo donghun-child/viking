@@ -29,7 +29,7 @@ HRESULT playerManager::init()
 	for (int i = 0; i < 3; ++i)
 	{
 		//¼¾ÅÍ
-		_prove_X[i] = (_rc[i].right - _rc[i].left)/2 + _rc[i].left;
+		_prove_X[i] = (_rc[i].right - _rc[i].left) / 2 + _rc[i].left;
 		_prove_Y[i] = _rc[i].bottom;
 	}
 
@@ -98,6 +98,9 @@ void playerManager::render()
 	char str[100];
 	sprintf_s(str, "%d", _prove_Y[BALEOG]);
 	TextOut(getMemDC(), 300, 100, str, strlen(str));
+
+	sprintf_s(str, "%d", _y[BALEOG]);
+	TextOut(getMemDC(), 300, 120, str, strlen(str));
 }
 
 void playerManager::pixelCollision()
@@ -112,7 +115,7 @@ void playerManager::pixelCollision()
 
 		if (r == 0 && g == 255 && b == 0)
 		{
-			_y[i] = i - 100;
+			_y[BALEOG] = i - 100;
 
 			break;
 		}
