@@ -16,8 +16,10 @@ enum BALEOGSTATE //벨로그 상태
 	BALEOG_LEFT_STOP, //왼쪽 기본상태
 	BALEOG_RIGHT_MOVE, //오른쪽 움직임
 	BALEOG_LEFT_MOVE, //왼쪽 움직임
-	BALEOG_RIGHT_SWORD_ATTACK, //오른쪽 검공격
-	BALEOG_LEFT_SWORD_ATTACK, //왼쪽 검공격
+	BALEOG_RIGHT_SWORD_ATTACK_ONE, //오른쪽 첫번째 패턴 검공격
+	BALEOG_LEFT_SWORD_ATTACK_ONE, //왼쪽 첫번째 패턴 검공격
+	BALEOG_RIGHT_SWORD_ATTACK_TWO, //오른쪽 두번째 패턴 검공격
+	BALEOG_LEFT_SWORD_ATTACK_TWO, //왼쪽 두번째 패턴 검공격
 	BALEOG_RIGHT_ARROW_ATTACK, //오른쪽 화살공격
 	BALEOG_LEFT_ARROW_ATTACK, //왼쪽 화살공격
 };
@@ -46,6 +48,18 @@ public:
 	void update();
 	void render();
 
+	//콜백함수 불러올 함수
+	static void rightArrowFire(void* obj);
+	static void leftArrowFire(void* obj);
+	static void rightSwordFire(void* obj);
+	static void leftSwordFire(void* obj);
 
+	//벨로그 상태 접근자 설정자
+	BALEOGSTATE getBaleogState() { return _baleogState; }
+	void setBaleogState(BALEOGSTATE state) { _baleogState = state; }
+
+	//벨로그 애니메이션 접근자 설정자
+	animation* getBaleogMotion() {return _baleogMotion;}
+	void setBaleogMotion(animation* motion) {_baleogMotion = motion;}
 };
 
