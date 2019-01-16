@@ -1,10 +1,12 @@
 #pragma once
 #include "gameNode.h"
+#include "arrow.h"
 
 struct baleogPlayer
 {
 	float x, y;
 	image* baleogImage;
+	image* arrowImage;
 	RECT baleogRc;
 	float speed;
 };
@@ -36,16 +38,17 @@ class baleog : public gameNode
 private:
 	BALEOGSTATE _baleogState;
 	baleogPlayer _baleogPlayer;
-
-	string _name;
+	
+	arrow* _arrow;
 	animation* _baleogMotion; //벨로그 모션 담아줄 빈 애니메이션
+
+	int _rndAttack;
 public:
 
 	baleog();
 	~baleog();
 
 	HRESULT init();
-	HRESULT init(string name);
 	void release();
 	void update();
 	void render();
@@ -58,7 +61,6 @@ public:
 	BALEOGSTATE getBaleogState() { return _baleogState; }
 	void setBaleogState(BALEOGSTATE state) { _baleogState = state; }
 
-	string getName() {return _name;}
 	//벨로그 애니메이션 접근자 설정자
 	animation* getBaleogMotion() {return _baleogMotion;}
 	void setBaleogMotion(animation* motion) {_baleogMotion = motion;}

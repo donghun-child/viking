@@ -1,5 +1,12 @@
 #pragma once
 #include "gameNode.h"
+#include "animation.h"
+
+enum ARROWSTATE
+{
+	ARROW_LEFT_FIRE,
+	ARROW_RIGHT_FIRE,
+};
 
 struct tagArrow
 {
@@ -7,7 +14,6 @@ struct tagArrow
 	float x, y;
 	RECT arrowRc;
 	float speed;
-	float angle;
 	float fireX, fireY;
 	float radius;
 };
@@ -17,12 +23,13 @@ private:
 	vector<tagArrow>			_vArrow;
 	vector<tagArrow>::iterator  _viArrow;
 
+	ARROWSTATE _arrowState;
 	const char* _imageName;
 	float _range;
 	int _arrowMax;
 
-	int _currentFrameX, _currentFrameY;
-	int _frameCount;
+	animation* _arrowAni;
+
 public:
 	arrow();
 	~arrow();
@@ -32,7 +39,29 @@ public:
 	void update();
 	void render();
 
-	void arrowFire(float x, float y, float angle, float speed);
+	void arrowFire(float x, float y, float speed);
 	void arrowMove();
+
+	ARROWSTATE getArrowState() {return _arrowState;}
+	void setArrowState(ARROWSTATE state) {_arrowState = state;}
+
+	vector<tagArrow> getVArrow() {return _vArrow;}
+
+	float getArrowX()
+	{
+		for (int i = 0; i < _vArrow.size(); i++)
+		{
+			return _vArrow[i].x;
+		}
+	}
+
+	void setArrowX(float x)
+	{
+		for (int i = 0; i < _vArrow.size(); i++)
+		{
+			_vArrow[i].x = x;
+		}
+	}
+
 };
 
