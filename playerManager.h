@@ -16,6 +16,10 @@ private:
 	bool _isDebug;
 
 
+	float _x[3];
+	float _y[3];
+	int _prove_X[3];
+	int _prove_Y[3];
 
 
 public:
@@ -26,5 +30,7 @@ public:
 	void release();
 	void update();
 	void render();
+
+	void pixelCollision();
 };
 
