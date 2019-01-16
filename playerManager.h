@@ -31,6 +31,9 @@ public:
 	void update();
 	void render();
 
-	void pixelCollision();
+	void pixelCollisionGreen();
+	void pixelCollisionYellow();
+	void pixelCollisionEmerald();
+
 };
 

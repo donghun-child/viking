@@ -16,7 +16,7 @@ HRESULT playerManager::init()
 	for (int i = 0; i < 3; ++i)
 	{
 		_x[i] = 30 + 120 * i;
-		_y[i] = 65;
+		_y[i] = 75;
 	}
 
 	for (int i = 0; i < 3; ++i)
@@ -24,7 +24,7 @@ HRESULT playerManager::init()
 		_rc[i] = RectMake(_x[i], _y[i], 100, 100);
 	}
 
-	_isDebug = true;
+	_isDebug = false;
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -55,8 +55,9 @@ void playerManager::update()
 		}
 	}
 
-	pixelCollision();
-
+	pixelCollisionGreen();
+	pixelCollisionYellow();
+	pixelCollisionEmerald();
 
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
@@ -95,19 +96,25 @@ void playerManager::render()
 		}
 	}
 
-	char str[100];
-	sprintf_s(str, "%d", _prove_Y[BALEOG]);
-	TextOut(getMemDC(), 300, 100, str, strlen(str));
-
-	sprintf_s(str, "%d", _y[BALEOG]);
-	TextOut(getMemDC(), 300, 120, str, strlen(str));
+	//char str[100];
+	//sprintf_s(str, "_x : %d", _x[0]);
+	//TextOut(getMemDC(), 300, 100, str, strlen(str));
+	//
+	//sprintf_s(str, "_prove_X : %d", _prove_X[0]);
+	//TextOut(getMemDC(), 300, 120, str, strlen(str));
+	//
+	//sprintf_s(str, "_y : %d", _y[BALEOG]);
+	//TextOut(getMemDC(), 300, 140, str, strlen(str));
 }
 
-void playerManager::pixelCollision()
+void playerManager::pixelCollisionGreen()
 {
-	for (int i = _prove_Y[BALEOG] - 50; i < _prove_Y[BALEOG] + 50; ++i)
+	//위로 올라서게
+	
+	//벨로그
+	for (int i = _prove_Y[BALEOG] - 5; i < _prove_Y[BALEOG] + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), _x[BALEOG], i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), _x[BALEOG] + 100, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -116,6 +123,146 @@ void playerManager::pixelCollision()
 		if (r == 0 && g == 255 && b == 0)
 		{
 			_y[BALEOG] = i - 100;
+
+			break;
+		}
+	}
+	//에릭
+	for (int i = _prove_Y[ERIC] - 5; i < _prove_Y[ERIC] + 5; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), _x[ERIC] + 100, i);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 0 && g == 255 && b == 0)
+		{
+			_y[ERIC] = i - 100;
+
+			break;
+		}
+	}
+	//올라프
+	for (int i = _prove_Y[OLAF] - 5; i < _prove_Y[OLAF] + 5; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), _x[OLAF] + 100, i);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 0 && g == 255 && b == 0)
+		{
+			_y[OLAF] = i - 100;
+
+			break;
+		}
+	}
+}
+
+void playerManager::pixelCollisionYellow()
+{
+	//왼쪽벽
+
+	//벨로그
+	for (int i = _prove_X[BALEOG] + 45; i > _prove_X[BALEOG] - 45; --i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[BALEOG] +50);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+			_x[BALEOG] = i;
+
+			break;
+		}
+	}
+	//에릭
+	for (int i = _prove_X[ERIC] + 45; i > _prove_X[ERIC] - 45; --i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[ERIC] + 50);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+			_x[ERIC] = i;
+
+			break;
+		}
+	}
+	//올라프
+	for (int i = _prove_X[OLAF] + 45; i > _prove_X[OLAF] - 45; --i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[OLAF] + 50);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+			_x[OLAF] = i;
+
+			break;
+		}
+	}
+}
+
+void playerManager::pixelCollisionEmerald()
+{
+	//오른쪽벽
+
+	//벨로그
+	for (int i = _prove_X[BALEOG] - 55; i > _prove_X[BALEOG] + 55; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[BALEOG] + 50);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 0 && g == 255 && b == 255)
+		{
+			_x[BALEOG] = i;
+
+			break;
+		}
+	}
+	//에릭
+	for (int i = _prove_X[ERIC] - 55; i > _prove_X[ERIC] + 55; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[ERIC] + 50);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 0 && g == 255 && b == 255)
+		{
+			_x[ERIC] = i;
+
+			break;
+		}
+	}
+	//올라프
+	for (int i = _prove_X[OLAF] - 55; i > _prove_X[OLAF] + 55; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[OLAF] + 50);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 0 && g == 255 && b == 255)
+		{
+			_x[OLAF] = i;
 
 			break;
 		}
