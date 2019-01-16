@@ -58,6 +58,9 @@
     <Filter Include="PlayGround\sceen">
       <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlayGround\playerManager">
+      <UniqueIdentifier>{18aea0ca-a908-4146-80bc-e0b59354d29c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -147,6 +150,9 @@
     <ClInclude Include="stage1.h">
       <Filter>PlayGround\sceen</Filter>
     </ClInclude>
+    <ClInclude Include="playerManager.h">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -223,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="stage1.cpp">
       <Filter>PlayGround\sceen</Filter>
+    </ClCompile>
+    <ClCompile Include="playerManager.cpp">
+      <Filter>PlayGround\playerManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
