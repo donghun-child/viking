@@ -52,14 +52,14 @@
     <Filter Include="2DFramework\action">
       <UniqueIdentifier>{29ce7e2b-17af-439c-a519-f3ca2bf12ff1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\camera">
-      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PlayGround\sceen">
       <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
     </Filter>
     <Filter Include="PlayGround\playerManager">
       <UniqueIdentifier>{18aea0ca-a908-4146-80bc-e0b59354d29c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\sceen\camera">
+      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +142,7 @@
       <Filter>2DFramework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>PlayGround\camera</Filter>
+      <Filter>PlayGround\sceen\camera</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
       <Filter>PlayGround\sceen</Filter>
@@ -222,7 +222,7 @@
       <Filter>2DFramework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>PlayGround\camera</Filter>
+      <Filter>PlayGround\sceen\camera</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp">
       <Filter>PlayGround\sceen</Filter>
