@@ -9,6 +9,8 @@ enum OLAFDIRECTION
 	OLAF_DIRECTION_LEFT_SHIELD,
 	OLAF_DIRECTION_RIGHT_MOVE,
 	OLAF_DIRECTION_LEFT_MOVE,
+	OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE,
+	OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE,
 	OLAF_DIRECTION_RIGHT_JUMP,
 	OLAF_DIRECTION_LEFT_JUMP
 };
@@ -44,6 +46,12 @@ public:
 
 	animation* getOlafMotion() { return _olafMotion; }
 	void setOlafMotion(animation* ani) { _olafMotion = ani; }
+
+	inline int getolafX() { return _olaf_x; }
+	void setolafX(int olafx) { _olaf_x = olafx; }
+
+	inline int getolafY() { return _olaf_y; }
+	void setolafY(int olafy) { _olaf_y = olafy; }
 
 
 	void olafMovement();
