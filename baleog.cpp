@@ -95,31 +95,34 @@ void baleog::update()
 		_baleogMotion->start();
 	}
 
-	if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
+	if (_arrow->getVArrow().size() == 0)
 	{
-		if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
+		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 		{
-			_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
-			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightArrowAttack");
-			_baleogMotion->start();
-			if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK && _arrow->getVArrow().size() <= 0)
+			if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
 			{
-				_arrow->setArrowState(ARROW_RIGHT_FIRE);
+				_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
+				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightArrowAttack");
+				_baleogMotion->start();
+				if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
+				{
+					_arrow->setArrowState(ARROW_RIGHT_FIRE);
+				}
+
+			}
+			else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
+			{
+				_baleogState = BALEOG_LEFT_ARROW_ATTACK;
+				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftArrowAttack");
+				_baleogMotion->start();
+				if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
+				{
+					_arrow->setArrowState(ARROW_LEFT_FIRE);
+				}
 			}
 
+			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10);
 		}
-		else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
-		{
-			_baleogState = BALEOG_LEFT_ARROW_ATTACK;
-			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftArrowAttack");
-			_baleogMotion->start();
-			if (_baleogState == BALEOG_LEFT_ARROW_ATTACK && _arrow->getVArrow().size() <= 0)
-			{
-				_arrow->setArrowState(ARROW_LEFT_FIRE);
-			}
-		}
-		
-		_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10);
 	}
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
