@@ -34,7 +34,6 @@ HRESULT eric::init()
 
 	_ericMotion = KEYANIMANAGER->findAnimation(_ericName, "ericRightStop");
 
-	num = 0;
 	_changeMode = false;
 
 

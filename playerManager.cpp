@@ -166,7 +166,7 @@ void playerManager::pixelCollisionYellow()
 	//왼쪽벽
 
 	//벨로그
-	for (int i = _prove_X[BALEOG] + 45; i > _prove_X[BALEOG] - 45; --i)
+	for (int i = _prove_X[BALEOG] ; i > _prove_X[BALEOG] - 5; --i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[BALEOG] +50);
 
@@ -176,13 +176,13 @@ void playerManager::pixelCollisionYellow()
 
 		if (r == 255 && g == 255 && b == 0)
 		{
-			_x[BALEOG] = i;
+			_x[BALEOG] = i - 45;
 
 			break;
 		}
 	}
 	//에릭
-	for (int i = _prove_X[ERIC] + 45; i > _prove_X[ERIC] - 45; --i)
+	for (int i = _prove_X[ERIC] ; i > _prove_X[ERIC] - 5; --i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[ERIC] + 50);
 
@@ -192,13 +192,13 @@ void playerManager::pixelCollisionYellow()
 
 		if (r == 255 && g == 255 && b == 0)
 		{
-			_x[ERIC] = i;
+			_x[ERIC] = i - 45;
 
 			break;
 		}
 	}
 	//올라프
-	for (int i = _prove_X[OLAF] + 45; i > _prove_X[OLAF] - 45; --i)
+	for (int i = _prove_X[OLAF] ; i > _prove_X[OLAF] - 5; --i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[OLAF] + 50);
 
@@ -208,7 +208,7 @@ void playerManager::pixelCollisionYellow()
 
 		if (r == 255 && g == 255 && b == 0)
 		{
-			_x[OLAF] = i;
+			_x[OLAF] = i - 45;
 
 			break;
 		}
@@ -220,7 +220,7 @@ void playerManager::pixelCollisionEmerald()
 	//오른쪽벽
 
 	//벨로그
-	for (int i = _prove_X[BALEOG] - 55; i > _prove_X[BALEOG] + 55; ++i)
+	for (int i = _prove_X[BALEOG]; i > _prove_X[BALEOG] + 5; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[BALEOG] + 50);
 
@@ -230,13 +230,13 @@ void playerManager::pixelCollisionEmerald()
 
 		if (r == 0 && g == 255 && b == 255)
 		{
-			_x[BALEOG] = i;
+			_x[BALEOG] = i + 45;
 
 			break;
 		}
 	}
 	//에릭
-	for (int i = _prove_X[ERIC] - 55; i > _prove_X[ERIC] + 55; ++i)
+	for (int i = _prove_X[ERIC]; i > _prove_X[ERIC] + 5; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[ERIC] + 50);
 
@@ -246,13 +246,13 @@ void playerManager::pixelCollisionEmerald()
 
 		if (r == 0 && g == 255 && b == 255)
 		{
-			_x[ERIC] = i;
+			_x[ERIC] = i + 45;
 
 			break;
 		}
 	}
 	//올라프
-	for (int i = _prove_X[OLAF] - 55; i > _prove_X[OLAF] + 55; ++i)
+	for (int i = _prove_X[OLAF]; i > _prove_X[OLAF] + 5; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _y[OLAF] + 50);
 
@@ -262,7 +262,7 @@ void playerManager::pixelCollisionEmerald()
 
 		if (r == 0 && g == 255 && b == 255)
 		{
-			_x[OLAF] = i;
+			_x[OLAF] = i + 45;
 
 			break;
 		}
