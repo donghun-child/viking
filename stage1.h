@@ -1,11 +1,13 @@
 #pragma once
 #include "gameNode.h"
 #include "camera.h"
+#include "playerManager.h"
 
 class stage1 : public gameNode
 {
 private:
 	camera* _camera;
+	playerManager* _playerManager;
 public:
 	stage1();
 	~stage1();

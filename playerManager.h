@@ -1,6 +1,13 @@
 #pragma once
 #include "gameNode.h"
 
+enum Character
+{
+	BALEOG,
+	ERIC,
+	OLAF
+};
+
 class playerManager : public gameNode
 {
 private:
