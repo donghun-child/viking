@@ -17,7 +17,7 @@ HRESULT stage1::init()
 	IMAGEMANAGER->addImage("pixel", "image/pixel.bmp", 3100, 2240, true, RGB(255, 0, 255));
 
 	_camera = new camera;
-	_camera->init();
+	_camera->init(0, 0 , 3);
 
 	_playerManager = new playerManager;
 	_playerManager->init();
