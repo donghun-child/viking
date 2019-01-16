@@ -28,8 +28,6 @@ HRESULT soundManager::init()
 	memset(_sound, 0, sizeof(Sound*) * (TOTALSOUNDBUFFER));
 	memset(_channel, 0, sizeof(Channel*) * (TOTALSOUNDBUFFER));
 
-
-
 	return S_OK;
 }
 
@@ -167,6 +165,95 @@ void soundManager::resume(string keyName)
 			break;
 		}
 	}
+}
+
+float soundManager::getVolume(string keyName)
+{
+	arrSoundsIter iter = _mTotalSounds.begin();
+
+	int count = 0;
+	float volume = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_channel[count]->getVolume(&volume);
+			break;
+		}
+	}
+
+	return volume;
+}
+
+void soundManager::setVolume(string keyName, float volume)
+{
+	arrSoundsIter iter = _mTotalSounds.begin();
+
+	int count = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_channel[count]->setVolume(volume);
+			break;
+		}
+	}
+}
+
+unsigned int soundManager::getPosition(string keyName)
+{
+	arrSoundsIter iter = _mTotalSounds.begin();
+
+	int count = 0;
+	unsigned int ms = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_channel[count]->getPosition(&ms, FMOD_TIMEUNIT_MS);
+			break;
+		}
+	}
+
+	return ms;
+}
+
+void soundManager::setPosition(string keyName, int ms)
+{
+	arrSoundsIter iter = _mTotalSounds.begin();
+
+	int count = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_channel[count]->setPosition(ms, FMOD_TIMEUNIT_MS);
+			break;
+		}
+	}
+}
+
+unsigned int soundManager::getLength(string keyName)
+{
+	arrSoundsIter iter = _mTotalSounds.begin();
+
+	int count = 0;
+	unsigned int length = 0;
+
+	for (iter; iter != _mTotalSounds.end(); ++iter, count++)
+	{
+		if (keyName == iter->first)
+		{
+			_sound[count]->getLength(&length, FMOD_TIMEUNIT_MS);
+			break;
+		}
+	}
+
+	return length;
 }
 
 
