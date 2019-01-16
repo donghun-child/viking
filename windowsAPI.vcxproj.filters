@@ -55,6 +55,9 @@
     <Filter Include="PlayGround\camera">
       <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlayGround\sceen">
+      <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -138,6 +141,12 @@
     <ClInclude Include="camera.h">
       <Filter>PlayGround\camera</Filter>
     </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>PlayGround\sceen</Filter>
+    </ClInclude>
+    <ClInclude Include="stage1.h">
+      <Filter>PlayGround\sceen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -208,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="camera.cpp">
       <Filter>PlayGround\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>PlayGround\sceen</Filter>
+    </ClCompile>
+    <ClCompile Include="stage1.cpp">
+      <Filter>PlayGround\sceen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
