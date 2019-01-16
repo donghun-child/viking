@@ -13,7 +13,13 @@ playerManager::~playerManager()
 
 HRESULT playerManager::init()
 {
-	return E_NOTIMPL;
+	for (int i = 0; i < 3; ++i)
+	{
+		//_rc[i] = RectMake()
+
+	}
+
+	return S_OK;
 }
 
 void playerManager::release()

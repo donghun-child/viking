@@ -7,6 +7,9 @@ private:
 	RECT _rc[3];
 
 
+
+
+
 public:
 	playerManager();
 	~playerManager();
