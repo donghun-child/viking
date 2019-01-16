@@ -20,6 +20,9 @@ private:
 	const char* _imageName;
 	float _range;
 	int _arrowMax;
+
+	int _currentFrameX, _currentFrameY;
+	int _frameCount;
 public:
 	arrow();
 	~arrow();

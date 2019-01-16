@@ -317,7 +317,7 @@ animation* keyAniManager::findAnimation(string targetName, string animationKeyNa
 
 	if (_mTotalAnimations.find(targetName) == _mTotalAnimations.end())
 	{
-		return;
+		return nullptr;
 	}
 
 	arrAnim = _mTotalAnimations[targetName];

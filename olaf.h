@@ -27,6 +27,7 @@ private:
 	float _olaf_x, _olaf_y;
 	RECT _olaf_rc;
 
+	string _olafName;
 	bool _changeMode;
 	int num;
 	animation* _olafMotion;
@@ -37,6 +38,7 @@ public:
 	~olaf();
 
 	HRESULT init();
+	HRESULT init(string name);
 	void release();
 	void update();
 	void render();
