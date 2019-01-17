@@ -13,53 +13,57 @@ eric::~eric()
 
 HRESULT eric::init()
 {
-	_ericimg = IMAGEMANAGER->addFrameImage("eric", "image\\eric.bmp", 0, 0, 1729, 2200, 11, 14, true, RGB(255, 0, 255));
-
-	_ericDirection = ERIC_DIRECTION_RIGHT_STOP;
-
-	_eric_x = 100;
-	_eric_y = 100;
-
-	_eric_rc = RectMakeCenter(_eric_x, _eric_y, _ericimg->getFrameWidth(), _ericimg->getFrameHeight());
-
-
-	int rightStop[] = { 0,1 };
-	KEYANIMANAGER->addArrayFrameAnimation(_ericName, "ericRightStop", "eric", rightStop, 2, 6, true);
-	int leftStop[] = { 2,3 };
-	KEYANIMANAGER->addArrayFrameAnimation(_ericName, "ericLeftStop", "eric", leftStop, 2, 6, true);
-	int rightMove[] = { 11,12,13,14,15,16,17,18};
-	KEYANIMANAGER->addArrayFrameAnimation(_ericName, "ericRightMove", "eric", rightMove, 8, 6, true);
-	int leftMove[] = { 28,28,27,26,25,24,23,22 };
-	KEYANIMANAGER->addArrayFrameAnimation(_ericName, "ericLeftMove", "eric", leftMove, 8, 6, true);
-
-	_ericMotion = KEYANIMANAGER->findAnimation(_ericName, "ericRightStop");
-
-	_changeMode = false;
-
-
 	return S_OK;
-}
 
-HRESULT eric::init(string name)
-{
-	_ericName = name;
-	init();
-	return S_OK;
+	_eric_x = WINSIZEX / 2 + 100;
+	_eric_y = WINSIZEY / 2;
+
+	//_eric_rc = RectMakeCenter(_eric_x, _eric_y, 50, 50);
 }
 
 void eric::release()
 {
 }
 
-void eric::update()
+void eric::update(POINTFLOAT StagePos, int choice)
 {
+	_cameraPos = StagePos;
+
+
+	if (choice == 2)
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			if (_eric_x < 2950)
+			{
+				_eric_x += 10;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			if (_eric_x > 0)
+			{
+				_eric_x -= 10;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_UP))
+		{
+			if (_eric_y > 0)
+			{
+				_eric_y -= 10;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		{
+			_eric_y += 10;
+		}
+	}
 }
 
 void eric::render()
 {
+	Rectangle(getMemDC(), _eric_x - _cameraPos.x + WINSIZEX / 2, _eric_y - _cameraPos.y + WINSIZEY / 2, _eric_x + 50 - _cameraPos.x + WINSIZEX / 2, _eric_y + 50 - _cameraPos.y + WINSIZEY / 2);
+	char str[128];
+	sprintf_s(str, "에릭 확인 : %f ", _eric_x);
+	TextOut(getMemDC(), 200, 70, str, strlen(str));
 }
-
-void eric::ericMovement()
-{
-}
-

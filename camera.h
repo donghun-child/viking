@@ -1,40 +1,39 @@
 #pragma once
 #include "gameNode.h"
 
-enum VikingCharacter
-{
-	VIKING_ERIC,
-	VIKING_OLAF,
-	VIKING_BALEOG
-};
 
-struct tagViking
-{
-	float x, y;
-	float speed;
-};
 
 class camera : public gameNode
 {
 private:
-	tagViking _eric;
-	tagViking _olaf;
-	tagViking _baleog;
+	image* _mapimage;
 
-	float _camera_X, _camera_Y;					// 카메라 X,Y
-	int _viking_Pic;
-	bool _back;
+	POINTFLOAT _camera;
+
+	float _mapX, _mapY;
+	bool change;
+
+	float Distance;
+	float angle;
 
 public:
 	camera();
 	~camera();
 
-	HRESULT init(float x, float y, float speed);
+	HRESULT init();
 	void release();
-	void update();
+	void update(float playerX, float playerY, int choice, float changespeed);
 	void render();
-	
-	float getCameraX() { return _camera_X;}				
-	float getCameraY() { return _camera_Y; }
+
+	POINTFLOAT getCameraPos() { return _camera; }
+
+	float getMapx() { return _mapX; }
+	float getMapy() { return _mapY; }
+
+	//카메라 전환
+	void setChange(bool v) { change = v; }
+	//플레이어간의 거리 
+	void setDistance(float v) { Distance = v; }
+	void setAngle(float v) { Distance = v; }
 };
 

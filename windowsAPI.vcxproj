@@ -23,7 +23,7 @@
     <ProjectGuid>{BE5C2545-DA5C-402F-8068-3E1EDF185C1C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>windowsAPI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -165,6 +165,7 @@
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="olaf.h" />
+    <ClInclude Include="player3.h" />
     <ClInclude Include="playerManager.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="progressBar.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="olaf.cpp" />
+    <ClCompile Include="player3.cpp" />
     <ClCompile Include="playerManager.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="progressBar.cpp" />

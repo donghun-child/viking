@@ -168,6 +168,9 @@
     <ClInclude Include="arrow.h">
       <Filter>PlayGround\playerManager\baleog</Filter>
     </ClInclude>
+    <ClInclude Include="player3.h">
+      <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="arrow.cpp">
       <Filter>PlayGround\playerManager\baleog</Filter>
+    </ClCompile>
+    <ClCompile Include="player3.cpp">
+      <Filter>PlayGround\playerManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

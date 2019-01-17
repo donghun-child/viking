@@ -1,67 +1,192 @@
 #include "stdafx.h"
-#include "stage1.h"
+#include "camera.h"
 
 
-stage1::stage1()
+camera::camera()
 {
 }
 
 
-stage1::~stage1()
+camera::~camera()
 {
 }
 
-HRESULT stage1::init()
+HRESULT camera::init()
 {
-	IMAGEMANAGER->addImage("backGround", "image/map.bmp", 3000, 2240, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("pixel", "image/pixel.bmp", 3000, 2240, true, RGB(255, 0, 255));
+	_mapimage = IMAGEMANAGER->addImage("backGround", "image\\map.bmp", 3000, 2240, true, RGB(255, 0, 255));
 
-	_camera = new camera;
-	_camera->init(0, 0 , 3);
+	_camera.x = WINSIZEX / 2;
+	_camera.y = WINSIZEY / 2;
 
-	_playerManager = new playerManager;
-	_playerManager->init();
 
-	_isPixel = false;
 
 	return S_OK;
 }
 
-void stage1::release()
+void camera::release()
 {
-	SAFE_DELETE(_playerManager);
-	SAFE_DELETE(_camera);
 }
 
-void stage1::update()
+void camera::update(float playerX, float playerY, int choice, float changespeed)
 {
-	_camera->update();
-	_playerManager->update();
-
-	//ÇÈ¼¿º¸ÀÌ±â¿ë
-	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD0))
+	if (change == true)
 	{
-		if (_isPixel)
+		if (_camera.x > playerX)
 		{
-			_isPixel = false;
+			_camera.x = _camera.x + cosf(angle) * Distance / changespeed;
+
+			if (_camera.x <= playerX)
+			{
+				_camera.x = playerX;
+			}
+
+
+
+			//===============¸Ê ÀÌÅ» ¹æÁö============================//
+			if (_camera.x < WINSIZEX / 2)
+			{
+				_camera.x = WINSIZEX / 2;
+			}
+
+			if (_camera.x > _mapimage->GetWidth() - WINSIZEX / 2)
+			{
+				_camera.x = _mapimage->GetWidth() - WINSIZEX / 2;
+			}
+
 		}
-		else
+		//==========================================================//
+
+
+
+		if (_camera.x < playerX)
 		{
-			_isPixel = true;
+			_camera.x = _camera.x + cosf(angle) * Distance / changespeed;
+
+			if (_camera.x >= playerX)
+			{
+				_camera.x = playerX;
+			}
+
+
+
+			//===============¸Ê ÀÌÅ» ¹æÁö============================//
+			if (_camera.x < WINSIZEX / 2)
+			{
+				_camera.x = WINSIZEX / 2;
+			}
+
+			if (_camera.x > _mapimage->GetWidth() - WINSIZEX / 2)
+			{
+				_camera.x = _mapimage->GetWidth() - WINSIZEX / 2;
+			}
+
 		}
+		//==========================================================//
+
+
+		if (_camera.y > playerY)
+		{
+			_camera.y = _camera.y + sinf(angle) * Distance / changespeed;
+
+			if (_camera.y <= playerY)
+			{
+				_camera.y = playerY;
+			}
+
+			if (_camera.y < WINSIZEY / 2)
+			{
+				_camera.y = WINSIZEY / 2;
+			}
+
+			if (_camera.y > _mapimage->GetHeight() - WINSIZEY / 2)
+			{
+				_camera.y = _mapimage->GetHeight() - WINSIZEY / 2;
+			}
+		}
+
+		if (_camera.y < playerY)
+		{
+			_camera.y = _camera.y + sinf(angle) * Distance / changespeed;
+
+			if (_camera.y >= playerY)
+			{
+				_camera.y = playerY;
+			}
+
+			if (_camera.y < WINSIZEY / 2)
+			{
+				_camera.y = WINSIZEY / 2;
+			}
+
+			if (_camera.y > _mapimage->GetHeight() - WINSIZEY / 2)
+			{
+				_camera.y = _mapimage->GetHeight() - WINSIZEY / 2;
+			}
+		}
+
+		if (playerX == _camera.x && playerY == _camera.y)
+		{
+			change = true;
+		}
+
+		if (_camera.x == WINSIZEX / 2 && _camera.y == WINSIZEY / 2)
+		{
+			change = true;
+		}
+
+		if (_camera.x == _mapimage->GetWidth() - WINSIZEX / 2 && _camera.y == _mapimage->GetHeight() - WINSIZEY / 2)
+		{
+			change = true;
+		}
+
+		if (_camera.x == WINSIZEX / 2 && _camera.y == _mapimage->GetHeight() - WINSIZEY / 2)
+		{
+			change = true;
+		}
+
+		if (_camera.x == _mapimage->GetWidth() - WINSIZEX / 2 && _camera.y == WINSIZEY / 2)
+		{
+			change = true;
+		}
+
+
 	}
 
-
-}
-
-void stage1::render()
-{
-	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
-	if (_isPixel)
+	if (change == false)
 	{
-		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX , WINSIZEY);
+		if (playerX >= WINSIZEX / 2 && playerX <= _mapimage->GetWidth() - WINSIZEX / 2)
+		{
+			_camera.x = playerX;
+		}
+		else if (playerX <= WINSIZEX / 2)
+		{
+			_camera.x = WINSIZEX / 2;
+		}
+		else if (playerX >= _mapimage->GetWidth() - WINSIZEX / 2)
+		{
+			_camera.x = _mapimage->GetWidth() - WINSIZEX / 2;
+		}
+
+
+		if (playerY >= WINSIZEY / 2 && playerY <= _mapimage->GetHeight() - WINSIZEY / 2)
+		{
+			_camera.y = playerY;
+		}
+		else if (playerY <= WINSIZEY / 2)
+		{
+			_camera.y = WINSIZEY / 2;
+		}
+		else if (playerY >= _mapimage->GetHeight() - WINSIZEY / 2)
+		{
+			_camera.y = _mapimage->GetHeight() - WINSIZEY / 2;
+		}
 	}
-	_playerManager->render();
 }
 
-
+void camera::render()
+{
+	IMAGEMANAGER->findImage("backGround")->render(getMemDC(), 0, 0, _camera.x - WINSIZEX / 2, _camera.y - WINSIZEY / 2, WINSIZEX, WINSIZEY);
+	char str[128];
+	sprintf_s(str, "¸Êx : %f, ¸Êy : %f , ½ºÀ§Äª : %d , °Å¸® : %f  ,°¢µµ : %f", _camera.x, _camera.y, change, Distance, angle);
+	TextOut(getMemDC(), 100, 160, str, strlen(str));
+}

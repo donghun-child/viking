@@ -12,7 +12,9 @@ enum OLAFDIRECTION
 	OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE,
 	OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE,
 	OLAF_DIRECTION_RIGHT_JUMP,
-	OLAF_DIRECTION_LEFT_JUMP
+	OLAF_DIRECTION_LEFT_JUMP,
+	OLAF_DIRECTION_RIGHT_WALL_PUSH,
+	OLAF_DIRECTION_LEFT_WALL_PUSH
 };
 
 
@@ -28,9 +30,16 @@ private:
 	RECT _olaf_rc;
 
 	string _olafName;
+
 	bool _changeMode;
 	int num;
 	animation* _olafMotion;
+
+	RECT _wall;
+	float _Wax, _Way;
+
+	POINTFLOAT _cameraPos;
+
 
 public:
 
@@ -40,7 +49,7 @@ public:
 	HRESULT init();
 	HRESULT init(string name);
 	void release();
-	void update();
+	void update(POINTFLOAT StagePos, int choice);
 	void render();
 
 	OLAFDIRECTION getOlafDirection() { return _olafDirection; }
@@ -49,12 +58,14 @@ public:
 	animation* getOlafMotion() { return _olafMotion; }
 	void setOlafMotion(animation* ani) { _olafMotion = ani; }
 
-	inline int getolafX() { return _olaf_x; }
-	void setolafX(int olafx) { _olaf_x = olafx; }
+	//inline int getolafX() { return _olaf_x; }
+	//void setolafX(int olafx) { _olaf_x = olafx; }
+	//
+	//inline int getolafY() { return _olaf_y; }
+	//void setolafY(int olafy) { _olaf_y = olafy; }
 
-	inline int getolafY() { return _olaf_y; }
-	void setolafY(int olafy) { _olaf_y = olafy; }
-
+	float getplayerX() { return _olaf_x; }
+	float getplayerY() { return _olaf_y; }
 
 	void olafMovement();
 };
