@@ -34,7 +34,7 @@ HRESULT eric::init()
 	int rightMove[] = { 11,12,13,14,15,16,17,18 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightMove", "eric", rightMove, 8, 10, true);
 
-	int leftMove[] = { 28,28,27,26,25,24,23,22 };
+	int leftMove[] = { 29,28,27,26,25,24,23,22 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftMove", "eric", leftMove, 8, 10, true);
 
 	int rightDashArr[] = { 33, 34, 35, 36, 37, 38, 39, 40 };
@@ -57,10 +57,11 @@ HRESULT eric::init()
 
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
-	_speed = 10;
+	_speed = 1;
 	_acceleration = 0;
 	_ericJump = new jump;
 	_ericJump->init();
+	_isAccel = false;
 	return S_OK;
 }
 
@@ -73,6 +74,7 @@ void eric::update(POINTFLOAT StagePos, int choice)
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH)
 	{
+		_speed = 1;
 		_ericState = ERIC_RIGHT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
@@ -86,6 +88,7 @@ void eric::update(POINTFLOAT StagePos, int choice)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH)
 	{
+		_speed = 1;
 		_ericState = ERIC_LEFT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
 		_ericMotion->start();
@@ -139,7 +142,7 @@ void eric::update(POINTFLOAT StagePos, int choice)
 
 	if (KEYMANAGER->isOnceKeyDown('D') )
 	{
-		_acceleration = 0.3f;
+		
 		if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE)
 		{
 			_ericState = ERIC_RIGHT_DASH;
@@ -155,23 +158,45 @@ void eric::update(POINTFLOAT StagePos, int choice)
 		}
 	}
 	
-	if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE || _ericState == ERIC_LEFT_STOP || _ericState == ERIC_LEFT_MOVE)
+	if (_isAccel == false && _ericState == ERIC_RIGHT_MOVE)
 	{
-		//가속도하고 스피드값 다시 초기화
-		_acceleration = 0;
-		_speed = 10;
+		if (_speed <= 5)
+		{
+			_acceleration = 0.05f;
+			_eric_X += _speed;
+			_speed += _acceleration;
+			
+		}
+		else if (_speed > 5)
+		{
+			_speed = 9;
+		}
+	}
+
+	else if (_isAccel == false && _ericState == ERIC_LEFT_MOVE)
+	{
+
+		if (_speed <= 5)
+		{
+			_acceleration = 0.05f;
+			_eric_X -= _speed;
+			_speed += _acceleration;
+		}
+		else if (_speed > 5)
+		{
+			_speed = 9;
+		}
 	}
 
 	switch (_ericState)
 	{
 	case ERIC_RIGHT_DASH:
 		_eric_X += _speed;
-		_speed += _acceleration;
 
 		break;
 	case ERIC_LEFT_DASH:
 		_eric_X -= _speed;
-		_speed += _acceleration;
+	
 		break;
 	}
 
@@ -184,26 +209,26 @@ void eric::update(POINTFLOAT StagePos, int choice)
 		{
 			if (_eric_X < 2950)
 			{
-				_eric_X += 10;
+				_eric_X += _speed;
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && (_ericState == ERIC_LEFT_STOP || _ericState == ERIC_LEFT_MOVE || _ericState == ERIC_LEFT_JUMP))
 		{
 			if (_eric_X > 0)
 			{
-				_eric_X -= 10;
+				_eric_X -= _speed;
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
 			if (_eric_Y > 0)
 			{
-				_eric_Y -= 10;
+				_eric_Y -= _speed;
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			_eric_Y += 10;
+			_eric_Y += _speed;
 		}
 	}
 }

@@ -29,6 +29,7 @@ private:
 	float _speed;
 	animation* _ericMotion; //에릭 모션
 	ERICSTATE _ericState; //에릭상태
+	bool _isAccel;
 
 	jump* _ericJump;
 
