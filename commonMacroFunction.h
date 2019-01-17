@@ -6,6 +6,12 @@
 
 //ÆÄÀÌ
 #define PI 3.141592654f
+
+inline POINTFLOAT PointFloatMake(float x, float y)
+{
+	POINTFLOAT pt = { x, y};
+	return pt;
+}
 //¿ø
 typedef struct tagELLIPSE
 {

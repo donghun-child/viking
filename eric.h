@@ -1,5 +1,6 @@
 #pragma once
 #include "gameNode.h"
+#include "jump.h"
 
 enum ERICSTATE
 {
@@ -14,15 +15,17 @@ enum ERICSTATE
 };
 class eric : public gameNode
 {
-
 private:
 	image* _ericImage;
 	RECT _eric_rc;
-	float _eric_x, _eric_y;
+	float _eric_X, _eric_Y;
+	float _start_X, _start_Y;
 	POINTFLOAT _cameraPos;
 
 	animation* _ericMotion; //에릭 모션
 	ERICSTATE _ericState; //에릭상태
+
+	jump* _ericJump;
 
 public:
 	eric();
@@ -44,7 +47,7 @@ public:
 	animation* getEricMotion() {return _ericMotion;}
 	void setEricMotion(animation* motion) {_ericMotion = motion;}
 
-	float getplayerX() { return _eric_x; }
-	float getplayerY() { return _eric_y; }
+	float getplayerX() { return _eric_X; }
+	float getplayerY() { return _eric_Y; }
 };
 
