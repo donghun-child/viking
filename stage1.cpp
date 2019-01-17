@@ -1,192 +1,108 @@
 #include "stdafx.h"
-#include "camera.h"
+#include "stage1.h"
 
 
-camera::camera()
+stage1::stage1()
 {
 }
 
 
-camera::~camera()
+stage1::~stage1()
 {
 }
 
-HRESULT camera::init()
+HRESULT stage1::init()
 {
-	_mapimage = IMAGEMANAGER->addImage("backGround", "image\\map.bmp", 3000, 2240, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("backGround", "image/map.bmp", 3000, 2240, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("pixel", "image/pixel.bmp", 3100, 2240, true, RGB(255, 0, 255));
 
-	_camera.x = WINSIZEX / 2;
-	_camera.y = WINSIZEY / 2;
+	_camera = new camera;
+	_camera->init();
 
+	_playerManager = new playerManager;
+	_playerManager->init();
 
+	_olaf = new olaf;
+	_olaf->init();
+
+	_eric = new eric;
+	_eric->init();
+
+	_play = new player3;
+	_play->init();
+
+	_choice = 1;
+
+	//_isPixel = false;
 
 	return S_OK;
 }
 
-void camera::release()
+void stage1::release()
 {
+	SAFE_DELETE(_playerManager);
+	SAFE_DELETE(_camera);
 }
 
-void camera::update(float playerX, float playerY, int choice, float changespeed)
+void stage1::update()
 {
-	if (change == true)
+	if (_choice == 1)
 	{
-		if (_camera.x > playerX)
-		{
-			_camera.x = _camera.x + cosf(angle) * Distance / changespeed;
-
-			if (_camera.x <= playerX)
-			{
-				_camera.x = playerX;
-			}
-
-
-
-			//===============∏  ¿Ã≈ª πÊ¡ˆ============================//
-			if (_camera.x < WINSIZEX / 2)
-			{
-				_camera.x = WINSIZEX / 2;
-			}
-
-			if (_camera.x > _mapimage->GetWidth() - WINSIZEX / 2)
-			{
-				_camera.x = _mapimage->GetWidth() - WINSIZEX / 2;
-			}
-
-		}
-		//==========================================================//
-
-
-
-		if (_camera.x < playerX)
-		{
-			_camera.x = _camera.x + cosf(angle) * Distance / changespeed;
-
-			if (_camera.x >= playerX)
-			{
-				_camera.x = playerX;
-			}
-
-
-
-			//===============∏  ¿Ã≈ª πÊ¡ˆ============================//
-			if (_camera.x < WINSIZEX / 2)
-			{
-				_camera.x = WINSIZEX / 2;
-			}
-
-			if (_camera.x > _mapimage->GetWidth() - WINSIZEX / 2)
-			{
-				_camera.x = _mapimage->GetWidth() - WINSIZEX / 2;
-			}
-
-		}
-		//==========================================================//
-
-
-		if (_camera.y > playerY)
-		{
-			_camera.y = _camera.y + sinf(angle) * Distance / changespeed;
-
-			if (_camera.y <= playerY)
-			{
-				_camera.y = playerY;
-			}
-
-			if (_camera.y < WINSIZEY / 2)
-			{
-				_camera.y = WINSIZEY / 2;
-			}
-
-			if (_camera.y > _mapimage->GetHeight() - WINSIZEY / 2)
-			{
-				_camera.y = _mapimage->GetHeight() - WINSIZEY / 2;
-			}
-		}
-
-		if (_camera.y < playerY)
-		{
-			_camera.y = _camera.y + sinf(angle) * Distance / changespeed;
-
-			if (_camera.y >= playerY)
-			{
-				_camera.y = playerY;
-			}
-
-			if (_camera.y < WINSIZEY / 2)
-			{
-				_camera.y = WINSIZEY / 2;
-			}
-
-			if (_camera.y > _mapimage->GetHeight() - WINSIZEY / 2)
-			{
-				_camera.y = _mapimage->GetHeight() - WINSIZEY / 2;
-			}
-		}
-
-		if (playerX == _camera.x && playerY == _camera.y)
-		{
-			change = true;
-		}
-
-		if (_camera.x == WINSIZEX / 2 && _camera.y == WINSIZEY / 2)
-		{
-			change = true;
-		}
-
-		if (_camera.x == _mapimage->GetWidth() - WINSIZEX / 2 && _camera.y == _mapimage->GetHeight() - WINSIZEY / 2)
-		{
-			change = true;
-		}
-
-		if (_camera.x == WINSIZEX / 2 && _camera.y == _mapimage->GetHeight() - WINSIZEY / 2)
-		{
-			change = true;
-		}
-
-		if (_camera.x == _mapimage->GetWidth() - WINSIZEX / 2 && _camera.y == WINSIZEY / 2)
-		{
-			change = true;
-		}
-
-
+		_camera->update(_olaf->getplayerX(), _olaf->getplayerY(), _choice, 10);
+	}
+	if (_choice == 2)
+	{
+		_camera->update(_eric->getplayerX(), _eric->getplayerY(), _choice, 10);
+	}
+	if (_choice == 3)
+	{
+		_camera->update(_play->getplayerX(), _play->getplayerY(), _choice, 10);
 	}
 
-	if (change == false)
+	_playerManager->update();
+
+
+	_olaf->update(_camera->getCameraPos(), _choice);
+
+	_eric->update(_camera->getCameraPos(), _choice);
+
+	_play->update(_camera->getCameraPos(), _choice);
+
+	if (KEYMANAGER->isOnceKeyDown('1'))
 	{
-		if (playerX >= WINSIZEX / 2 && playerX <= _mapimage->GetWidth() - WINSIZEX / 2)
-		{
-			_camera.x = playerX;
-		}
-		else if (playerX <= WINSIZEX / 2)
-		{
-			_camera.x = WINSIZEX / 2;
-		}
-		else if (playerX >= _mapimage->GetWidth() - WINSIZEX / 2)
-		{
-			_camera.x = _mapimage->GetWidth() - WINSIZEX / 2;
-		}
-
-
-		if (playerY >= WINSIZEY / 2 && playerY <= _mapimage->GetHeight() - WINSIZEY / 2)
-		{
-			_camera.y = playerY;
-		}
-		else if (playerY <= WINSIZEY / 2)
-		{
-			_camera.y = WINSIZEY / 2;
-		}
-		else if (playerY >= _mapimage->GetHeight() - WINSIZEY / 2)
-		{
-			_camera.y = _mapimage->GetHeight() - WINSIZEY / 2;
-		}
+		_choice = 1;
+		_camera->setChange(false);
+		_camera->setDistance(getDistance(_eric->getplayerX(), _eric->getplayerY(), _olaf->getplayerX(), _olaf->getplayerY()));
+		_camera->setAngle(getAngle(_eric->getplayerX(), _eric->getplayerY(), _olaf->getplayerX(), _olaf->getplayerX()));
 	}
+
+
+	if (KEYMANAGER->isOnceKeyDown('2'))
+	{
+		_choice = 2;
+		_camera->setChange(false);
+		_camera->setDistance(getDistance(_olaf->getplayerX(), _olaf->getplayerY(), _play->getplayerX(), _play->getplayerY()));
+		_camera->setAngle(getAngle(_olaf->getplayerX(), _olaf->getplayerY(), _play->getplayerX(), _play->getplayerX()));
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('3'))
+	{
+		_choice = 3;
+		_camera->setChange(false);
+		_camera->setDistance(getDistance(_play->getplayerX(), _play->getplayerY(), _eric->getplayerX(), _eric->getplayerY()));
+		_camera->setAngle(getAngle(_play->getplayerX(), _play->getplayerY(), _eric->getplayerX(), _eric->getplayerX()));
+	}
+
 }
 
-void camera::render()
+void stage1::render()
 {
-	IMAGEMANAGER->findImage("backGround")->render(getMemDC(), 0, 0, _camera.x - WINSIZEX / 2, _camera.y - WINSIZEY / 2, WINSIZEX, WINSIZEY);
-	char str[128];
-	sprintf_s(str, "∏ x : %f, ∏ y : %f , Ω∫¿ßƒ™ : %d , ∞≈∏Æ : %f  ,∞¢µµ : %f", _camera.x, _camera.y, change, Distance, angle);
-	TextOut(getMemDC(), 100, 160, str, strlen(str));
+
+	_playerManager->render();
+	_camera->render();
+	_olaf->render();
+	_eric->render();
+	_play->render();
 }
+
+
