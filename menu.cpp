@@ -22,7 +22,7 @@ HRESULT menu::init()
 	_imageAlphaValue = 0;
 
 	_menuGameStart = false;
-	_opening = true;
+	_opening = true;					
 	_padeIn = true;
 	_padeOut = false;
 
@@ -35,30 +35,30 @@ void menu::release()
 
 void menu::update()
 {
-	if (_padeIn)
+	if (_padeIn)						//페이드 인 적용
 	{
 		if (_imageAlphaValue <= 254)
 		{
 			_imageAlphaValue += 1;
 		}
-		else
+		else							//끝나면 fasle
 		{
 			_padeIn = false;
 		}
 	}
-	if (_padeOut)
+	if (_padeOut)						//위와 동일
 	{
-		if (_imageAlphaValue >= 0)
+		if (_imageAlphaValue > 0)
 		{
 			_imageAlphaValue -= 1;
 		}
-		else
+		else							//페이드 아웃시 끝나면 오프닝도 종료
 		{
 			_padeOut = false;
 			_opening = false;
 		}
 	}
-	if (!_opening )
+	if (!_opening )						//오프닝 종료시 메뉴선택 키입력
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
 		{
@@ -71,7 +71,7 @@ void menu::update()
 			else PostQuitMessage(0);
 		}
 	}
-	else
+	else								//오프닝 엔터시 페이드아웃 적용
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && !_padeIn)
 		{
@@ -82,7 +82,7 @@ void menu::update()
 
 void menu::render()
 {
-	if (_opening)
+	if (_opening)					
 	{
 		IMAGEMANAGER->findImage("오프닝")->alphaRender(getMemDC(), _imageAlphaValue);
 	}
@@ -91,4 +91,6 @@ void menu::render()
 		IMAGEMANAGER->findImage("메뉴")->render(getMemDC());
 		IMAGEMANAGER->findImage("메뉴선택")->render(getMemDC(), _menuSelect_X, _menuSelect_Y);
 	}
+
+
 }
