@@ -98,7 +98,9 @@ void stage1::update()
 
 void stage1::render()
 {
-	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
+	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX() , _camera->getCameraY(), WINSIZEX, WINSIZEY);
+	
+	
 	if (_isPixel)
 	{
 		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);

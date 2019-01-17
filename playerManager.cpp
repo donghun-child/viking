@@ -62,19 +62,19 @@ void playerManager::update()
 
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		_x[0] -= 3;
+		_x[0] -= 2;
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
-		_x[0] += 3;
+		_x[0] +=2;
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		_y[0] += 3;
+		_y[0] += 2;
 	}
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
-		_y[0] -= 3;
+		_y[0] -=2;
 	}
 
 
