@@ -55,7 +55,7 @@ HRESULT baleog::init()
 
 	IMAGEMANAGER->addFrameImage("화살", "image/bullet.bmp", 85, 20, 5, 2, true, RGB(255, 0, 255));
 	_arrow = new arrow;
-	_arrow->init("화살", 0, 600);
+	_arrow->init("화살", 10, WINSIZEX);
 
 	_rndAttack = RND->getInt(2);
 	return S_OK;
@@ -70,7 +70,7 @@ void baleog::update()
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK)
 	{
 		_baleogState = BALEOG_RIGHT_MOVE; //오른쪽 움직임 상태로 전환
-	
+
 		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightMove"); //모션 바꿔주고
 		_baleogMotion->start(); //모션 시작
 	}
@@ -84,7 +84,7 @@ void baleog::update()
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK)
 	{
 		_baleogState = BALEOG_LEFT_MOVE;
-	
+
 		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftMove");
 		_baleogMotion->start();
 	}
@@ -95,7 +95,7 @@ void baleog::update()
 		_baleogMotion->start();
 	}
 
-	if (_arrow->getVArrow().size() == 0)
+	//if (_arrow->getVArrow().size() == 0)
 	{
 		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 		{
@@ -106,6 +106,7 @@ void baleog::update()
 				_baleogMotion->start();
 				if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
 				{
+					_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI2);
 					_arrow->setArrowState(ARROW_RIGHT_FIRE);
 				}
 
@@ -117,11 +118,12 @@ void baleog::update()
 				_baleogMotion->start();
 				if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
 				{
+					_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI);
 					_arrow->setArrowState(ARROW_LEFT_FIRE);
 				}
 			}
 
-			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10);
+
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown('D'))
@@ -163,25 +165,6 @@ void baleog::update()
 	}
 
 	_arrow->update();
-
-	switch (_baleogState)
-	{
-	case BALEOG_RIGHT_MOVE:
-		
-		//_baleogPlayer.x += _baleogPlayer.speed;
-		break;
-	case BALEOG_LEFT_MOVE:
-	
-		//_baleogPlayer.x -= _baleogPlayer.speed;
-		break;
-	case BALEOG_RIGHT_ARROW_ATTACK:
-	
-		break;
-	case BALEOG_LEFT_ARROW_ATTACK:
-	
-		break;
-	}
-
 
 	_baleogPlayer.baleogRc = RectMakeCenter(_baleogPlayer.x, _baleogPlayer.y, _baleogPlayer.baleogImage->getFrameWidth(), _baleogPlayer.baleogImage->getFrameHeight());
 

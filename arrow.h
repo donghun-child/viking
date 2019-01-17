@@ -14,6 +14,7 @@ struct tagArrow
 	float x, y;
 	RECT arrowRc;
 	float speed;
+	float angle;
 	float fireX, fireY;
 	float radius;
 };
@@ -39,13 +40,13 @@ public:
 	void update();
 	void render();
 
-	void arrowFire(float x, float y, float speed);
+	void arrowFire(float x, float y, float speed, float angle);
 	void arrowMove();
 
-	ARROWSTATE getArrowState() {return _arrowState;}
-	void setArrowState(ARROWSTATE state) {_arrowState = state;}
+	ARROWSTATE getArrowState() { return _arrowState; }
+	void setArrowState(ARROWSTATE state) { _arrowState = state; }
 
-	vector<tagArrow> getVArrow() {return _vArrow;}
+	vector<tagArrow> getVArrow() { return _vArrow; }
 
 	float getArrowX()
 	{

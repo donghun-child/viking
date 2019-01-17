@@ -48,7 +48,7 @@ void arrow::render()
 	}
 }
 
-void arrow::arrowFire(float x, float y, float speed)
+void arrow::arrowFire(float x, float y, float speed, float angle)
 {
 	if (_vArrow.size() > _arrowMax) return;
 
@@ -56,6 +56,7 @@ void arrow::arrowFire(float x, float y, float speed)
 	arrow.arrowImage = IMAGEMANAGER->findImage(_imageName);
 	arrow.x = arrow.fireX = x;
 	arrow.y = arrow.fireY = y;
+	arrow.angle = angle;
 	arrow.radius = arrow.arrowImage->getFrameWidth() / 2;
 	arrow.speed = speed;
 	arrow.arrowRc = RectMakeCenter(arrow.x, arrow.y, arrow.arrowImage->getFrameWidth(), arrow.arrowImage->getFrameHeight());
@@ -67,20 +68,20 @@ void arrow::arrowMove()
 {
 	for (_viArrow = _vArrow.begin(); _viArrow != _vArrow.end();)
 	{
-
 		//¿À¸¥ÂÊ ½ğ»óÅÂ
 		if (_arrowState == ARROW_RIGHT_FIRE)
 		{
-			_viArrow->x += _viArrow->speed;
+			_viArrow->x += cosf(_viArrow->angle) * _viArrow->speed;
+			_viArrow->y += -sinf(_viArrow->angle) * _viArrow->speed;
 			_arrowAni = KEYANIMANAGER->findAnimation("È­»ì½ô", "rightFire");
 			_arrowAni->start();
-
 		}
 
 		//¿ŞÂÊ ½ğ»óÅÂ
-		if (_arrowState == ARROW_LEFT_FIRE)
+		else if (_arrowState == ARROW_LEFT_FIRE)
 		{
-			_viArrow->x -= _viArrow->speed;
+			_viArrow->x += cosf(_viArrow->angle) * _viArrow->speed;
+			_viArrow->y += -sinf(_viArrow->angle) * _viArrow->speed;
 			_arrowAni = KEYANIMANAGER->findAnimation("È­»ì½ô", "leftFire");
 			_arrowAni->start();
 		}
