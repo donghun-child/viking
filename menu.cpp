@@ -20,6 +20,8 @@ HRESULT menu::init()
 	_menuSelect_X = 320;
 	_menuSelect_Y = 525;
 	_menuGameStart = false;
+	_opening = true;
+
 	return S_OK;
 }
 
@@ -29,21 +31,37 @@ void menu::release()
 
 void menu::update()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
+	if (!_opening)
 	{
-		if (_menuSelect_Y == 590) _menuSelect_Y = 525;
-		else _menuSelect_Y = 590;
+		if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			if (_menuSelect_Y == 590) _menuSelect_Y = 525;
+			else _menuSelect_Y = 590;
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+		{
+			if (_menuSelect_Y == 525) _menuGameStart = true;
+			else PostQuitMessage(0);
+		}
 	}
-	if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+	else
 	{
-		if (_menuSelect_Y == 525) _menuGameStart = true;
-		else PostQuitMessage(0);
+		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+		{
+			_opening = false;
+		}
 	}
-
 }
 
 void menu::render()
 {
-	IMAGEMANAGER->findImage("메뉴")->render(getMemDC());
-	IMAGEMANAGER->findImage("메뉴선택")->render(getMemDC(), _menuSelect_X, _menuSelect_Y);
+	if (_opening)
+	{
+		IMAGEMANAGER->findImage("오프닝")->render(getMemDC());
+	}
+	else
+	{
+		IMAGEMANAGER->findImage("메뉴")->render(getMemDC());
+		IMAGEMANAGER->findImage("메뉴선택")->render(getMemDC(), _menuSelect_X, _menuSelect_Y);
+	}
 }
