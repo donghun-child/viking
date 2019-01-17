@@ -20,8 +20,8 @@
 class playGround : public gameNode
 {
 private:
-	gameNode* _menu;
-	gameNode* _stage1;
+	menu* _menu;
+	stage1* _stage1;
 
 
 

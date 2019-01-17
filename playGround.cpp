@@ -23,7 +23,7 @@ HRESULT playGround::init()
 
 	SCENEMANAGER->changeScene("stage1");
 
-
+	
 	return S_OK;
 }
 
@@ -42,7 +42,10 @@ void playGround::update()
 	gameNode::update();
 	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) PostQuitMessage(0);
 	
-	
+	if (_menu->getMenuQuit())
+	{
+		SCENEMANAGER->changeScene("stage1");
+	}
 	SCENEMANAGER->update();
 }
 
@@ -53,6 +56,7 @@ void playGround::render()
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//===========================================================
 	SCENEMANAGER->render();
+
 
 
 	TIMEMANAGER->render(getMemDC());
