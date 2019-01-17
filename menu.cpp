@@ -19,8 +19,12 @@ HRESULT menu::init()
 
 	_menuSelect_X = 320;
 	_menuSelect_Y = 525;
+	_imageAlphaValue = 0;
+
 	_menuGameStart = false;
 	_opening = true;
+	_padeIn = true;
+	_padeOut = false;
 
 	return S_OK;
 }
@@ -31,7 +35,30 @@ void menu::release()
 
 void menu::update()
 {
-	if (!_opening)
+	if (_padeIn)
+	{
+		if (_imageAlphaValue <= 254)
+		{
+			_imageAlphaValue += 1;
+		}
+		else
+		{
+			_padeIn = false;
+		}
+	}
+	if (_padeOut)
+	{
+		if (_imageAlphaValue >= 0)
+		{
+			_imageAlphaValue -= 1;
+		}
+		else
+		{
+			_padeOut = false;
+			_opening = false;
+		}
+	}
+	if (!_opening )
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
 		{
@@ -46,9 +73,9 @@ void menu::update()
 	}
 	else
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+		if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && !_padeIn)
 		{
-			_opening = false;
+			_padeOut = true;
 		}
 	}
 }
@@ -57,9 +84,9 @@ void menu::render()
 {
 	if (_opening)
 	{
-		IMAGEMANAGER->findImage("오프닝")->render(getMemDC());
+		IMAGEMANAGER->findImage("오프닝")->alphaRender(getMemDC(), _imageAlphaValue);
 	}
-	else
+	else if(!_opening)
 	{
 		IMAGEMANAGER->findImage("메뉴")->render(getMemDC());
 		IMAGEMANAGER->findImage("메뉴선택")->render(getMemDC(), _menuSelect_X, _menuSelect_Y);
