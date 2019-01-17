@@ -58,6 +58,9 @@ HRESULT baleog::init()
 	_arrow->init("화살", 0, WINSIZEX);
 
 	_rndAttack = RND->getInt(2);
+
+	_arrowFireStop = false;
+
 	return S_OK;
 }
 
@@ -117,27 +120,17 @@ void baleog::update()
 			if (_baleogMotion->getFramePos().x == 750 && _baleogState == BALEOG_RIGHT_ARROW_ATTACK)
 			{
 				_baleogMotion->pause();
+				_arrowFireStop = true;
 			}
 			else if (_baleogMotion->getFramePos().x == 300 && _baleogState == BALEOG_LEFT_ARROW_ATTACK)
 			{
 				_baleogMotion->pause();
+				_arrowFireStop = true;
 			}
 		}
 		if (KEYMANAGER->isOnceKeyUp('S'))
 		{
-			if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
-			{
-				_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI2);
-				_arrow->setArrowState(ARROW_RIGHT_FIRE);
-				_baleogMotion->resume();
-			}
-			
-			else if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
-			{
-				_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI);
-				_arrow->setArrowState(ARROW_LEFT_FIRE);
-				_baleogMotion->resume();
-			}
+			_arrowFireStop = false;
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown('D'))
@@ -177,6 +170,7 @@ void baleog::update()
 			}
 		}
 	}
+	if(!_arrowFireStop)	arrowFire();
 
 	_arrow->update();
 
@@ -216,6 +210,29 @@ void baleog::leftFire(void * obj)
 	baleogPlayer->setBaleogState(BALEOG_LEFT_STOP);
 	baleogPlayer->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
 	baleogPlayer->getBaleogMotion()->start();
+}
+
+void baleog::arrowFire()
+{
+	if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
+	{
+		if (_baleogMotion->getFramePos().x == 750)
+		{
+			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI2);
+			_arrow->setArrowState(ARROW_RIGHT_FIRE);
+			_baleogMotion->resume();
+		}
+	}
+	else if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
+	{
+		if (_baleogMotion->getFramePos().x == 300)
+		{
+			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI);
+			_arrow->setArrowState(ARROW_LEFT_FIRE);
+			_baleogMotion->resume();
+		}
+	}
+	
 }
 
 

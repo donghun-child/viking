@@ -43,6 +43,9 @@ private:
 	animation* _baleogMotion; //벨로그 모션 담아줄 빈 애니메이션
 
 	int _rndAttack;
+
+	bool _arrowFireStop;
+
 public:
 
 	baleog();
@@ -64,5 +67,7 @@ public:
 	//벨로그 애니메이션 접근자 설정자
 	animation* getBaleogMotion() {return _baleogMotion;}
 	void setBaleogMotion(animation* motion) {_baleogMotion = motion;}
+
+	void arrowFire();
 };
 
