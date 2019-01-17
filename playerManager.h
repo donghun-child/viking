@@ -1,5 +1,6 @@
 #pragma once
 #include "gameNode.h"
+#include "baleog.h"
 
 enum Character
 {
@@ -19,6 +20,7 @@ private:
 
 	bool _isDebug;
 
+	baleog* _baleog;
 
 	int _x[3];
 	int _y[3];
