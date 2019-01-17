@@ -8,10 +8,13 @@ enum ERICSTATE
 	ERIC_LEFT_STOP,
 	ERIC_RIGHT_MOVE,
 	ERIC_LEFT_MOVE,
+	ERIC_UP_MOVE,
+	ERIC_DOWN_MOVE,
 	ERIC_RIGHT_JUMP,
 	ERIC_LEFT_JUMP,
 	ERIC_RIGHT_DASH,
 	ERIC_LEFT_DASH,
+
 };
 class eric : public gameNode
 {
@@ -22,6 +25,8 @@ private:
 	float _start_X, _start_Y;
 	POINTFLOAT _cameraPos;
 
+	float _acceleration; //대쉬할때 가속도
+	float _speed;
 	animation* _ericMotion; //에릭 모션
 	ERICSTATE _ericState; //에릭상태
 
