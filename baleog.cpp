@@ -55,7 +55,7 @@ HRESULT baleog::init()
 
 	IMAGEMANAGER->addFrameImage("화살", "image/bullet.bmp", 85, 20, 5, 2, true, RGB(255, 0, 255));
 	_arrow = new arrow;
-	_arrow->init("화살", 10, WINSIZEX);
+	_arrow->init("화살", 0, WINSIZEX);
 
 	_rndAttack = RND->getInt(2);
 	return S_OK;
@@ -95,7 +95,7 @@ void baleog::update()
 		_baleogMotion->start();
 	}
 
-	//if (_arrow->getVArrow().size() == 0)
+	if (_arrow->getVArrow().size() == 0)
 	{
 		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 		{
@@ -104,26 +104,40 @@ void baleog::update()
 				_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightArrowAttack");
 				_baleogMotion->start();
-				if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
-				{
-					_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI2);
-					_arrow->setArrowState(ARROW_RIGHT_FIRE);
-				}
-
 			}
 			else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
 			{
 				_baleogState = BALEOG_LEFT_ARROW_ATTACK;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftArrowAttack");
 				_baleogMotion->start();
-				if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
-				{
-					_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI);
-					_arrow->setArrowState(ARROW_LEFT_FIRE);
-				}
 			}
-
-
+		}
+		if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			if (_baleogMotion->getFramePos().x == 750 && _baleogState == BALEOG_RIGHT_ARROW_ATTACK)
+			{
+				_baleogMotion->pause();
+			}
+			else if (_baleogMotion->getFramePos().x == 300 && _baleogState == BALEOG_LEFT_ARROW_ATTACK)
+			{
+				_baleogMotion->pause();
+			}
+		}
+		if (KEYMANAGER->isOnceKeyUp('S'))
+		{
+			if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
+			{
+				_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI2);
+				_arrow->setArrowState(ARROW_RIGHT_FIRE);
+				_baleogMotion->resume();
+			}
+			
+			else if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
+			{
+				_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI);
+				_arrow->setArrowState(ARROW_LEFT_FIRE);
+				_baleogMotion->resume();
+			}
 		}
 	}
 	if (KEYMANAGER->isOnceKeyDown('D'))
@@ -181,7 +195,7 @@ void baleog::render()
 	sprintf_s(str, "벨로그 스피드 : %d", _baleogPlayer.speed);
 	TextOut(getMemDC(), 100, 120, str, strlen(str));
 
-	sprintf_s(str, "랜덤어택 : %d", _rndAttack);
+	sprintf_s(str, "랜덤어택 : %d", _baleogMotion->getFramePos().x);
 	TextOut(getMemDC(), 100, 140, str, strlen(str));
 
 	_baleogPlayer.baleogImage->aniRender(getMemDC(), _baleogPlayer.baleogRc.left, _baleogPlayer.baleogRc.top, _baleogMotion);
