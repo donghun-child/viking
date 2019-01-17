@@ -14,13 +14,16 @@ stage1::~stage1()
 HRESULT stage1::init()
 {
 	IMAGEMANAGER->addImage("backGround", "image/map.bmp", 3000, 2240, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("pixel", "image/pixel.bmp", 3100, 2240, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("pixel", "image/pixel.bmp", 3000, 2240, true, RGB(255, 0, 255));
 
 	_camera = new camera;
 	_camera->init();
 
 	_playerManager = new playerManager;
 	_playerManager->init();
+
+	_camera->getPlayerManagerAddressLink(_playerManager);
+	_playerManager->getCameraAddressLink(_camera);
 
 	_olaf = new olaf;
 	_olaf->init();
@@ -33,7 +36,7 @@ HRESULT stage1::init()
 
 	_choice = 1;
 
-	//_isPixel = false;
+	_isPixel = false;
 
 	return S_OK;
 }
@@ -46,6 +49,19 @@ void stage1::release()
 
 void stage1::update()
 {
+	//ÇÈ¼¿º¸ÀÌ±â¿ë
+	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD0))
+	{
+		if (_isPixel)
+		{
+			_isPixel = false;
+		}
+		else
+		{
+			_isPixel = true;
+		}
+	}
+
 	if (_choice == 1)
 	{
 		_camera->update(_olaf->getplayerX(), _olaf->getplayerY(), _choice, 10);
@@ -97,7 +113,11 @@ void stage1::update()
 
 void stage1::render()
 {
-
+	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX() - WINSIZEX / 2, _camera->getCameraY() - WINSIZEY / 2, WINSIZEX, WINSIZEY);
+	if (_isPixel)
+	{
+		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX() - WINSIZEX / 2, _camera->getCameraY() - WINSIZEY / 2, WINSIZEX, WINSIZEY);
+	}
 	_playerManager->render();
 	_camera->render();
 	_olaf->render();

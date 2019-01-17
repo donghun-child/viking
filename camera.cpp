@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "camera.h"
+#include "playerManager.h"
 
 
 camera::camera()
@@ -13,7 +14,7 @@ camera::~camera()
 
 HRESULT camera::init()
 {
-	_mapimage = IMAGEMANAGER->addImage("backGround", "image\\map.bmp", 3000, 2240, true, RGB(255, 0, 255));
+	_mapimage = IMAGEMANAGER->findImage("backGround");
 
 	_camera.x = WINSIZEX / 2;
 	_camera.y = WINSIZEY / 2;
@@ -185,8 +186,7 @@ void camera::update(float playerX, float playerY, int choice, float changespeed)
 
 void camera::render()
 {
-	IMAGEMANAGER->findImage("backGround")->render(getMemDC(), 0, 0, _camera.x - WINSIZEX / 2, _camera.y - WINSIZEY / 2, WINSIZEX, WINSIZEY);
-	char str[128];
-	sprintf_s(str, "¸Êx : %f, ¸Êy : %f , ½ºÀ§Äª : %d , °Å¸® : %f  ,°¢µµ : %f", _camera.x, _camera.y, change, Distance, angle);
-	TextOut(getMemDC(), 100, 160, str, strlen(str));
+	//char str[128];
+	//sprintf_s(str, "¸Êx : %f, ¸Êy : %f , ½ºÀ§Äª : %d , °Å¸® : %f  ,°¢µµ : %f", _camera.x, _camera.y, change, Distance, angle);
+	//TextOut(getMemDC(), 100, 160, str, strlen(str));
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "playerManager.h"
+#include "camera.h"
 
 
 playerManager::playerManager()

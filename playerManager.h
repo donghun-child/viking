@@ -8,9 +8,13 @@ enum Character
 	OLAF
 };
 
+class camera;
+
 class playerManager : public gameNode
 {
 private:
+	camera* _camera;
+
 	RECT _rc[3];
 
 	bool _isDebug;
@@ -35,5 +39,6 @@ public:
 	void pixelCollisionYellow();
 	void pixelCollisionEmerald();
 
+	void getCameraAddressLink(camera* camera) { _camera = camera; }
 };
 
