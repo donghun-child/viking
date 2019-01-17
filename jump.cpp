@@ -61,3 +61,13 @@ void jump::jumping(float * x, float * y, float jumpPower, float gravity)
 	_jumpPower = jumpPower;
 
 }
+
+
+jump::jump()
+{
+}
+
+
+jump::~jump()
+{
+}

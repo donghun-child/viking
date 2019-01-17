@@ -26,3 +26,10 @@ public:
 	void jumping(float* x, float* y, float jumpPower, float gravity);
 };
 
+class jump
+{
+public:
+	jump();
+	~jump();
+};
+

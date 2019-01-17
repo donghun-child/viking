@@ -63,6 +63,26 @@ void eric::update(POINTFLOAT StagePos, int choice)
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
 	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	{
+		_ericState = ERIC_RIGHT_STOP;
+		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
+		_ericMotion->start();
+	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+	{
+		_ericState = ERIC_LEFT_MOVE;
+		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
+		_ericMotion->start();
+	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
+	{
+		_ericState = ERIC_LEFT_STOP;
+		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftStop");
+		_ericMotion->start();
+	}
+
 
 	_cameraPos = StagePos;
 

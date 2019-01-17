@@ -64,6 +64,9 @@
     <Filter Include="PlayGround\playerManager\baleog">
       <UniqueIdentifier>{6a7f129c-ab3f-4d6c-8291-a167091f150b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlayGround\playerManager\eric">
+      <UniqueIdentifier>{220c0a5b-e4cd-4ee1-b0ff-c1f7cd2989fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,9 +162,6 @@
     <ClInclude Include="olaf.h">
       <Filter>PlayGround\playerManager</Filter>
     </ClInclude>
-    <ClInclude Include="eric.h">
-      <Filter>PlayGround\playerManager</Filter>
-    </ClInclude>
     <ClInclude Include="baleog.h">
       <Filter>PlayGround\playerManager\baleog</Filter>
     </ClInclude>
@@ -170,6 +170,12 @@
     </ClInclude>
     <ClInclude Include="player3.h">
       <Filter>PlayGround\playerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="jump.h">
+      <Filter>PlayGround\playerManager\eric</Filter>
+    </ClInclude>
+    <ClInclude Include="eric.h">
+      <Filter>PlayGround\playerManager\eric</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +260,6 @@
     <ClCompile Include="olaf.cpp">
       <Filter>PlayGround\playerManager</Filter>
     </ClCompile>
-    <ClCompile Include="eric.cpp">
-      <Filter>PlayGround\playerManager</Filter>
-    </ClCompile>
     <ClCompile Include="baleog.cpp">
       <Filter>PlayGround\playerManager\baleog</Filter>
     </ClCompile>
@@ -265,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="player3.cpp">
       <Filter>PlayGround\playerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="jump.cpp">
+      <Filter>PlayGround\playerManager\eric</Filter>
+    </ClCompile>
+    <ClCompile Include="eric.cpp">
+      <Filter>PlayGround\playerManager\eric</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
