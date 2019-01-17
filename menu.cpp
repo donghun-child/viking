@@ -39,7 +39,11 @@ void menu::update()
 	{
 		if (_imageAlphaValue <= 254)
 		{
-			_imageAlphaValue += 1;
+			_imageAlphaValue += 2;
+			if (_imageAlphaValue >= 253)
+			{
+				_imageAlphaValue = 255;
+			}
 		}
 		else							//끝나면 fasle
 		{
@@ -50,7 +54,11 @@ void menu::update()
 	{
 		if (_imageAlphaValue > 0)
 		{
-			_imageAlphaValue -= 1;
+			_imageAlphaValue -= 2;
+			if (_imageAlphaValue < 3)
+			{
+				_imageAlphaValue = 0;
+			}
 		}
 		else							//페이드 아웃시 끝나면 오프닝도 종료
 		{
