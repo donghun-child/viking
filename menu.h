@@ -5,7 +5,8 @@ class menu : public gameNode
 {
 private:
 	int _menuSelect_X, _menuSelect_Y;
-	bool _menuQuit;
+	bool _menuGameStart;					//메뉴 게임 시작 불값
+
 public:
 	menu();
 	~menu();
@@ -15,6 +16,6 @@ public:
 	void update();
 	void render();
 
-	bool getMenuQuit() { return _menuQuit; }
+	bool getMenuQuit() { return _menuGameStart; }
 };
 

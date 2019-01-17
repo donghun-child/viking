@@ -13,12 +13,13 @@ menu::~menu()
 
 HRESULT menu::init()
 {
+	IMAGEMANAGER->addImage("오프닝", "image/theLostVikings.bmp", 1000, 800, true, RGB(255, 0 ,255));
 	IMAGEMANAGER->addImage("메뉴", "image/menu.bmp", 1000, 800, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("메뉴선택", "image/menuselect.bmp", 50, 50, true, RGB(255, 0, 255));
 
 	_menuSelect_X = 320;
 	_menuSelect_Y = 525;
-	_menuQuit = false;
+	_menuGameStart = false;
 	return S_OK;
 }
 
@@ -35,7 +36,7 @@ void menu::update()
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 	{
-		if (_menuSelect_Y == 525) _menuQuit = true;
+		if (_menuSelect_Y == 525) _menuGameStart = true;
 		else PostQuitMessage(0);
 	}
 
