@@ -11,9 +11,7 @@ class stage1 : public gameNode
 private:
 	camera* _camera;
 	playerManager* _playerManager;
-	olaf* _olaf;
-	eric* _eric;
-	player3* _play;
+
 	bool _isPixel;
 
 	int _choice;

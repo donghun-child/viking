@@ -16,8 +16,8 @@ HRESULT camera::init()
 {
 	_mapimage = IMAGEMANAGER->findImage("backGround");
 
-	_camera.x = WINSIZEX / 2;
-	_camera.y = WINSIZEY / 2;
+	_camera.x = 0;
+	_camera.y = 0;
 
 
 

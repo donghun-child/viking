@@ -3,8 +3,8 @@
 
 enum Character
 {
-	BALEOG,
 	ERIC,
+	BALEOG,
 	OLAF
 };
 
@@ -40,5 +40,13 @@ public:
 	void pixelCollisionEmerald();
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
+
+	int getEricX() { return _x[0]; }
+	int getEricY() { return _y[0]; }
+	int getBalogX() { return _x[1]; }
+	int getBalogY() { return _y[1]; }
+	int getOlafX() { return _x[2]; }
+	int getOlafY() { return _y[2]; }
+
 };
 

@@ -25,15 +25,6 @@ HRESULT stage1::init()
 	_camera->getPlayerManagerAddressLink(_playerManager);
 	_playerManager->getCameraAddressLink(_camera);
 
-	_olaf = new olaf;
-	_olaf->init();
-
-	_eric = new eric;
-	_eric->init();
-
-	_play = new player3;
-	_play->init();
-
 	_choice = 1;
 
 	_isPixel = false;
@@ -64,32 +55,26 @@ void stage1::update()
 
 	if (_choice == 1)
 	{
-		_camera->update(_olaf->getplayerX(), _olaf->getplayerY(), _choice, 10);
+		_camera->update(_playerManager->getEricX(), _playerManager->getEricY(), _choice, 10);
 	}
 	if (_choice == 2)
 	{
-		_camera->update(_eric->getplayerX(), _eric->getplayerY(), _choice, 10);
+		_camera->update(_playerManager->getBalogX(), _playerManager->getBalogY(), _choice, 10);
 	}
 	if (_choice == 3)
 	{
-		_camera->update(_play->getplayerX(), _play->getplayerY(), _choice, 10);
+		_camera->update(_playerManager->getOlafX(), _playerManager->getOlafY(), _choice, 10);
 	}
 
 	_playerManager->update();
 
 
-	_olaf->update(_camera->getCameraPos(), _choice);
-
-	_eric->update(_camera->getCameraPos(), _choice);
-
-	_play->update(_camera->getCameraPos(), _choice);
-
 	if (KEYMANAGER->isOnceKeyDown('1'))
 	{
 		_choice = 1;
 		_camera->setChange(false);
-		_camera->setDistance(getDistance(_eric->getplayerX(), _eric->getplayerY(), _olaf->getplayerX(), _olaf->getplayerY()));
-		_camera->setAngle(getAngle(_eric->getplayerX(), _eric->getplayerY(), _olaf->getplayerX(), _olaf->getplayerX()));
+		_camera->setDistance(getDistance(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY()));
+		_camera->setAngle(getAngle(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY()));
 	}
 
 
@@ -97,32 +82,30 @@ void stage1::update()
 	{
 		_choice = 2;
 		_camera->setChange(false);
-		_camera->setDistance(getDistance(_olaf->getplayerX(), _olaf->getplayerY(), _play->getplayerX(), _play->getplayerY()));
-		_camera->setAngle(getAngle(_olaf->getplayerX(), _olaf->getplayerY(), _play->getplayerX(), _play->getplayerX()));
+		_camera->setDistance(getDistance(_playerManager->getBalogX(),_playerManager->getBalogY(),_playerManager->getOlafX(),_playerManager->getOlafY()));
+		_camera->setAngle(getAngle(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY()));
 	}
 
 	if (KEYMANAGER->isOnceKeyDown('3'))
 	{
 		_choice = 3;
 		_camera->setChange(false);
-		_camera->setDistance(getDistance(_play->getplayerX(), _play->getplayerY(), _eric->getplayerX(), _eric->getplayerY()));
-		_camera->setAngle(getAngle(_play->getplayerX(), _play->getplayerY(), _eric->getplayerX(), _eric->getplayerX()));
+		_camera->setDistance(getDistance(_playerManager->getOlafX(),_playerManager->getOlafY(),_playerManager->getEricX(),_playerManager->getEricY()));
+		_camera->setAngle(getAngle(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY()));
 	}
 
 }
 
 void stage1::render()
 {
-	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX() - WINSIZEX / 2, _camera->getCameraY() - WINSIZEY / 2, WINSIZEX, WINSIZEY);
+	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
 	if (_isPixel)
 	{
-		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX() - WINSIZEX / 2, _camera->getCameraY() - WINSIZEY / 2, WINSIZEX, WINSIZEY);
+		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
 	}
 	_playerManager->render();
 	_camera->render();
-	_olaf->render();
-	_eric->render();
-	_play->render();
+	
 }
 
 
