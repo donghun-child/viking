@@ -55,10 +55,17 @@ void menu::update()
 		else							//페이드 아웃시 끝나면 오프닝도 종료
 		{
 			_padeOut = false;
+			if (!_opening)
+			{
+				_menuGameStart = true;
+				return;
+			}
 			_opening = false;
+			if (!_opening) _imageAlphaValue = 255;
+
 		}
 	}
-	if (!_opening )						//오프닝 종료시 메뉴선택 키입력
+	if (!_opening)						//오프닝 종료시 메뉴선택 키입력
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
 		{
@@ -67,7 +74,7 @@ void menu::update()
 		}
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 		{
-			if (_menuSelect_Y == 525) _menuGameStart = true;
+			if (_menuSelect_Y == 525) _padeOut = true;
 			else PostQuitMessage(0);
 		}
 	}
@@ -88,8 +95,8 @@ void menu::render()
 	}
 	else if(!_opening)
 	{
-		IMAGEMANAGER->findImage("메뉴")->render(getMemDC());
-		IMAGEMANAGER->findImage("메뉴선택")->render(getMemDC(), _menuSelect_X, _menuSelect_Y);
+		IMAGEMANAGER->findImage("메뉴")->alphaRender(getMemDC(), _imageAlphaValue);
+		IMAGEMANAGER->findImage("메뉴선택")->alphaRender(getMemDC(), _menuSelect_X, _menuSelect_Y, _imageAlphaValue);
 	}
 
 
