@@ -20,5 +20,7 @@ public:
 	void render();
 
 	bool getMenuQuit() { return _menuGameStart; }
+	void padeIn();
+	void padeOut();
 };
 

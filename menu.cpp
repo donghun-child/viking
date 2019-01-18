@@ -35,44 +35,9 @@ void menu::release()
 
 void menu::update()
 {
-	if (_padeIn)						//페이드 인 적용
-	{
-		if (_imageAlphaValue <= 254)
-		{
-			_imageAlphaValue += 2;
-			if (_imageAlphaValue >= 253)
-			{
-				_imageAlphaValue = 255;
-			}
-		}
-		else							//끝나면 fasle
-		{
-			_padeIn = false;
-		}
-	}
-	if (_padeOut)						//위와 동일
-	{
-		if (_imageAlphaValue > 0)
-		{
-			_imageAlphaValue -= 2;
-			if (_imageAlphaValue < 3)
-			{
-				_imageAlphaValue = 0;
-			}
-		}
-		else							//페이드 아웃시 끝나면 오프닝도 종료
-		{
-			_padeOut = false;
-			if (!_opening)
-			{
-				_menuGameStart = true;
-				return;
-			}
-			_opening = false;
-			if (!_opening) _imageAlphaValue = 255;
-
-		}
-	}
+	padeIn();
+	padeOut();
+	
 	if (!_opening)						//오프닝 종료시 메뉴선택 키입력
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
@@ -108,4 +73,50 @@ void menu::render()
 	}
 
 
+}
+
+void menu::padeIn()
+{
+	if (_padeIn)						//페이드 인 적용
+	{
+		if (_imageAlphaValue <= 254)
+		{
+			_imageAlphaValue += 2;
+			if (_imageAlphaValue >= 253)
+			{
+				_imageAlphaValue = 255;
+			}
+		}
+		else							//끝나면 fasle
+		{
+			_padeIn = false;
+		}
+	}
+}
+
+void menu::padeOut()
+{
+	if (_padeOut)						//위와 동일
+	{
+		if (_imageAlphaValue > 0)
+		{
+			_imageAlphaValue -= 2;
+			if (_imageAlphaValue < 3)
+			{
+				_imageAlphaValue = 0;
+			}
+		}
+		else							//페이드 아웃시 끝나면 오프닝도 종료
+		{
+			_padeOut = false;
+			if (!_opening)
+			{
+				_menuGameStart = true;
+				return;
+			}
+			_opening = false;
+			if (!_opening) _imageAlphaValue = 255;
+
+		}
+	}
 }
