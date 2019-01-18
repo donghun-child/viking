@@ -39,7 +39,7 @@ public:
 
 	HRESULT init();
 	void release();
-	void update(POINTFLOAT StagePos, int choice);
+	void update();
 	void render();
 
 	static void rightDash(void* obj);
