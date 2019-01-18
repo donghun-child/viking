@@ -50,19 +50,24 @@ private:
 	bool _arrowFireStop;
 
 public:
-
 	baleog();
 	~baleog();
 
 	HRESULT init();
 	void release();
-	void update();
+	void update(float baleogX, float baleogY);
 	void render();
+
+	void keySetting(float baleogX, float baleogY); //키셋팅
+	void arrowAttack(); //화살공격
+	void swordAttack(); //검공격
+	void arrowFire(); //모션이 취해질때 화살 발사할 함수
 
 	//콜백함수 불러올 함수
 	static void rightFire(void* obj);
 	static void leftFire(void* obj);
 
+public:
 	//벨로그 상태 접근자 설정자
 	BALEOGSTATE getBaleogState() { return _baleogState; }
 	void setBaleogState(BALEOGSTATE state) { _baleogState = state; }
@@ -71,6 +76,8 @@ public:
 	animation* getBaleogMotion() {return _baleogMotion;}
 	void setBaleogMotion(animation* motion) {_baleogMotion = motion;}
 
-	void arrowFire();
+	//사다리 충돌했는지 접근자 설정자
+	bool getLadderCollision() {return _isLadderColision;}
+	void setLadderCollision(bool collision) {_isLadderColision = collision;}
 };
 
