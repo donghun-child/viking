@@ -318,7 +318,7 @@ void playerManager::gravity(int select)
 		{
 			if (_jumpNum > 0)
 			{
-				if (KEYMANAGER->isOnceKeyDown('F'))
+				if (KEYMANAGER->isOnceKeyDown('F') && _camera->getChange() == false)
 				{
 					_jumpNum--;
 					_jumpStartPos = _y[0];
