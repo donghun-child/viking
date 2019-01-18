@@ -55,10 +55,10 @@ public:
 
 	HRESULT init();
 	void release();
-	void update(float baleogX, float baleogY);
+	void update(float x, float y);
 	void render();
 
-	void keySetting(float baleogX, float baleogY); //키셋팅
+	void keySetting(); //키셋팅
 	void arrowAttack(); //화살공격
 	void swordAttack(); //검공격
 	void arrowFire(); //모션이 취해질때 화살 발사할 함수
@@ -79,5 +79,13 @@ public:
 	//사다리 충돌했는지 접근자 설정자
 	bool getLadderCollision() {return _isLadderColision;}
 	void setLadderCollision(bool collision) {_isLadderColision = collision;}
+
+	image* getBaleogImage() {return _baleogPlayer.baleogImage;}
+
+	float getBaleogX() {return _baleogPlayer.x;}
+	float getBaleogY() {return _baleogPlayer.y;}
+
+	void setBaleogX(float x) {_baleogPlayer.x = x;}
+	void setBaleogY(float y) {_baleogPlayer.y = y;}
 };
 

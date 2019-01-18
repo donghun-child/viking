@@ -22,10 +22,10 @@ HRESULT baleog::init()
 	_baleogState = BALEOG_RIGHT_STOP; //처음엔 오른쪽 기본상태로
 
 	int rightStop[] = { 0,1 };
-	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "rightStop", "벨로그", rightStop, 2, 6, true);
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "rightStop", "벨로그", rightStop, 2, 4, true);
 
 	int leftStop[] = { 2,3 };
-	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftStop", "벨로그", leftStop, 2, 6, true);
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftStop", "벨로그", leftStop, 2, 4, true);
 
 	int rightMove[] = { 8, 9, 10, 11, 12, 13, 14, 15 };
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "rightMove", "벨로그", rightMove, 8, 10, true);
@@ -73,12 +73,16 @@ HRESULT baleog::init()
 
 void baleog::release()
 {
+	SAFE_DELETE(_arrow);
 }
 
-void baleog::update(float baleogX, float baleogY)
+void baleog::update(float x, float y)
 {
+	_baleogPlayer.x = x;
+	_baleogPlayer.y = y;
+
 	//키셋팅
-	keySetting(baleogX, baleogY);
+	keySetting();
 
 	//화살공격
 	arrowAttack();
@@ -110,7 +114,7 @@ void baleog::render()
 	_arrow->render();
 }
 
-void baleog::keySetting(float baleogX, float baleogY)
+void baleog::keySetting()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK)
 	{
@@ -168,16 +172,16 @@ void baleog::keySetting(float baleogX, float baleogY)
 	switch (_baleogState)
 	{
 	case BALEOG_RIGHT_MOVE:
-		baleogX += _baleogPlayer.speed;
+		_baleogPlayer.x += _baleogPlayer.speed;
 		break;
 	case BALEOG_LEFT_MOVE:
-		baleogX -= _baleogPlayer.speed;
+		_baleogPlayer.y -= _baleogPlayer.speed;
 		break;
 	case BALEOG_UP_MOVE:
-		if (KEYMANAGER->isStayKeyDown(VK_UP)) baleogY -= _baleogPlayer.speed;
+		if (KEYMANAGER->isStayKeyDown(VK_UP)) _baleogPlayer.y -= _baleogPlayer.speed;
 		break;
 	case BALEOG_DOWN_MOVE:
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN)) baleogY += _baleogPlayer.speed;
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN)) _baleogPlayer.y += _baleogPlayer.speed;
 		break;
 	}
 
