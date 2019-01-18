@@ -61,7 +61,8 @@ HRESULT eric::init()
 	_acceleration = 0;
 	_ericJump = new jump;
 	_ericJump->init();
-	_isAccel = false;
+	_isLadderCollision = false;
+
 	return S_OK;
 }
 
@@ -100,26 +101,30 @@ void eric::update(POINTFLOAT StagePos, int choice)
 		_ericMotion->start();
 	}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_UP))
+	//사다리 충돌했을경우만 위아래 움직이게함.
+	if (_isLadderCollision == true)
 	{
-		_ericState = ERIC_UP_MOVE;
-		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "upMove");
-		_ericMotion->start();
-	}
-	else if (KEYMANAGER->isOnceKeyUp(VK_UP) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE)
-	{
-		_ericMotion->pause();
-	}
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			_ericState = ERIC_UP_MOVE;
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "upMove");
+			_ericMotion->start();
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_UP) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE)
+		{
+			_ericMotion->pause();
+		}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
-	{
-		_ericState = ERIC_DOWN_MOVE;
-		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "downMove");
-		_ericMotion->start();
-	}
-	else if (KEYMANAGER->isOnceKeyUp(VK_DOWN) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE)
-	{
-		_ericMotion->pause();
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			_ericState = ERIC_DOWN_MOVE;
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "downMove");
+			_ericMotion->start();
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_DOWN) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE)
+		{
+			_ericMotion->pause();
+		}
 	}
 
 	if (KEYMANAGER->isOnceKeyDown('S'))
@@ -158,7 +163,8 @@ void eric::update(POINTFLOAT StagePos, int choice)
 		}
 	}
 	
-	if (_isAccel == false && _ericState == ERIC_RIGHT_MOVE)
+	//가속도 주기위함
+	if (_ericState == ERIC_RIGHT_MOVE)
 	{
 		if (_speed <= 5)
 		{
@@ -172,8 +178,8 @@ void eric::update(POINTFLOAT StagePos, int choice)
 			_speed = 9;
 		}
 	}
-
-	else if (_isAccel == false && _ericState == ERIC_LEFT_MOVE)
+	//가속도 주기위함
+	else if (_ericState == ERIC_LEFT_MOVE)
 	{
 
 		if (_speed <= 5)
@@ -219,16 +225,20 @@ void eric::update(POINTFLOAT StagePos, int choice)
 				_eric_X -= _speed;
 			}
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
+		//사다리 충돌했을경우만 위아래 움직이게함.
+		if (_isLadderCollision == true)
 		{
-			if (_eric_Y > 0)
+			if (KEYMANAGER->isStayKeyDown(VK_UP))
 			{
-				_eric_Y -= _speed;
+				if (_eric_Y > 0)
+				{
+					_eric_Y -= _speed;
+				}
 			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			_eric_Y += _speed;
+			if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+			{
+				_eric_Y += _speed;
+			}
 		}
 	}
 }

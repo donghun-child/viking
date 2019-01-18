@@ -51,11 +51,17 @@ HRESULT baleog::init()
 	int leftSwordAttackTwo[] = { 51, 50, 49, 48 };
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftSwordAttackTwo", "벨로그", leftSwordAttackTwo, 4, 10, false, leftFire, this);
 
+	int upMove[] = {56, 57, 58, 59};
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "upMove", "벨로그", upMove, 4, 10, false);
+
+	int downMove[] = {59, 58, 57, 56};
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "downMove", "벨로그", downMove, 4, 10, false);
+
 	_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
 
 	IMAGEMANAGER->addFrameImage("화살", "image/bullet.bmp", 85, 20, 5, 2, true, RGB(255, 0, 255));
 	_arrow = new arrow;
-	_arrow->init("화살", 0, WINSIZEX);
+	_arrow->init("화살", 3, WINSIZEX);
 
 	_rndAttack = RND->getInt(2);
 
@@ -98,6 +104,29 @@ void baleog::update()
 		_baleogMotion->start();
 	}
 
+	if (KEYMANAGER->isOnceKeyDown(VK_UP))
+	{
+		_baleogState = BALEOG_UP_MOVE;
+		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "upMove");
+		_baleogMotion->start();
+	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_UP) && _baleogState != BALEOG_RIGHT_MOVE && _baleogState != BALEOG_LEFT_MOVE)
+	{
+		_baleogMotion->pause();
+	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+	{
+		_baleogState = BALEOG_DOWN_MOVE;
+		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "downMove");
+		_baleogMotion->start();
+	}
+	else if (KEYMANAGER->isOnceKeyUp(VK_DOWN) && _baleogState != BALEOG_RIGHT_MOVE && _baleogState != BALEOG_LEFT_MOVE)
+	{
+		_baleogMotion->pause();
+	}
+
+	//화살공격
 	if (_arrow->getVArrow().size() == 0)
 	{
 		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
@@ -132,7 +161,14 @@ void baleog::update()
 		{
 			_arrowFireStop = false;
 		}
+		if (_arrowFireStop == false)
+		{
+			arrowFire();
+		}
 	}
+
+	
+	//검공격
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
 		if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
@@ -170,7 +206,17 @@ void baleog::update()
 			}
 		}
 	}
-	if(!_arrowFireStop)	arrowFire();
+
+
+	switch (_baleogState)
+	{
+	case BALEOG_RIGHT_MOVE:
+		_baleogPlayer.x += _baleogPlayer.speed;
+		break;
+	case BALEOG_LEFT_MOVE:
+		_baleogPlayer.x -= _baleogPlayer.speed;
+		break;
+	}
 
 	_arrow->update();
 

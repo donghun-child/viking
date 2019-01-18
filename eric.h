@@ -29,7 +29,7 @@ private:
 	float _speed;
 	animation* _ericMotion; //에릭 모션
 	ERICSTATE _ericState; //에릭상태
-	bool _isAccel;
+	bool _isLadderCollision; //사다리 충돌했니
 
 	jump* _ericJump;
 
