@@ -51,9 +51,9 @@ public:
 	void render();
 
 	//픽셀충돌
-	void pixelCollisionGreen(int select);
-	void pixelCollisionYellow(int select);
-	void pixelCollisionEmerald(int select);
+	void pixelCollisionGreen();
+	void pixelCollisionYellow();
+	void pixelCollisionEmerald();
 
 	//중력
 	void gravity(int select);

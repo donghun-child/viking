@@ -100,23 +100,23 @@ void stage1::characterChoice()
 	if (_choice == 1)
 	{
 		_camera->update(_playerManager->getEricX(), _playerManager->getEricY());
-		_playerManager->pixelCollisionGreen(_choice);
-		_playerManager->pixelCollisionYellow(_choice);
-		_playerManager->pixelCollisionEmerald(_choice);
+		_playerManager->pixelCollisionGreen();
+		_playerManager->pixelCollisionYellow();
+		_playerManager->pixelCollisionEmerald();
 	}
 	if (_choice == 2)
 	{
 		_camera->update(_playerManager->getBalogX(), _playerManager->getBalogY());
-		_playerManager->pixelCollisionGreen(_choice);
-		_playerManager->pixelCollisionYellow(_choice);
-		_playerManager->pixelCollisionEmerald(_choice);
+		_playerManager->pixelCollisionGreen();
+		_playerManager->pixelCollisionYellow();
+		_playerManager->pixelCollisionEmerald();
 	}
 	if (_choice == 3)
 	{
 		_camera->update(_playerManager->getOlafX(), _playerManager->getOlafY());
-		_playerManager->pixelCollisionGreen(_choice);
-		_playerManager->pixelCollisionYellow(_choice);
-		_playerManager->pixelCollisionEmerald(_choice);
+		_playerManager->pixelCollisionGreen();
+		_playerManager->pixelCollisionYellow();
+		_playerManager->pixelCollisionEmerald();
 	}
 }
 
@@ -190,30 +190,26 @@ void stage1::characterMove()
 
 void stage1::characterChange()
 {
-	//점프중이 아닐때 캐릭터 체인지 가능
-	if (_playerManager->getIsjump() == false)
+	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
-		if (KEYMANAGER->isOnceKeyDown('Q'))
+		if (_choice == 1)
 		{
-			if (_choice == 1)
-			{
-				_changing = true;
-				_choice = 2;
-				cameraChange(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY());
-			}
-			else if (_choice == 2)
-			{
-				_changing = true;
-				_choice = 3;
-				cameraChange(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY());
+			_changing = true;
+			_choice = 2;
+			cameraChange(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY());
+		}
+		else if (_choice == 2)
+		{
+			_changing = true;
+			_choice = 3;
+			cameraChange(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY());
 
-			}
-			else if (_choice == 3)
-			{
-				_changing = true;
-				_choice = 1;
-				cameraChange(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY());
-			}
+		}
+		else if (_choice == 3)
+		{
+			_changing = true;
+			_choice = 1;
+			cameraChange(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY());
 		}
 	}
 }
@@ -228,7 +224,8 @@ void stage1::cameraChange(float orizinX, float orizinY, float newX, float newY)
 	_camera->setChange(true);
 	_orizin = cameraPos(orizinX, orizinY);
 	_new = cameraPos(newX, newY);
-
+	_orizin.x = _camera->getCameraX();
+	_orizin.y = _camera->getCameraY();
 
 	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
 	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);

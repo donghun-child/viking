@@ -102,13 +102,13 @@ void playerManager::render()
 	//TextOut(getMemDC(), 300, 160, str, strlen(str));
 }
 
-void playerManager::pixelCollisionGreen(int select)
+void playerManager::pixelCollisionGreen()
 {
 	//위로 올라서게
 
 	if (!_isJump)
 	{
-		if (select == 1)
+		//if (select == 1)
 		{
 			//에릭
 			for (int i = _prove_Y[ERIC] - 10; i < _prove_Y[ERIC] + 10; ++i)
@@ -128,7 +128,7 @@ void playerManager::pixelCollisionGreen(int select)
 				}
 			}
 		}
-		else if (select == 2)
+		//else if (select == 2)
 		{
 			//벨로그
 			for (int i = _prove_Y[BALEOG] - 10; i < _prove_Y[BALEOG] + 10; ++i)
@@ -147,7 +147,7 @@ void playerManager::pixelCollisionGreen(int select)
 				}
 			}
 		}
-		else if (select == 3)
+		//else if (select == 3)
 		{
 			//올라프
 			for (int i = _prove_Y[OLAF] - 10; i < _prove_Y[OLAF] + 10; ++i)
@@ -169,11 +169,11 @@ void playerManager::pixelCollisionGreen(int select)
 	}
 }
 
-void playerManager::pixelCollisionYellow(int select)
+void playerManager::pixelCollisionYellow()
 {
 	//왼쪽벽
 
-	if (select == 1)
+	//if (select == 1)
 	{
 		//에릭
 		for (int i = _prove_X[ERIC] - 40; i > _prove_X[ERIC] - 50; --i)
@@ -192,7 +192,7 @@ void playerManager::pixelCollisionYellow(int select)
 			}
 		}
 	}
-	else if (select == 2)
+	//else if (select == 2)
 	{
 		//벨로그
 		for (int i = _prove_X[BALEOG] - 40; i > _prove_X[BALEOG] - 50; --i)
@@ -211,7 +211,7 @@ void playerManager::pixelCollisionYellow(int select)
 			}
 		}
 	}
-	else if (select == 3)
+	//else if (select == 3)
 	{
 		//올라프
 		for (int i = _prove_X[OLAF] - 40; i > _prove_X[OLAF] - 50; --i)
@@ -232,10 +232,10 @@ void playerManager::pixelCollisionYellow(int select)
 	}
 }
 
-void playerManager::pixelCollisionEmerald(int select)
+void playerManager::pixelCollisionEmerald()
 {
 	//오른쪽벽
-	if (select == 1)
+	//if (select == 1)
 	{
 		//에릭
 		for (int i = _prove_X[ERIC] + 45; i < _prove_X[ERIC] + 50; ++i)
@@ -254,7 +254,7 @@ void playerManager::pixelCollisionEmerald(int select)
 			}
 		}
 	}
-	else if (select == 2)
+	//else if (select == 2)
 	{
 		//벨로그
 		for (int i = _prove_X[BALEOG] + 45; i < _prove_X[BALEOG] + 50; ++i)
@@ -273,7 +273,7 @@ void playerManager::pixelCollisionEmerald(int select)
 			}
 		}
 	}
-	else if (select == 3)
+	//else if (select == 3)
 	{
 		//올라프
 		for (int i = _prove_X[OLAF] + 45; i < _prove_X[OLAF] + 50; ++i)
@@ -311,7 +311,7 @@ void playerManager::gravity(int select)
 		}
 		else
 		{
-			_y[select - 1] += 3.f;
+			_y[i] += 7.f;
 			_jumpCount = 0;
 		}
 		if (select == 1)
