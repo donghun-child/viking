@@ -1,6 +1,8 @@
 #pragma once
 #include "gameNode.h"
 #include "baleog.h"
+#include "olaf.h"
+#include "eric.h"
 
 enum Character
 {
@@ -21,12 +23,23 @@ private:
 	bool _isDebug;
 
 	baleog* _baleog;
+	eric* _eric;
+	olaf* _olaf;
 
-	int _x[3];
-	int _y[3];
-	int _prove_X[3];
-	int _prove_Y[3];
+	float _x[3];
+	float _y[3];
+	float _prove_X[3];
+	float _prove_Y[3];
+	float _viewX[3];
+	float _viewY[3];
 
+	float _gravity;
+	float _jumpPower;
+	bool _isJump;
+	float _jumpStartPos;
+	int _jumpCount;
+	//Á¡ÇÁ È½¼ö
+	int _jumpNum;
 
 public:
 	playerManager();
@@ -37,18 +50,31 @@ public:
 	void update();
 	void render();
 
-	void pixelCollisionGreen();
-	void pixelCollisionYellow();
-	void pixelCollisionEmerald();
+	//ÇÈ¼¿Ãæµ¹
+	void pixelCollisionGreen(int select);
+	void pixelCollisionYellow(int select);
+	void pixelCollisionEmerald(int select);
+
+	//Áß·Â
+	void gravity(int select);
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 
-	int getEricX() { return _x[0]; }
-	int getEricY() { return _y[0]; }
-	int getBalogX() { return _x[1]; }
-	int getBalogY() { return _y[1]; }
-	int getOlafX() { return _x[2]; }
-	int getOlafY() { return _y[2]; }
+	float getEricX() { return _x[ERIC]; }
+	float getEricY() { return _y[ERIC]; }
+	float getBalogX() { return _x[BALEOG]; }
+	float getBalogY() { return _y[BALEOG]; }
+	float getOlafX() { return _x[OLAF]; }
+	float getOlafY() { return _y[OLAF]; }
+
+	void setEricX(float x) { _x[ERIC] = x; }
+	void setEricY(float y) { _y[ERIC] = y; }
+	void setBalogX(float x) { _x[BALEOG] = x; }
+	void setBalogY(float y) { _y[BALEOG] = y; }
+	void setOlafX(float x) { _x[OLAF] = x; }
+	void setOlafY(float y) { _y[OLAF] = y; }
+
+	bool getIsjump() { return _isJump; }
 
 };
 

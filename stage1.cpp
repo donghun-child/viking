@@ -28,6 +28,10 @@ HRESULT stage1::init()
 	_choice = 1;
 
 	_isPixel = false;
+	_changing = false;
+
+	_time = CAMERA_CHANGING_SPEED;
+
 
 	return S_OK;
 }
@@ -39,6 +43,43 @@ void stage1::release()
 }
 
 void stage1::update()
+{
+	_playerManager->update();
+	//픽셀 보이게하는 함수
+	viewPixel();
+	//캐릭터 중력
+	_playerManager->gravity(_choice);
+	//캐릭터 선택
+	characterChoice();
+	//캐릭터 무브
+	characterMove();
+	//캐릭터 체인지
+	characterChange();
+	//카메라 체인지
+	changeMoving();
+}
+
+void stage1::render()
+{
+	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
+
+	if (_isPixel)
+	{
+		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
+	}
+	_playerManager->render();
+	_camera->render();
+
+	//char str[100];
+	//sprintf_s(str, "플레이어 x : %f", _playerManager->getEricX());
+	//TextOut(getMemDC(), 300, 20, str, strlen(str));
+	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
+	//TextOut(getMemDC(), 300, 40, str, strlen(str));
+	//sprintf_s(str, "초이스 : %d", _choice);
+	//TextOut(getMemDC(), 300, 60, str, strlen(str));
+}
+
+void stage1::viewPixel()
 {
 	//픽셀보이기용
 	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD0))
@@ -52,62 +93,249 @@ void stage1::update()
 			_isPixel = true;
 		}
 	}
+}
 
+void stage1::characterChoice()
+{
 	if (_choice == 1)
 	{
-		_camera->update(_playerManager->getEricX(), _playerManager->getEricY(), _choice, 10);
+		_camera->update(_playerManager->getEricX(), _playerManager->getEricY());
+		_playerManager->pixelCollisionGreen(_choice);
+		_playerManager->pixelCollisionYellow(_choice);
+		_playerManager->pixelCollisionEmerald(_choice);
 	}
 	if (_choice == 2)
 	{
-		_camera->update(_playerManager->getBalogX(), _playerManager->getBalogY(), _choice, 10);
+		_camera->update(_playerManager->getBalogX(), _playerManager->getBalogY());
+		_playerManager->pixelCollisionGreen(_choice);
+		_playerManager->pixelCollisionYellow(_choice);
+		_playerManager->pixelCollisionEmerald(_choice);
 	}
 	if (_choice == 3)
 	{
-		_camera->update(_playerManager->getOlafX(), _playerManager->getOlafY(), _choice, 10);
+		_camera->update(_playerManager->getOlafX(), _playerManager->getOlafY());
+		_playerManager->pixelCollisionGreen(_choice);
+		_playerManager->pixelCollisionYellow(_choice);
+		_playerManager->pixelCollisionEmerald(_choice);
 	}
-
-	_playerManager->update();
-
-
-	if (KEYMANAGER->isOnceKeyDown('1'))
-	{
-		_choice = 1;
-		_camera->setChange(false);
-		_camera->setDistance(getDistance(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY()));
-		_camera->setAngle(getAngle(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY()));
-	}
-
-
-	if (KEYMANAGER->isOnceKeyDown('2'))
-	{
-		_choice = 2;
-		_camera->setChange(false);
-		_camera->setDistance(getDistance(_playerManager->getBalogX(),_playerManager->getBalogY(),_playerManager->getOlafX(),_playerManager->getOlafY()));
-		_camera->setAngle(getAngle(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY()));
-	}
-
-	if (KEYMANAGER->isOnceKeyDown('3'))
-	{
-		_choice = 3;
-		_camera->setChange(false);
-		_camera->setDistance(getDistance(_playerManager->getOlafX(),_playerManager->getOlafY(),_playerManager->getEricX(),_playerManager->getEricY()));
-		_camera->setAngle(getAngle(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY()));
-	}
-
 }
 
-void stage1::render()
+void stage1::characterMove()
 {
-	IMAGEMANAGER->render("backGround", getMemDC(), 0, 0, _camera->getCameraX() , _camera->getCameraY(), WINSIZEX, WINSIZEY);
-	
-	
-	if (_isPixel)
+	if (!_changing)
 	{
-		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _camera->getCameraX(), _camera->getCameraY(), WINSIZEX, WINSIZEY);
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			if (_choice == 1)
+			{
+				_playerManager->setEricX(_playerManager->getEricX() - 5);
+			}
+			if (_choice == 2)
+			{
+				_playerManager->setBalogX(_playerManager->getBalogX() - 5);
+			}
+			if (_choice == 3)
+			{
+				_playerManager->setOlafX(_playerManager->getOlafX() - 5);
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			if (_choice == 1)
+			{
+				_playerManager->setEricX(_playerManager->getEricX() + 5);
+			}
+			if (_choice == 2)
+			{
+				_playerManager->setBalogX(_playerManager->getBalogX() + 5);
+			}
+			if (_choice == 3)
+			{
+				_playerManager->setOlafX(_playerManager->getOlafX() + 5);
+			}
+
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_UP))
+		{
+			if (_choice == 1)
+			{
+				_playerManager->setEricY(_playerManager->getEricY() - 5);
+			}
+			if (_choice == 2)
+			{
+				_playerManager->setBalogY(_playerManager->getBalogY() - 5);
+			}
+			if (_choice == 3)
+			{
+				_playerManager->setOlafY(_playerManager->getOlafY() - 5);
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		{
+			if (_choice == 1)
+			{
+				_playerManager->setEricY(_playerManager->getEricY() + 5);
+			}
+			if (_choice == 2)
+			{
+				_playerManager->setBalogY(_playerManager->getBalogY() + 5);
+			}
+			if (_choice == 3)
+			{
+				_playerManager->setOlafY(_playerManager->getOlafY() + 5);
+			}
+		}
 	}
-	_playerManager->render();
-	_camera->render();
-	
+}
+
+void stage1::characterChange()
+{
+	//점프중이 아닐때 캐릭터 체인지 가능
+	if (_playerManager->getIsjump() == false)
+	{
+		if (KEYMANAGER->isOnceKeyDown('Q'))
+		{
+			if (_choice == 1)
+			{
+				_changing = true;
+				_choice = 2;
+				cameraChange(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY());
+			}
+			else if (_choice == 2)
+			{
+				_changing = true;
+				_choice = 3;
+				cameraChange(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY());
+
+			}
+			else if (_choice == 3)
+			{
+				_changing = true;
+				_choice = 1;
+				cameraChange(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY());
+			}
+		}
+	}
+}
+
+void stage1::cameraChange(float orizinX, float orizinY, float newX, float newY)
+{
+	_orizin.x = orizinX;
+	_orizin.y = orizinY;
+	_new.x = newX;
+	_new.y = newY;
+
+	_camera->setChange(true);
+	_orizin = cameraPos(orizinX, orizinY);
+	_new = cameraPos(newX, newY);
+
+
+	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
+	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);
+	_worldTime = TIMEMANAGER->getWorldTime();
+	_time = CAMERA_CHANGING_SPEED;
+}
+
+POINTFLOAT stage1::cameraPos(float x, float y)
+{
+	//카메라의 현재 좌표를 포인트로 뱉어내는 함수
+	POINTFLOAT _point;
+
+	//4모서리에 있을때
+	if (x < WINSIZEX / 2 && y < WINSIZEY / 2)
+	{
+		//x = 0;
+		//y = 0;
+		_point.x = 0;
+		_point.y = 0;
+
+		return _point;
+	}
+	else if (x > 3000 - WINSIZEX / 2 && y < WINSIZEY / 2)
+	{
+		_point.x = 3000 - WINSIZEX;
+		_point.y = 0;
+
+		return _point;
+	}
+	else if (x < WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
+	{
+		_point.x = 0;
+		_point.y = 2240 - WINSIZEY;
+
+		return _point;
+	}
+	else if (x > 3000 - WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
+	{
+		_point.x = 3000 - WINSIZEX;
+		_point.y = 2240 - WINSIZEY;
+
+		return _point;
+	}
+	//x좌표예외처리
+	else if (x < WINSIZEX / 2)
+	{
+		_point.x = 0;
+		_point.y = y - WINSIZEY / 2;
+
+		return _point;
+	}
+	else if (x > 3000 - WINSIZEX / 2)
+	{
+		_point.x = 3000 - WINSIZEX;
+		_point.y = y - WINSIZEY / 2;
+
+		return _point;
+	}
+	//y좌표예외처리
+	else if (y < WINSIZEY / 2)
+	{
+		_point.x = x - WINSIZEX / 2;
+		_point.y = 0;
+
+		return _point;
+	}
+	else if (y > 2240 - WINSIZEY / 2)
+	{
+		_point.x = x - WINSIZEX / 2;
+		_point.y = 2240 - WINSIZEY;
+
+		return _point;
+	}
+	//기본상태
+	else
+	{
+		_point.x = x - WINSIZEX / 2;
+		_point.y = y - WINSIZEY / 2;
+
+		return _point;
+	}
+}
+
+void stage1::changeMoving()
+{
+	if (_camera->getChange() == false) return;
+
+	elapsedTime = TIMEMANAGER->getElpasedTime();
+
+	moveSpeed = (elapsedTime / _time) * _Distance;;
+
+	if (moveSpeed != 0)
+	{
+		_camera->setCameraX(_camera->getCameraX() + cosf(_angle) * moveSpeed);
+		_camera->setCameraY(_camera->getCameraY() + -sinf(_angle) * moveSpeed);
+	}
+
+	if (_time + _worldTime <= TIMEMANAGER->getWorldTime() || moveSpeed == 0)
+	{
+		_worldTime = TIMEMANAGER->getWorldTime();
+
+		_camera->setCameraX(_new.x);
+		_camera->setCameraY(_new.y);
+
+		_camera->setChange(false);
+		_changing = false;
+	}
 }
 
 
