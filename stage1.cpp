@@ -103,6 +103,7 @@ void stage1::characterChoice()
 		_playerManager->pixelCollisionGreen();
 		_playerManager->pixelCollisionYellow();
 		_playerManager->pixelCollisionEmerald();
+		_playerManager->pixelCollisionRed();
 	}
 	if (_choice == 2)
 	{

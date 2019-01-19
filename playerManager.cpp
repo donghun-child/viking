@@ -14,6 +14,8 @@ playerManager::~playerManager()
 
 HRESULT playerManager::init()
 {
+	_eric = new eric;
+	_eric->init();
 	for (int i = 0; i < 3; ++i)
 	{
 		_x[i] = 30 + 120 * i;
@@ -50,6 +52,7 @@ void playerManager::release()
 
 void playerManager::update()
 {
+	_eric->update(_viewX[ERIC] - 50, _viewY[ERIC] - 50);
 	//캐릭터박스 보이기용
 	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD1))
 	{
@@ -80,6 +83,7 @@ void playerManager::update()
 
 void playerManager::render()
 {
+	_eric->render();
 	if (_isDebug)
 	{
 		for (int i = 0; i < 3; ++i)
@@ -88,7 +92,7 @@ void playerManager::render()
 		}
 	}
 
-	//char str[100];
+	char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
 
@@ -98,8 +102,8 @@ void playerManager::render()
 	//sprintf_s(str, "_prove_Y : %f", _prove_Y[0]);
 	//TextOut(getMemDC(), 300, 140, str, strlen(str));
 	//
-	//sprintf_s(str, "%f", _gravity);
-	//TextOut(getMemDC(), 300, 160, str, strlen(str));
+	sprintf_s(str, "중력값 : %f", _gravity);
+	TextOut(getMemDC(), 300, 160, str, strlen(str));
 }
 
 void playerManager::pixelCollisionGreen()
@@ -278,7 +282,7 @@ void playerManager::pixelCollisionEmerald()
 		//올라프
 		for (int i = _prove_X[OLAF] + 45; i < _prove_X[OLAF] + 50; ++i)
 		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[2] - 50);
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[OLAF] - 50);
 
 			int r = GetRValue(color);
 			int g = GetGValue(color);
@@ -290,6 +294,25 @@ void playerManager::pixelCollisionEmerald()
 
 				break;
 			}
+		}
+	}
+}
+
+void playerManager::pixelCollisionRed()
+{
+	for (int i = _prove_Y[ERIC] - 95; i > _prove_Y[ERIC] - 100; i--)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), _prove_X[ERIC], i);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+	
+		if (r == 255 && g == 0 && b == 0)
+		{
+			_y[ERIC] = i;
+			_y[ERIC] += 5.0f;
+			_isJump = false;
 		}
 	}
 }
@@ -321,7 +344,6 @@ void playerManager::gravity(int select)
 				if (KEYMANAGER->isOnceKeyDown('F') && _camera->getChange() == false)
 				{
 					_jumpNum--;
-					_jumpStartPos = _y[0];
 					_jumpPower = 6.f;
 					_gravity = 0.05f;
 					_isJump = true;

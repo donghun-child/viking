@@ -36,7 +36,6 @@ private:
 	float _gravity;
 	float _jumpPower;
 	bool _isJump;
-	float _jumpStartPos;
 	int _jumpCount;
 	//점프 횟수
 	int _jumpNum;
@@ -54,13 +53,14 @@ public:
 	void pixelCollisionGreen();
 	void pixelCollisionYellow();
 	void pixelCollisionEmerald();
+	void pixelCollisionRed();
 
 	//중력
 	void gravity(int select);
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 
-	float getEricX() { return _x[ERIC]; }
+	float getEricX() { return _x[ERIC]; };
 	float getEricY() { return _y[ERIC]; }
 	float getBalogX() { return _x[BALEOG]; }
 	float getBalogY() { return _y[BALEOG]; }

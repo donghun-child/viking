@@ -52,14 +52,8 @@
     <Filter Include="2DFramework\action">
       <UniqueIdentifier>{29ce7e2b-17af-439c-a519-f3ca2bf12ff1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\sceen">
-      <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PlayGround\playerManager">
       <UniqueIdentifier>{18aea0ca-a908-4146-80bc-e0b59354d29c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PlayGround\sceen\camera">
-      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
     </Filter>
     <Filter Include="PlayGround\playerManager\baleog">
       <UniqueIdentifier>{6a7f129c-ab3f-4d6c-8291-a167091f150b}</UniqueIdentifier>
@@ -70,14 +64,20 @@
     <Filter Include="PlayGround\playerManager\olaf">
       <UniqueIdentifier>{020184a5-291d-4ae3-a5bd-d7b156779626}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\sceen\item">
-      <UniqueIdentifier>{ede14f05-3864-4d16-a4d9-034ba85bc648}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PlayGround\sceen\ui">
-      <UniqueIdentifier>{cd770a2c-cc8c-45c6-a7a4-fe83504f0907}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PlayGround\sound">
       <UniqueIdentifier>{c3eee400-64aa-4193-af68-f907649cad33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\playerManager\sceen">
+      <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\playerManager\sceen\camera">
+      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\playerManager\sceen\item">
+      <UniqueIdentifier>{ede14f05-3864-4d16-a4d9-034ba85bc648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\playerManager\sceen\ui">
+      <UniqueIdentifier>{cd770a2c-cc8c-45c6-a7a4-fe83504f0907}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -160,13 +160,13 @@
       <Filter>2DFramework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>PlayGround\sceen\camera</Filter>
+      <Filter>PlayGround\playerManager\sceen\camera</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
-      <Filter>PlayGround\sceen</Filter>
+      <Filter>PlayGround\playerManager\sceen</Filter>
     </ClInclude>
     <ClInclude Include="stage1.h">
-      <Filter>PlayGround\sceen</Filter>
+      <Filter>PlayGround\playerManager\sceen</Filter>
     </ClInclude>
     <ClInclude Include="playerManager.h">
       <Filter>PlayGround\playerManager</Filter>
@@ -187,10 +187,10 @@
       <Filter>PlayGround\playerManager\olaf</Filter>
     </ClInclude>
     <ClInclude Include="ui.h">
-      <Filter>PlayGround\sceen\ui</Filter>
+      <Filter>PlayGround\playerManager\sceen\ui</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
-      <Filter>PlayGround\sceen\item</Filter>
+      <Filter>PlayGround\playerManager\sceen\item</Filter>
     </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>PlayGround\sound</Filter>
@@ -264,13 +264,13 @@
       <Filter>2DFramework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>PlayGround\sceen\camera</Filter>
+      <Filter>PlayGround\playerManager\sceen\camera</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp">
-      <Filter>PlayGround\sceen</Filter>
+      <Filter>PlayGround\playerManager\sceen</Filter>
     </ClCompile>
     <ClCompile Include="stage1.cpp">
-      <Filter>PlayGround\sceen</Filter>
+      <Filter>PlayGround\playerManager\sceen</Filter>
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
       <Filter>PlayGround\playerManager</Filter>
@@ -291,10 +291,10 @@
       <Filter>PlayGround\playerManager\olaf</Filter>
     </ClCompile>
     <ClCompile Include="ui.cpp">
-      <Filter>PlayGround\sceen\ui</Filter>
+      <Filter>PlayGround\playerManager\sceen\ui</Filter>
     </ClCompile>
     <ClCompile Include="item.cpp">
-      <Filter>PlayGround\sceen\item</Filter>
+      <Filter>PlayGround\playerManager\sceen\item</Filter>
     </ClCompile>
     <ClCompile Include="sound.cpp">
       <Filter>PlayGround\sound</Filter>
