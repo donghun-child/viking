@@ -14,8 +14,6 @@ playerManager::~playerManager()
 
 HRESULT playerManager::init()
 {
-	_eric = new eric;
-	_eric->init();
 	for (int i = 0; i < 3; ++i)
 	{
 		_x[i] = 30 + 120 * i;
@@ -52,7 +50,6 @@ void playerManager::release()
 
 void playerManager::update()
 {
-	_eric->update(_viewX[ERIC] - 50, _viewY[ERIC] - 50);
 	//캐릭터박스 보이기용
 	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD1))
 	{
@@ -83,7 +80,6 @@ void playerManager::update()
 
 void playerManager::render()
 {
-	_eric->render();
 	if (_isDebug)
 	{
 		for (int i = 0; i < 3; ++i)
