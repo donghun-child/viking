@@ -3,6 +3,8 @@
 #include "baleog.h"
 #include "olaf.h"
 #include "eric.h"
+#include "camera.h"
+
 
 enum Character
 {
@@ -10,8 +12,6 @@ enum Character
 	BALEOG,
 	OLAF
 };
-
-class camera;
 
 class playerManager : public gameNode
 {
@@ -33,6 +33,7 @@ private:
 	float _viewX[3];
 	float _viewY[3];
 
+	float _choice;
 	float _gravity;
 	float _jumpPower;
 	bool _isJump;
@@ -49,6 +50,11 @@ public:
 	void update();
 	void render();
 
+	//캐릭터 선택
+	void characterChoice();
+	void characterMove();
+	void characterChange();
+
 	//픽셀충돌
 	void pixelCollisionGreen();
 	void pixelCollisionYellow();
@@ -56,7 +62,7 @@ public:
 	void pixelCollisionRed();
 
 	//중력
-	void gravity(int select);
+	void jumpGravity(int select);
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 
@@ -75,6 +81,8 @@ public:
 	void setOlafY(float y) { _y[OLAF] = y; }
 
 	bool getIsjump() { return _isJump; }
+
+	camera* getCamera() { return _camera; }
 
 };
 

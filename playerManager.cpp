@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "playerManager.h"
-#include "camera.h"
 
 
 playerManager::playerManager()
@@ -40,16 +39,38 @@ HRESULT playerManager::init()
 	_gravity = 0.3;
 	_isJump = false;
 	_jumpNum = 1;
+	_choice = 1;
+
+	_camera = new camera;
+	_camera->init();
 
 	return S_OK;
 }
 
 void playerManager::release()
 {
+	SAFE_DELETE(_camera);
 }
 
 void playerManager::update()
 {
+	//에릭의 점프
+	jumpGravity(_choice);
+
+	//픽셀충돌
+	pixelCollisionGreen();
+	pixelCollisionYellow();
+	pixelCollisionEmerald();
+	pixelCollisionRed();
+	
+	//캐릭터 무브
+	characterMove();
+	//캐릭터 고르기
+	characterChoice();
+	//카메라 체인지
+	characterChange();
+	
+	
 	//캐릭터박스 보이기용
 	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD1))
 	{
@@ -61,6 +82,14 @@ void playerManager::update()
 		{
 			_isDebug = true;
 		}
+
+	}
+
+	//가상좌표 갱신
+	for (int i = 0; i < 3; ++i)
+	{
+		_viewX[i] = _x[i] - _camera->getCameraX();
+		_viewY[i] = _y[i] - _camera->getCameraY();
 	}
 
 	//갱신
@@ -70,12 +99,7 @@ void playerManager::update()
 		_prove_X[i] = _x[i] + 50;
 		_prove_Y[i] = _y[i] + 100;
 	}
-	//가상좌표 갱신
-	for (int i = 0; i < 3; ++i)
-	{
-		_viewX[i] = _x[i] - _camera->getCameraX();
-		_viewY[i] = _y[i] - _camera->getCameraY();
-	}
+
 }
 
 void playerManager::render()
@@ -87,8 +111,8 @@ void playerManager::render()
 			Rectangle(getMemDC(), _rc[i]);
 		}
 	}
-
-	char str[100];
+	_camera->render();
+	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
 
@@ -102,10 +126,114 @@ void playerManager::render()
 	//TextOut(getMemDC(), 300, 160, str, strlen(str));
 }
 
+void playerManager::characterChoice()
+{
+	if (_choice == 1)
+	{
+		_camera->update(_x[ERIC], _y[ERIC]);
+	}
+	else if (_choice == 2)
+	{
+		_camera->update(_x[BALEOG], _y[BALEOG]);
+	}
+	else if (_choice == 3)
+	{
+		_camera->update(_x[OLAF], _y[OLAF]);
+	}
+}
+
+void playerManager::characterMove()
+{
+	if (_camera->getChange() == false)
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			if (_choice == 1)
+			{
+				_x[ERIC] -= 5;
+			}
+			else if (_choice == 2)
+			{
+				_x[BALEOG] -= 5;
+			}
+			else if (_choice == 3)
+			{
+				_x[OLAF] -= 5;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			if (_choice == 1)
+			{
+				_x[ERIC] += 5;
+			}
+			else if (_choice == 2)
+			{
+				_x[BALEOG] += 5; 
+			}
+			else if (_choice == 3)
+			{
+				_x[OLAF] += 5;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_UP))
+		{
+			if (_choice == 1)
+			{
+				_y[ERIC] -= 5;
+			}
+			else if (_choice == 2)
+			{
+				_y[BALEOG] -= 5;
+			}
+			else if (_choice == 3)
+			{
+				_y[OLAF] -= 5;
+			}
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		{
+			if (_choice == 1)
+			{
+				_y[ERIC] += 5;
+			}
+			else if (_choice == 2)
+			{
+				_y[BALEOG] += 5;
+			}
+			else if (_choice == 3)
+			{
+				_y[OLAF] += 5;
+			}
+		}
+	}
+}
+
+void playerManager::characterChange()
+{
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+	{
+		if (_choice == 1)
+		{
+			_choice = 2;
+			_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+		}
+		else if (_choice == 2)
+		{
+			_choice = 3;
+			_camera->cameraChange(_x[OLAF], _y[OLAF]);
+		}
+		else if (_choice == 3)
+		{
+			_choice = 1;
+			_camera->cameraChange(_x[ERIC], _y[ERIC]);
+		}
+	}
+}
+
 void playerManager::pixelCollisionGreen()
 {
 	//위로 올라서게
-
 	if (!_isJump)
 	{
 		//if (select == 1)
@@ -172,7 +300,6 @@ void playerManager::pixelCollisionGreen()
 void playerManager::pixelCollisionYellow()
 {
 	//왼쪽벽
-
 	//if (select == 1)
 	{
 		//에릭
@@ -313,7 +440,7 @@ void playerManager::pixelCollisionRed()
 	}
 }
 
-void playerManager::gravity(int select)
+void playerManager::jumpGravity(int select)
 {
 	for (int i = 0; i < 3; ++i)
 	{

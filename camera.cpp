@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "camera.h"
-#include "playerManager.h"
 
 
 camera::camera()
@@ -110,7 +109,7 @@ void camera::cameraChange(float newX, float newY)
 	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
 	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);
 	_worldTime = TIMEMANAGER->getWorldTime();
-	_time = 1.5f;
+	_time = CAMERA_CHANGING_SPEED;
 }
 
 void camera::changeMoving()

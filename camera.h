@@ -1,12 +1,11 @@
 #pragma once
 #include "gameNode.h"
 
-class playerManager;
+#define CAMERA_CHANGING_SPEED 1.5f
 
 class camera : public gameNode
 {
 private:
-	playerManager* _playerManager;
 
 	image* _mapimage;
 
@@ -52,6 +51,5 @@ public:
 	void setDistance(float v) { _Distance = v; }
 	void setAngle(float v) { _Distance = v; }
 
-	void getPlayerManagerAddressLink(playerManager* playerManager) { _playerManager = playerManager; }
 };
 
