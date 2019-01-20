@@ -67,16 +67,16 @@
     <Filter Include="PlayGround\sound">
       <UniqueIdentifier>{c3eee400-64aa-4193-af68-f907649cad33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\playerManager\sceen">
+    <Filter Include="PlayGround\sceen">
       <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\playerManager\sceen\camera">
+    <Filter Include="PlayGround\sceen\camera">
       <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\playerManager\sceen\item">
+    <Filter Include="PlayGround\sceen\item">
       <UniqueIdentifier>{ede14f05-3864-4d16-a4d9-034ba85bc648}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\playerManager\sceen\ui">
+    <Filter Include="PlayGround\sceen\ui">
       <UniqueIdentifier>{cd770a2c-cc8c-45c6-a7a4-fe83504f0907}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -160,13 +160,13 @@
       <Filter>2DFramework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>PlayGround\playerManager\sceen\camera</Filter>
+      <Filter>PlayGround\sceen\camera</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
-      <Filter>PlayGround\playerManager\sceen</Filter>
+      <Filter>PlayGround\sceen</Filter>
     </ClInclude>
     <ClInclude Include="stage1.h">
-      <Filter>PlayGround\playerManager\sceen</Filter>
+      <Filter>PlayGround\sceen</Filter>
     </ClInclude>
     <ClInclude Include="playerManager.h">
       <Filter>PlayGround\playerManager</Filter>
@@ -187,10 +187,10 @@
       <Filter>PlayGround\playerManager\olaf</Filter>
     </ClInclude>
     <ClInclude Include="ui.h">
-      <Filter>PlayGround\playerManager\sceen\ui</Filter>
+      <Filter>PlayGround\sceen\ui</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
-      <Filter>PlayGround\playerManager\sceen\item</Filter>
+      <Filter>PlayGround\sceen\item</Filter>
     </ClInclude>
     <ClInclude Include="sound.h">
       <Filter>PlayGround\sound</Filter>
@@ -264,13 +264,13 @@
       <Filter>2DFramework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>PlayGround\playerManager\sceen\camera</Filter>
+      <Filter>PlayGround\sceen\camera</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp">
-      <Filter>PlayGround\playerManager\sceen</Filter>
+      <Filter>PlayGround\sceen</Filter>
     </ClCompile>
     <ClCompile Include="stage1.cpp">
-      <Filter>PlayGround\playerManager\sceen</Filter>
+      <Filter>PlayGround\sceen</Filter>
     </ClCompile>
     <ClCompile Include="playerManager.cpp">
       <Filter>PlayGround\playerManager</Filter>
@@ -291,10 +291,10 @@
       <Filter>PlayGround\playerManager\olaf</Filter>
     </ClCompile>
     <ClCompile Include="ui.cpp">
-      <Filter>PlayGround\playerManager\sceen\ui</Filter>
+      <Filter>PlayGround\sceen\ui</Filter>
     </ClCompile>
     <ClCompile Include="item.cpp">
-      <Filter>PlayGround\playerManager\sceen\item</Filter>
+      <Filter>PlayGround\sceen\item</Filter>
     </ClCompile>
     <ClCompile Include="sound.cpp">
       <Filter>PlayGround\sound</Filter>

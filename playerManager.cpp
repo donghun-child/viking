@@ -98,8 +98,8 @@ void playerManager::render()
 	//sprintf_s(str, "_prove_Y : %f", _prove_Y[0]);
 	//TextOut(getMemDC(), 300, 140, str, strlen(str));
 	//
-	sprintf_s(str, "중력값 : %f", _gravity);
-	TextOut(getMemDC(), 300, 160, str, strlen(str));
+	//sprintf_s(str, "중력값 : %f", _gravity);
+	//TextOut(getMemDC(), 300, 160, str, strlen(str));
 }
 
 void playerManager::pixelCollisionGreen()

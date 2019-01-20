@@ -46,9 +46,9 @@ public:
 	void characterChange();
 
 	//Ä«¸Þ¶ó
-	void cameraChange(float orizinX, float orizinY, float newX, float newY);
-	POINTFLOAT cameraPos(float x, float y);
-	void changeMoving();
+	//void cameraChange(float orizinX, float orizinY, float newX, float newY);
+	//POINTFLOAT cameraPos(float x, float y);
+	//void changeMoving();
 
 };
 

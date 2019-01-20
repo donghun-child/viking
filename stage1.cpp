@@ -56,7 +56,7 @@ void stage1::update()
 	//캐릭터 체인지
 	characterChange();
 	//카메라 체인지
-	changeMoving();
+	//changeMoving();
 }
 
 void stage1::render()
@@ -123,7 +123,7 @@ void stage1::characterChoice()
 
 void stage1::characterMove()
 {
-	if (!_changing)
+	if (_camera->getChange() == false)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
@@ -195,145 +195,148 @@ void stage1::characterChange()
 	{
 		if (_choice == 1)
 		{
-			_changing = true;
+			//_changing = true;
 			_choice = 2;
-			cameraChange(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY());
+			//cameraChange(_playerManager->getEricX(), _playerManager->getEricY(), _playerManager->getBalogX(), _playerManager->getBalogY());
+			_camera->cameraChange(_playerManager->getBalogX(), _playerManager->getBalogY());
 		}
 		else if (_choice == 2)
 		{
-			_changing = true;
+			//_changing = true;
 			_choice = 3;
-			cameraChange(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY());
+			//cameraChange(_playerManager->getBalogX(), _playerManager->getBalogY(), _playerManager->getOlafX(), _playerManager->getOlafY());
+			_camera->cameraChange(_playerManager->getOlafX(), _playerManager->getOlafY());
 
 		}
 		else if (_choice == 3)
 		{
-			_changing = true;
+			//_changing = true;
 			_choice = 1;
-			cameraChange(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY());
+			//cameraChange(_playerManager->getOlafX(), _playerManager->getOlafY(), _playerManager->getEricX(), _playerManager->getEricY());
+			_camera->cameraChange(_playerManager->getEricX(), _playerManager->getEricY());
 		}
 	}
 }
 
-void stage1::cameraChange(float orizinX, float orizinY, float newX, float newY)
-{
-	_orizin.x = orizinX;
-	_orizin.y = orizinY;
-	_new.x = newX;
-	_new.y = newY;
-
-	_camera->setChange(true);
-	_orizin = cameraPos(orizinX, orizinY);
-	_new = cameraPos(newX, newY);
-	_orizin.x = _camera->getCameraX();
-	_orizin.y = _camera->getCameraY();
-
-	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
-	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);
-	_worldTime = TIMEMANAGER->getWorldTime();
-	_time = CAMERA_CHANGING_SPEED;
-}
-
-POINTFLOAT stage1::cameraPos(float x, float y)
-{
-	//카메라의 현재 좌표를 포인트로 뱉어내는 함수
-	POINTFLOAT _point;
-
-	//4모서리에 있을때
-	if (x < WINSIZEX / 2 && y < WINSIZEY / 2)
-	{
-		//x = 0;
-		//y = 0;
-		_point.x = 0;
-		_point.y = 0;
-
-		return _point;
-	}
-	else if (x > 3000 - WINSIZEX / 2 && y < WINSIZEY / 2)
-	{
-		_point.x = 3000 - WINSIZEX;
-		_point.y = 0;
-
-		return _point;
-	}
-	else if (x < WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
-	{
-		_point.x = 0;
-		_point.y = 2240 - WINSIZEY;
-
-		return _point;
-	}
-	else if (x > 3000 - WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
-	{
-		_point.x = 3000 - WINSIZEX;
-		_point.y = 2240 - WINSIZEY;
-
-		return _point;
-	}
-	//x좌표예외처리
-	else if (x < WINSIZEX / 2)
-	{
-		_point.x = 0;
-		_point.y = y - WINSIZEY / 2;
-
-		return _point;
-	}
-	else if (x > 3000 - WINSIZEX / 2)
-	{
-		_point.x = 3000 - WINSIZEX;
-		_point.y = y - WINSIZEY / 2;
-
-		return _point;
-	}
-	//y좌표예외처리
-	else if (y < WINSIZEY / 2)
-	{
-		_point.x = x - WINSIZEX / 2;
-		_point.y = 0;
-
-		return _point;
-	}
-	else if (y > 2240 - WINSIZEY / 2)
-	{
-		_point.x = x - WINSIZEX / 2;
-		_point.y = 2240 - WINSIZEY;
-
-		return _point;
-	}
-	//기본상태
-	else
-	{
-		_point.x = x - WINSIZEX / 2;
-		_point.y = y - WINSIZEY / 2;
-
-		return _point;
-	}
-}
-
-void stage1::changeMoving()
-{
-	if (_camera->getChange() == false) return;
-
-	elapsedTime = TIMEMANAGER->getElpasedTime();
-
-	moveSpeed = (elapsedTime / _time) * _Distance;;
-
-	if (moveSpeed != 0)
-	{
-		_camera->setCameraX(_camera->getCameraX() + cosf(_angle) * moveSpeed);
-		_camera->setCameraY(_camera->getCameraY() + -sinf(_angle) * moveSpeed);
-	}
-
-	if (_time + _worldTime <= TIMEMANAGER->getWorldTime() || moveSpeed == 0)
-	{
-		_worldTime = TIMEMANAGER->getWorldTime();
-
-		_camera->setCameraX(_new.x);
-		_camera->setCameraY(_new.y);
-
-		_camera->setChange(false);
-		_changing = false;
-	}
-}
+//void stage1::cameraChange(float orizinX, float orizinY, float newX, float newY)
+//{
+//	_orizin.x = orizinX;
+//	_orizin.y = orizinY;
+//	_new.x = newX;
+//	_new.y = newY;
+//
+//	_camera->setChange(true);
+//	_orizin = cameraPos(orizinX, orizinY);
+//	_new = cameraPos(newX, newY);
+//	_orizin.x = _camera->getCameraX();
+//	_orizin.y = _camera->getCameraY();
+//
+//	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
+//	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);
+//	_worldTime = TIMEMANAGER->getWorldTime();
+//	_time = CAMERA_CHANGING_SPEED;
+//}
+//
+//POINTFLOAT stage1::cameraPos(float x, float y)
+//{
+//	//카메라의 현재 좌표를 포인트로 뱉어내는 함수
+//	POINTFLOAT _point;
+//
+//	//4모서리에 있을때
+//	if (x < WINSIZEX / 2 && y < WINSIZEY / 2)
+//	{
+//		//x = 0;
+//		//y = 0;
+//		_point.x = 0;
+//		_point.y = 0;
+//
+//		return _point;
+//	}
+//	else if (x > 3000 - WINSIZEX / 2 && y < WINSIZEY / 2)
+//	{
+//		_point.x = 3000 - WINSIZEX;
+//		_point.y = 0;
+//
+//		return _point;
+//	}
+//	else if (x < WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
+//	{
+//		_point.x = 0;
+//		_point.y = 2240 - WINSIZEY;
+//
+//		return _point;
+//	}
+//	else if (x > 3000 - WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
+//	{
+//		_point.x = 3000 - WINSIZEX;
+//		_point.y = 2240 - WINSIZEY;
+//
+//		return _point;
+//	}
+//	//x좌표예외처리
+//	else if (x < WINSIZEX / 2)
+//	{
+//		_point.x = 0;
+//		_point.y = y - WINSIZEY / 2;
+//
+//		return _point;
+//	}
+//	else if (x > 3000 - WINSIZEX / 2)
+//	{
+//		_point.x = 3000 - WINSIZEX;
+//		_point.y = y - WINSIZEY / 2;
+//
+//		return _point;
+//	}
+//	//y좌표예외처리
+//	else if (y < WINSIZEY / 2)
+//	{
+//		_point.x = x - WINSIZEX / 2;
+//		_point.y = 0;
+//
+//		return _point;
+//	}
+//	else if (y > 2240 - WINSIZEY / 2)
+//	{
+//		_point.x = x - WINSIZEX / 2;
+//		_point.y = 2240 - WINSIZEY;
+//
+//		return _point;
+//	}
+//	//기본상태
+//	else
+//	{
+//		_point.x = x - WINSIZEX / 2;
+//		_point.y = y - WINSIZEY / 2;
+//
+//		return _point;
+//	}
+//}
+//
+//void stage1::changeMoving()
+//{
+//	if (_camera->getChange() == false) return;
+//
+//	elapsedTime = TIMEMANAGER->getElpasedTime();
+//
+//	moveSpeed = (elapsedTime / _time) * _Distance;;
+//
+//	if (moveSpeed != 0)
+//	{
+//		_camera->setCameraX(_camera->getCameraX() + cosf(_angle) * moveSpeed);
+//		_camera->setCameraY(_camera->getCameraY() + -sinf(_angle) * moveSpeed);
+//	}
+//
+//	if (_time + _worldTime <= TIMEMANAGER->getWorldTime() || moveSpeed == 0)
+//	{
+//		_worldTime = TIMEMANAGER->getWorldTime();
+//
+//		_camera->setCameraX(_new.x);
+//		_camera->setCameraY(_new.y);
+//
+//		_camera->setChange(false);
+//		_changing = false;
+//	}
+//}
 
 

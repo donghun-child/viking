@@ -18,10 +18,9 @@ HRESULT camera::init()
 
 	_camera.x = 0;
 	_camera.y = 0;
-	_time = 0.0f;
+	_time = 1.5f;
 
 	_change = false;
-
 
 	return S_OK;
 }
@@ -86,7 +85,7 @@ void camera::update(float playerX, float playerY)
 	}
 	else
 	{
-		//changeMoving();
+		changeMoving();
 	}
 }
 
@@ -99,111 +98,115 @@ void camera::render()
 	//TextOut(getMemDC(), 500, 40, str, strlen(str));
 }
 
-//스테이지1에 함수 있음
+void camera::cameraChange(float newX, float newY)
+{
+	_change = true;
 
-//void camera::cameraChange(float orizinX, float orizinY, float newX, float newY)
-//{
-//	_change = true;
-//	_orizin = cameraPos(orizinX, orizinY);
-//	_new = cameraPos(newX, newY);
-//
-//	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
-//	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);
-//	_worldTime = TIMEMANAGER->getWorldTime();
-//	_time = 0.f;
-//}
-//
-//void camera::changeMoving()
-//{
-//	if (!_change) return;
-//
-//	float elapsedTime = TIMEMANAGER->getElpasedTime();
-//
-//	float moveSpeed = (elapsedTime / _time) * _Distance;
-//
-//	_camera.x = _orizin.x + cosf(_angle) * moveSpeed;
-//	_camera.y = _orizin.y + -sinf(_angle) * moveSpeed;
-//
-//	if (_time + _worldTime <= TIMEMANAGER->getWorldTime())
-//	{
-//		_worldTime = TIMEMANAGER->getWorldTime();
-//
-//		_camera.x = _new.x;
-//		_camera.y = _new.y;
-//
-//		_change = false;
-//	}
-//}
-//
-//POINTFLOAT camera::cameraPos(float x, float y)
-//{
-//	//4모서리에 있을때
-//	if (x < WINSIZEX / 2 && y < WINSIZEY / 2)
-//	{
-//		_point .x = 0;
-//		_point .y = 0;
-//
-//		return _point;
-//	}
-//	else if (x > 3000 - WINSIZEX / 2 && y < WINSIZEY / 2)
-//	{
-//		_point.x = 3000 - WINSIZEX;
-//		_point.y = 0;
-//
-//		return _point;
-//	}
-//	else if (x < WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
-//	{
-//		_point.x = 0;
-//		_point.y = 2240 - WINSIZEY;
-//
-//		return _point;
-//	}
-//	else if (x > 3000 - WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
-//	{
-//		_point.x = 3000 - WINSIZEX;
-//		_point.y = 2240 - WINSIZEY;
-//
-//		return _point;
-//	}
-//	//x좌표예외처리
-//	else if (x < WINSIZEX / 2)
-//	{
-//		_point.x = 0;
-//		_point.y = y - WINSIZEY / 2;
-//
-//		return _point;
-//	}
-//	else if (x > 3000 - WINSIZEX / 2)
-//	{
-//		_point.x = 3000 - WINSIZEX;
-//		_point.y = y - WINSIZEY / 2;
-//
-//		return _point;
-//	}
-//	//y좌표예외처리
-//	else if (y < WINSIZEY / 2)
-//	{
-//		_point.x = x - WINSIZEX / 2;
-//		_point.y = 0;
-//
-//		return _point;
-//	}
-//	else if (y > 2240 - WINSIZEY / 2)
-//	{
-//		_point.x = x - WINSIZEX / 2;
-//		_point.y = 2240 - WINSIZEY;
-//
-//		return _point;
-//	}
-//	//기본상태
-//	else
-//	{
-//		_point.x = x - WINSIZEX / 2;
-//		_point.y = y - WINSIZEY / 2;
-//
-//		return _point;
-//	}
-//}
+	_new = cameraPos(newX, newY);
+
+	_orizin.x = _camera.x;
+	_orizin.y = _camera.y;
+
+	_Distance = getDistance(_orizin.x, _orizin.y, _new.x, _new.y);
+	_angle = getAngle(_orizin.x, _orizin.y, _new.x, _new.y);
+	_worldTime = TIMEMANAGER->getWorldTime();
+	_time = 1.5f;
+}
+
+void camera::changeMoving()
+{
+	if (_change == false) return;
+
+	float elapsedTime = TIMEMANAGER->getElpasedTime();
+
+	float moveSpeed = (elapsedTime / _time) * _Distance;
+
+	if (moveSpeed != 0)
+	{
+		_camera.x += cosf(_angle) * moveSpeed;
+		_camera.y += -sinf(_angle) * moveSpeed;
+	}
+
+	if (_time + _worldTime <= TIMEMANAGER->getWorldTime())
+	{
+		_worldTime = TIMEMANAGER->getWorldTime();
+
+		_camera.x = _new.x;
+		_camera.y = _new.y;
+
+		_change = false;
+	}
+}
+
+POINTFLOAT camera::cameraPos(float x, float y)
+{
+	//4모서리에 있을때
+	if (x < WINSIZEX / 2 && y < WINSIZEY / 2)
+	{
+		_point.x = 0;
+		_point.y = 0;
+
+		return _point;
+	}
+	else if (x > 3000 - WINSIZEX / 2 && y < WINSIZEY / 2)
+	{
+		_point.x = 3000 - WINSIZEX;
+		_point.y = 0;
+
+		return _point;
+	}
+	else if (x < WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
+	{
+		_point.x = 0;
+		_point.y = 2240 - WINSIZEY;
+
+		return _point;
+	}
+	else if (x > 3000 - WINSIZEX / 2 && y > 2240 - WINSIZEY / 2)
+	{
+		_point.x = 3000 - WINSIZEX;
+		_point.y = 2240 - WINSIZEY;
+
+		return _point;
+	}
+	//x좌표예외처리
+	else if (x < WINSIZEX / 2)
+	{
+		_point.x = 0;
+		_point.y = y - WINSIZEY / 2;
+
+		return _point;
+	}
+	else if (x > 3000 - WINSIZEX / 2)
+	{
+		_point.x = 3000 - WINSIZEX;
+		_point.y = y - WINSIZEY / 2;
+
+		return _point;
+	}
+	//y좌표예외처리
+	else if (y < WINSIZEY / 2)
+	{
+		_point.x = x - WINSIZEX / 2;
+		_point.y = 0;
+
+		return _point;
+	}
+	else if (y > 2240 - WINSIZEY / 2)
+	{
+		_point.x = x - WINSIZEX / 2;
+		_point.y = 2240 - WINSIZEY;
+
+		return _point;
+	}
+	//기본상태
+	else
+	{
+		_point.x = x - WINSIZEX / 2;
+		_point.y = y - WINSIZEY / 2;
+
+		return _point;
+	}
+}
 
 

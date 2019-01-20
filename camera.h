@@ -34,9 +34,9 @@ public:
 	void render();
 
 	//스테이지1로 옮김
-	//void cameraChange(float orizinX,float orizinY,float newX,float newY);
-	//void changeMoving();
-	//POINTFLOAT cameraPos(float x, float y);
+	void cameraChange(float newX, float newY);
+	void changeMoving();
+	POINTFLOAT cameraPos(float x, float y);
 
 	POINTFLOAT getCameraPos() { return _camera; }
 
