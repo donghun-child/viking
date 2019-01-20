@@ -16,7 +16,7 @@ HRESULT eric::init()
 	_ericImage = IMAGEMANAGER->addFrameImage("eric", "image/eric.bmp", 0, 0, 1761, 2240, 11, 14, true, RGB(255, 0, 255));
 
 	_eric_X = 30;
-	_eric_Y =75;
+	_eric_Y = 75;
 
 	_start_X = _eric_X;
 	_start_Y = _eric_Y;
@@ -57,7 +57,7 @@ HRESULT eric::init()
 
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
-	_speed = 1;
+	_speed = 0;
 	_acceleration = 0;
 	_ericJump = new jump;
 	_ericJump->init();
@@ -71,7 +71,88 @@ void eric::release()
 	SAFE_DELETE(_ericJump);
 }
 
-void eric::update()
+void eric::update(float viewX, float viewY, float* x, float* y)
+{
+	_eric_X = viewX;
+	_eric_Y = viewY;
+
+	keySetting();
+	dashKeySetting();
+	//jumpKeySetting();
+	//_ericJump->update();
+
+	//가속도 주기위함
+	if (_ericState == ERIC_RIGHT_MOVE)
+	{
+		if (_speed < 5)
+		{
+			_acceleration = 0.05f;
+			*x += _speed;
+			_speed += _acceleration;
+		}
+		else if (_speed >= 5)
+		{
+			_speed = 7;
+		}
+	}
+	//가속도 주기위함
+	else if (_ericState == ERIC_LEFT_MOVE)
+	{
+		if (_speed < 5)
+		{
+			_acceleration = 0.05f;
+			*x -= _speed;
+			_speed += _acceleration;
+		}
+		else if (_speed >= 5)
+		{
+			_speed = 7;
+		}
+	}
+
+	switch (_ericState)
+	{
+	case ERIC_UP_MOVE:
+		*y -= 7;
+		break;
+	case ERIC_DOWN_MOVE:
+		*y += 7;
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _ericState == ERIC_RIGHT_STOP)
+	{
+		_ericState = ERIC_RIGHT_MOVE;
+		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
+		_ericMotion->start();
+	}
+	else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _ericState == ERIC_LEFT_STOP)
+	{
+		_ericState = ERIC_LEFT_MOVE;
+		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
+		_ericMotion->start();
+	}
+
+	KEYANIMANAGER->update();
+}
+
+void eric::render(float viewX, float viewY)
+{
+	//char str[128];
+	//sprintf_s(str, "에릭 확인 : %f ", _eric_X);
+	//TextOut(getMemDC(), 200, 570, str, strlen(str));
+
+	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	//TextOut(getMemDC(), 200, 590, str, strlen(str));
+
+	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
+	//TextOut(getMemDC(), 200, 610, str, strlen(str));
+
+	//sprintf_s(str, "에릭 속도 : %f ", _speed);
+	//TextOut(getMemDC(), 200, 630, str, strlen(str));
+
+	_ericImage->aniRender(getMemDC(), viewX, viewY, _ericMotion);
+}
+void eric::keySetting()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH)
 	{
@@ -80,7 +161,7 @@ void eric::update()
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
 	}
-	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE)
+	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
 		_speed = 0;
 		_ericState = ERIC_RIGHT_STOP;
@@ -95,7 +176,7 @@ void eric::update()
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
 		_ericMotion->start();
 	}
-	else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE)
+	else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
 		_speed = 0;
 		_ericState = ERIC_LEFT_STOP;
@@ -128,10 +209,11 @@ void eric::update()
 			_ericMotion->pause();
 		}
 	}
-
-	if (KEYMANAGER->isOnceKeyDown('S') && !(_ericState == ERIC_RIGHT_DASH) && !(_ericState == ERIC_LEFT_DASH))
+}
+void eric::jumpKeySetting()
+{
+	if (!(_ericState == ERIC_RIGHT_DASH) && !(_ericState == ERIC_LEFT_DASH))
 	{
-		_ericJump->Jumping(&_eric_X, &_eric_Y, &_start_X, &_start_Y, 15.0f, 0.6f);
 		if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE)
 		{
 			_ericState = ERIC_RIGHT_JUMP;
@@ -145,7 +227,9 @@ void eric::update()
 			_ericMotion->start();
 		}
 	}
-
+}
+void eric::dashKeySetting()
+{
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
 		if (_speed >= 7)
@@ -165,102 +249,7 @@ void eric::update()
 			}
 		}
 	}
-	
-	//가속도 주기위함
-	if (_ericState == ERIC_RIGHT_MOVE || _ericState == ERIC_RIGHT_JUMP)
-	{
-		if (_speed <= 3)
-		{
-			_acceleration = 0.05f;
-			_eric_X += _speed;
-			_speed += _acceleration;
-			
-		}
-		else if (_speed > 3)
-		{
-			_speed = 7;
-		}
-	}
-	//가속도 주기위함
-	else if (_ericState == ERIC_LEFT_MOVE || _ericState == ERIC_LEFT_JUMP)
-	{
-		if (_speed <= 3)
-		{
-			_acceleration = 0.05f;
-			_eric_X -= _speed;
-			_speed += _acceleration;
-		}
-		else if (_speed > 3)
-		{
-			_speed = 7;
-		}
-	}
 
-	switch (_ericState)
-	{
-	case ERIC_RIGHT_DASH:
-		_eric_X += _speed;
-
-		break;
-	case ERIC_LEFT_DASH:
-		_eric_X -= _speed;
-	
-		break;
-	}
-
-	_ericJump->update();
-	//_cameraPos = StagePos;
-	KEYANIMANAGER->update();
-
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE || _ericState == ERIC_RIGHT_JUMP))
-	{
-		if (_eric_X < 2950)
-		{
-			_eric_X += _speed;
-		}
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && (_ericState == ERIC_LEFT_STOP || _ericState == ERIC_LEFT_MOVE || _ericState == ERIC_LEFT_JUMP))
-	{
-		if (_eric_X > 0)
-		{
-			_eric_X -= _speed;
-		}
-	}
-	//사다리 충돌했을경우만 위아래 움직이게함.
-	if (_isLadderCollision == true)
-	{
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
-		{
-			if (_eric_Y > 0)
-			{
-				_eric_Y -= _speed;
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			_eric_Y += _speed;
-		}
-	}
-	
-}
-
-void eric::render()
-{
-	//Rectangle(getMemDC(), _eric_X - _cameraPos.x + WINSIZEX / 2, _eric_Y - _cameraPos.y + WINSIZEY / 2, _eric_X + 50 - _cameraPos.x + WINSIZEX / 2, _eric_Y + 50 - _cameraPos.y + WINSIZEY / 2);
-	char str[128];
-	sprintf_s(str, "에릭 확인 : %f ", _eric_X);
-	TextOut(getMemDC(), 200, 70, str, strlen(str));
-
-	sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	TextOut(getMemDC(), 200, 90, str, strlen(str));
-
-	sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
-	TextOut(getMemDC(), 200, 110, str, strlen(str));
-
-	sprintf_s(str, "에릭 속도 : %f ", _speed);
-	TextOut(getMemDC(), 200, 130, str, strlen(str));
-
-	_ericImage->aniRender(getMemDC(), _eric_X, _eric_Y, _ericMotion);
 }
 void eric::rightDash(void* obj)
 {

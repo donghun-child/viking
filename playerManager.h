@@ -41,6 +41,9 @@ private:
 	//а║га х╫╪Ж
 	int _jumpNum;
 
+	int _attckCount;
+	bool _isAttack;
+
 public:
 	playerManager();
 	~playerManager();

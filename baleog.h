@@ -46,8 +46,12 @@ private:
 
 	int _rndAttack;
 
+	bool _isSwordAttack;
+
 	bool _isLadderColision; //사다리 충돌했니
 	bool _arrowFireStop;
+
+
 
 public:
 	baleog();
@@ -55,8 +59,8 @@ public:
 
 	HRESULT init();
 	void release();
-	void update(float x, float y);
-	void render();
+	void update(float viewX, float viewY, float* x, float* y);
+	void render(float viewX, float viewY);
 
 	void keySetting(); //키셋팅
 	void arrowAttack(); //화살공격
@@ -87,5 +91,8 @@ public:
 
 	void setBaleogX(float x) {_baleogPlayer.x = x;}
 	void setBaleogY(float y) {_baleogPlayer.y = y;}
+
+	float getSpeed() { return _baleogPlayer.speed; }
+	void setSwordAttack(bool attack) { _isSwordAttack = attack; }
 };
 

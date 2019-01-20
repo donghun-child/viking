@@ -67,6 +67,7 @@ HRESULT baleog::init()
 
 	_arrowFireStop = false;
 	_isLadderColision = false;
+	_isSwordAttack = false;
 
 	return S_OK;
 }
@@ -76,10 +77,10 @@ void baleog::release()
 	SAFE_DELETE(_arrow);
 }
 
-void baleog::update(float x, float y)
+void baleog::update(float viewX, float viewY, float* x, float* y)
 {
-	_baleogPlayer.x = x;
-	_baleogPlayer.y = y;
+	_baleogPlayer.x = viewX;
+	_baleogPlayer.y = viewY;
 
 	//키셋팅
 	keySetting();
@@ -90,6 +91,22 @@ void baleog::update(float x, float y)
 	//검공격
 	swordAttack();
 
+	switch (_baleogState)
+	{
+	case BALEOG_RIGHT_MOVE:
+		*x += _baleogPlayer.speed;
+		break;
+	case BALEOG_LEFT_MOVE:
+		*x -= _baleogPlayer.speed;
+		break;
+	case BALEOG_UP_MOVE:
+		if (KEYMANAGER->isStayKeyDown(VK_UP)) *y -= _baleogPlayer.speed;
+		break;
+	case BALEOG_DOWN_MOVE:
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN)) *y += _baleogPlayer.speed;
+		break;
+	}
+
 	_arrow->update();
 
 	_baleogPlayer.baleogRc = RectMakeCenter(_baleogPlayer.x, _baleogPlayer.y, _baleogPlayer.baleogImage->getFrameWidth(), _baleogPlayer.baleogImage->getFrameHeight());
@@ -98,7 +115,7 @@ void baleog::update(float x, float y)
 
 }
 
-void baleog::render()
+void baleog::render(float viewX, float viewY)
 {
 	char str[128];
 	sprintf_s(str, "벨로그 상태 : %d", _baleogState);
@@ -110,13 +127,13 @@ void baleog::render()
 	sprintf_s(str, "프레임이미지 x좌표 : %d", _baleogMotion->getFramePos().x);
 	TextOut(getMemDC(), 100, 140, str, strlen(str));
 
-	_baleogPlayer.baleogImage->aniRender(getMemDC(), _baleogPlayer.baleogRc.left, _baleogPlayer.baleogRc.top, _baleogMotion);
+	_baleogPlayer.baleogImage->aniRender(getMemDC(), viewX, viewY, _baleogMotion);
 	_arrow->render();
 }
 
 void baleog::keySetting()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK)
+	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO)
 	{
 		_baleogState = BALEOG_RIGHT_MOVE; //오른쪽 움직임 상태로 전환
 		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightMove"); //모션 바꿔주고
@@ -129,7 +146,7 @@ void baleog::keySetting()
 		_baleogMotion->start();
 	}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK)
+	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO)
 	{
 		_baleogState = BALEOG_LEFT_MOVE;
 		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftMove");
@@ -167,24 +184,6 @@ void baleog::keySetting()
 			_baleogMotion->pause();
 		}
 	}
-
-
-	switch (_baleogState)
-	{
-	case BALEOG_RIGHT_MOVE:
-		_baleogPlayer.x += _baleogPlayer.speed;
-		break;
-	case BALEOG_LEFT_MOVE:
-		_baleogPlayer.y -= _baleogPlayer.speed;
-		break;
-	case BALEOG_UP_MOVE:
-		if (KEYMANAGER->isStayKeyDown(VK_UP)) _baleogPlayer.y -= _baleogPlayer.speed;
-		break;
-	case BALEOG_DOWN_MOVE:
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN)) _baleogPlayer.y += _baleogPlayer.speed;
-		break;
-	}
-
 }
 
 void baleog::arrowAttack()
@@ -235,7 +234,7 @@ void baleog::arrowAttack()
 void baleog::swordAttack()
 {
 	//검공격
-	if (KEYMANAGER->isOnceKeyDown('D'))
+	if(_isSwordAttack == true)
 	{
 		_rndAttack = RND->getInt(2); //랜덤공격값 받기위함
 		if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
@@ -277,7 +276,7 @@ void baleog::arrowFire()
 	{
 		if (_baleogMotion->getFramePos().x == 750)
 		{
-			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI2);
+			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI2);
 			_arrow->setArrowState(ARROW_RIGHT_FIRE);
 			_baleogMotion->resume();
 		}
@@ -286,7 +285,7 @@ void baleog::arrowFire()
 	{
 		if (_baleogMotion->getFramePos().x == 300)
 		{
-			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y + 20, 10, PI);
+			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI);
 			_arrow->setArrowState(ARROW_LEFT_FIRE);
 			_baleogMotion->resume();
 		}

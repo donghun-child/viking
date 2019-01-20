@@ -13,6 +13,11 @@ playerManager::~playerManager()
 
 HRESULT playerManager::init()
 {
+	_eric = new eric;
+	_eric->init();
+	_baleog = new baleog;
+	_baleog->init();
+	
 	for (int i = 0; i < 3; ++i)
 	{
 		_x[i] = 30 + 120 * i;
@@ -26,7 +31,7 @@ HRESULT playerManager::init()
 		_rc[i] = RectMake(_viewX[i], _viewY[i], 100, 100);
 	}
 
-	_isDebug = true;
+	_isDebug = false;
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -50,6 +55,8 @@ HRESULT playerManager::init()
 void playerManager::release()
 {
 	SAFE_DELETE(_camera);
+	SAFE_DELETE(_eric);
+	SAFE_DELETE(_baleog);
 }
 
 void playerManager::update()
@@ -70,7 +77,6 @@ void playerManager::update()
 	//카메라 체인지
 	characterChange();
 	
-	
 	//캐릭터박스 보이기용
 	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD1))
 	{
@@ -82,7 +88,6 @@ void playerManager::update()
 		{
 			_isDebug = true;
 		}
-
 	}
 
 	//가상좌표 갱신
@@ -100,10 +105,21 @@ void playerManager::update()
 		_prove_Y[i] = _y[i] + 100;
 	}
 
+	if (_choice == 1)
+	{
+		_eric->update(_viewX[ERIC] - 50, _viewY[ERIC] - 50, &_x[ERIC], &_y[ERIC]);
+	}
+	else if (_choice == 2)
+	{
+		_baleog->update(_viewX[BALEOG] + 50, _viewY[BALEOG] + 50, &_x[BALEOG], &_y[BALEOG]);
+	}
+
 }
 
 void playerManager::render()
 {
+	_eric->render(_viewX[ERIC] - 50, _viewY[ERIC] - 50);
+	_baleog->render(_viewX[BALEOG] - 50, _viewY[BALEOG] - 50);
 	if (_isDebug)
 	{
 		for (int i = 0; i < 3; ++i)
@@ -146,30 +162,31 @@ void playerManager::characterMove()
 {
 	if (_camera->getChange() == false)
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO)
 		{
 			if (_choice == 1)
 			{
-				_x[ERIC] -= 5;
+				_x[ERIC] -= _eric->getSpeed();
 			}
 			else if (_choice == 2)
 			{
-				_x[BALEOG] -= 5;
+				_x[BALEOG] -= _baleog->getSpeed();
 			}
 			else if (_choice == 3)
 			{
 				_x[OLAF] -= 5;
 			}
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO)
 		{
 			if (_choice == 1)
 			{
-				_x[ERIC] += 5;
+				_x[ERIC] += _eric->getSpeed();
 			}
 			else if (_choice == 2)
 			{
-				_x[BALEOG] += 5; 
+				_x[BALEOG] += _baleog->getSpeed();
+			
 			}
 			else if (_choice == 3)
 			{
@@ -206,6 +223,21 @@ void playerManager::characterMove()
 				_y[OLAF] += 5;
 			}
 		}
+		if (KEYMANAGER->isOnceKeyDown('D'))
+		{
+			if (_choice == 2)
+			{
+				_baleog->swordAttack();
+				_baleog->setSwordAttack(true);
+
+			}
+		}
+		else if (KEYMANAGER->isOnceKeyUp('D'))
+		{
+			_baleog->setSwordAttack(false);
+		}
+
+		
 	}
 }
 
@@ -470,6 +502,8 @@ void playerManager::jumpGravity(int select)
 					_jumpPower = 6.f;
 					_gravity = 0.05f;
 					_isJump = true;
+
+					_eric->jumpKeySetting();
 				}
 			}
 		}

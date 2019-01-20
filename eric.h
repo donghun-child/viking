@@ -39,8 +39,12 @@ public:
 
 	HRESULT init();
 	void release();
-	void update();
-	void render();
+	void update(float viewX, float viewY, float* x, float* y);
+	void render(float viewX, float viewY);
+
+	void keySetting();
+	void jumpKeySetting();
+	void dashKeySetting();
 
 	static void rightDash(void* obj);
 	static void leftDash(void* obj);
@@ -55,5 +59,7 @@ public:
 
 	float getplayerX() { return _eric_X; }
 	float getplayerY() { return _eric_Y; }
+
+	float getSpeed() { return _speed; }
 };
 
