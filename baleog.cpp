@@ -110,21 +110,15 @@ void baleog::update(float viewX, float viewY, float* x, float* y)
 	//검공격이나 화살공격하고 오른쪽키나 왼쪽키를 꾹눌러도 무브상태로 하기위함.
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_LEFT_STOP))
 	{
-		
 		_baleogState = BALEOG_RIGHT_MOVE;
 		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightMove");
 		_baleogMotion->start();
-	
 	}
 	else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_RIGHT_STOP))
 	{
-	
-		
 		_baleogState = BALEOG_LEFT_MOVE;
 		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftMove");
 		_baleogMotion->start();
-		
-
 	}
 
 	_baleogPlayer.baleogRc = RectMakeCenter(_baleogPlayer.x, _baleogPlayer.y, _baleogPlayer.baleogImage->getFrameWidth(), _baleogPlayer.baleogImage->getFrameHeight());
