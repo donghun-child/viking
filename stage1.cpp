@@ -66,6 +66,8 @@ void stage1::update()
 		createBubble();
 	}
 	else _ui->update();
+
+	_ui->profileUpdate(_playerManager->getChoice());
 }
 
 void stage1::render()
@@ -84,9 +86,9 @@ void stage1::render()
 
 
 
-	//char str[100];
-	//sprintf_s(str, "플레이어 x : %f", _playerManager->getEricX());
-	//TextOut(getMemDC(), 300, 20, str, strlen(str));
+	char str[100];
+	sprintf_s(str, "플레이어 x : %d", _playerManager->getChoice());
+	TextOut(getMemDC(), 300, 30, str, strlen(str));
 	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
 	//TextOut(getMemDC(), 300, 40, str, strlen(str));
 	//sprintf_s(str, "카메라 X : %f", _playerManager->getCamera()->getCameraX());
