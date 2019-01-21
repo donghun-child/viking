@@ -13,13 +13,13 @@ eric::~eric()
 
 HRESULT eric::init()
 {
-	_ericImage = IMAGEMANAGER->addFrameImage("eric", "image/eric.bmp", 0, 0, 1761, 2240, 11, 14, true, RGB(255, 0, 255));
+	_ericImage = IMAGEMANAGER->addFrameImage("eric", "image/eric.bmp", 0, 0, 1760, 2170, 11, 14, true, RGB(255, 0, 255));
 
 	_eric_X = WINSIZEX / 2;
 	_eric_Y = WINSIZEY / 2;
 
 	_ericState = ERIC_RIGHT_STOP;
-
+	
 	_eric_rc = RectMakeCenter(_eric_X, _eric_Y, _ericImage->getFrameWidth(), _ericImage->getFrameHeight());
 
 	int rightStop[] = { 0,1 };
