@@ -133,6 +133,19 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 		break;
 	case ERIC_DOWN_MOVE:
 		*y += 7;
+		break;
+	case ERIC_RIGHT_DASH:
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			_ericState = ERIC_LEFT_MOVE;
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
+			_ericMotion->start();
+		}
+		break;
+	case ERIC_LEFT_DASH:
+		if(KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		*x -= _speed;
+		break;
 	}
 
 	//대쉬나 점프할때 오른쪽이나 왼쪽 꾹눌러도 무브상태로 하기위함.
@@ -302,31 +315,43 @@ void eric::dashKeySetting()
 void eric::rightDash(void* obj)
 {
 	eric* e = (eric*)obj;
-	e->setEricState(ERIC_RIGHT_STOP);
-	e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
-	e->getEricMotion()->start();
+	if (e->getEricState() == ERIC_RIGHT_DASH)
+	{
+		e->setEricState(ERIC_RIGHT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+		e->getEricMotion()->start();
+	}
 }
 
 void eric::leftDash(void* obj)
 {
 	eric* e = (eric*)obj;
-	e->setEricState(ERIC_LEFT_STOP);
-	e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
-	e->getEricMotion()->start();
+	if (e->getEricState() == ERIC_LEFT_DASH)
+	{
+		e->setEricState(ERIC_LEFT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+		e->getEricMotion()->start();
+	}
 }
 
 void eric::rightJump(void* obj)
 {
 	eric* e = (eric*)obj;
-	e->setEricState(ERIC_RIGHT_STOP);
-	e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
-	e->getEricMotion()->start();
+	if (e->getEricState() == ERIC_RIGHT_JUMP)
+	{
+		e->setEricState(ERIC_RIGHT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+		e->getEricMotion()->start();
+	}
 }
 
 void eric::leftJump(void* obj)
 {
 	eric* e = (eric*)obj;
-	e->setEricState(ERIC_LEFT_STOP);
-	e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
-	e->getEricMotion()->start();
+	if (e->getEricState() == ERIC_LEFT_JUMP)
+	{
+		e->setEricState(ERIC_LEFT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+		e->getEricMotion()->start();
+	}
 }
