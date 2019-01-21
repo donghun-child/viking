@@ -72,8 +72,7 @@ void stage1::update()
 		_bubble->update();
 		createBubble();
 	}
-	else _ui->update();
-	
+	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
 }
 
