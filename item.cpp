@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "item.h"
+#include "playerManager.h"
 
 
 item::item()
@@ -11,77 +12,66 @@ item::~item()
 {
 }
 
-HRESULT item::init(const char* imageName, bool isFrame, int frameY)
+HRESULT item::init()
 {
-	_isFrame = isFrame;
-	_itemName = imageName;
-	_frameY = frameY;
 
 	return S_OK;
 }
 
 void item::release()
 {
-	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
-	{
-		_viItem = _vItem.erase(_viItem);
-
-		--_viItem;
-	}
 }
 
 void item::update()
 {
 	removeItem();
 
-
+	//아이템을 상대좌표로 그리기 위해서 카메라를 받아온후 그려준다
+	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
+	{
+		_viItem->viewX = _viItem->x - _playerManager->getCamera()->getCameraX();
+		_viItem->viewY = _viItem->y - _playerManager->getCamera()->getCameraY();
+	}
 
 }
 
 void item::render()
 {
+	//뷰 좌표로 랜더 
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
 	{
-		if (!_isFrame)
-		{
-			_viItem->image->render(getMemDC(), _viItem->x, _viItem->y);
-		}
-		else
-		{
-			_viItem->image->frameRender(getMemDC(), _viItem->x, _viItem->y,_viItem->frameX, _frameY);
-		}
+		_viItem->image->frameRender(getMemDC(), _viItem->viewX, _viItem->viewY, _viItem->frameX, _viItem->frameY);
 	}
+
+
 }
 
-void item::createItem(float x, float y, float width, float height)
+void item::createItem(const char* imageName,float x, float y, int frameX, int frameY)
 {
 	tagItem item;
 	ZeroMemory(&item, sizeof(item));
-	item.image = IMAGEMANAGER->findImage(_itemName);
-	item.frameX = 0;
-	item.frameY = _frameY;
+	item.image = IMAGEMANAGER->findImage(imageName);
+	//우리 아이템이미지는 다 프레임처럼 합쳐져 있으므로 프레임을 받는다.
+	item.frameX = frameX;
+	item.frameY = frameY;
 	item.x = x;
 	item.y = y;
+	item.viewX = x;
+	item.viewY = y;
 	item.isLive = true;
-	if (!_isFrame)
-	{
-		item.rc = RectMake(x, y, item.image->GetWidth(), item.image->GetHeight());
-	}
-	else
-	{
-		item.rc = RectMake(x, y, item.image->getFrameWidth(), item.image->getFrameHeight());
-	}
+	item.rc = RectMake(x, y, item.image->getFrameWidth(), item.image->getFrameHeight());
 
 	_vItem.push_back(item);
 }
 
 void item::removeItem()
 {
+	//아이템의 isLive 가 false가 되면 이레이즈한다
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); )
 	{
 		if ((*_viItem).isLive == false)
 		{
-			_vItem.erase(_viItem);
+			_viItem = _vItem.erase(_viItem);
 		}
 		else
 		{
