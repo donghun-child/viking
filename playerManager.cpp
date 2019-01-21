@@ -192,7 +192,7 @@ void playerManager::characterChoice()
 	if (_choice == ERIC)
 	{
 		_camera->update(_x[ERIC], _y[ERIC]);
-		_camera->update(_camerc_x, _camerc_y);
+		
 	}
 	else if (_choice == BALEOG)
 	{
@@ -202,6 +202,8 @@ void playerManager::characterChoice()
 	{
 		_camera->update(_x[OLAF], _y[OLAF]);
 	}
+
+	_camera->update(_camerc_x, _camerc_y);
 }
 
 void playerManager::characterMove()
