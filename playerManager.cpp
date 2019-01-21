@@ -46,7 +46,7 @@ HRESULT playerManager::init()
 	_gravity = 0.3;
 	_isJump = false;
 	_jumpNum = 1;
-	_choice = 1;
+	_choice = ERIC;
 
 	_camera = new camera;
 	_camera->init();
@@ -108,16 +108,16 @@ void playerManager::update()
 		_prove_Y[i] = _y[i] + 100;
 	}
 
-	if (_choice == 1)
+	if (_choice == ERIC)
 	{
 		_eric->update(_viewX[ERIC] - 50, _viewY[ERIC] - 50, &_x[ERIC], &_y[ERIC]);
 	}
-	else if (_choice == 2)
+	else if (_choice == BALEOG)
 	{
 		_baleog->update(_viewX[BALEOG] + 50, _viewY[BALEOG] + 50, &_x[BALEOG], &_y[BALEOG]);
 	}
 
-	else if(_choice == 3)
+	else if(_choice == OLAF)
 	{
 		_olaf->update(_viewX[OLAF] + 50, _viewY[OLAF] + 50, &_x[OLAF], &_y[OLAF]);
 	}
@@ -153,15 +153,15 @@ void playerManager::render()
 
 void playerManager::characterChoice()
 {
-	if (_choice == 1)
+	if (_choice == ERIC)
 	{
 		_camera->update(_x[ERIC], _y[ERIC]);
 	}
-	else if (_choice == 2)
+	else if (_choice == BALEOG)
 	{
 		_camera->update(_x[BALEOG], _y[BALEOG]);
 	}
-	else if (_choice == 3)
+	else if (_choice == OLAF)
 	{
 		_camera->update(_x[OLAF], _y[OLAF]);
 	}
@@ -173,61 +173,61 @@ void playerManager::characterMove()
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO)
 		{
-			if (_choice == 1)
+			if (_choice == ERIC)
 			{
 				_x[ERIC] -= _eric->getSpeed();
 			}
-			else if (_choice == 2)
+			else if (_choice == BALEOG)
 			{
 				_x[BALEOG] -= _baleog->getSpeed();
 			}
-			else if (_choice == 3)
+			else if (_choice == OLAF)
 			{
 				_x[OLAF] -= _olaf->getSpeed();
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO)
 		{
-			if (_choice == 1)
+			if (_choice == ERIC)
 			{
 				_x[ERIC] += _eric->getSpeed();
 			}
-			else if (_choice == 2)
+			else if (_choice == BALEOG)
 			{
 				_x[BALEOG] += _baleog->getSpeed();
 			
 			}
-			else if (_choice == 3)
+			else if (_choice == OLAF)
 			{
 				_x[OLAF] += _olaf->getSpeed();
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			if (_choice == 1)
+			if (_choice == ERIC)
 			{
 				_y[ERIC] -= 5;
 			}
-			else if (_choice == 2)
+			else if (_choice == BALEOG)
 			{
 				_y[BALEOG] -= 5;
 			}
-			else if (_choice == 3)
+			else if (_choice == OLAF)
 			{
 				_y[OLAF] -= 5;
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
-			if (_choice == 1)
+			if (_choice == ERIC)
 			{
 				_y[ERIC] += 5;
 			}
-			else if (_choice == 2)
+			else if (_choice == BALEOG)
 			{
 				_y[BALEOG] += 5;
 			}
-			else if (_choice == 3)
+			else if (_choice == OLAF)
 			{
 				_y[OLAF] += 5;
 			}
@@ -235,7 +235,7 @@ void playerManager::characterMove()
 	}
 	else if (_camera->getChange() == true)
 	{
-		if (_choice == 1)
+		if (_choice == ERIC)
 		{
 			if (_baleog->getBaleogState() == BALEOG_RIGHT_MOVE)
 			{
@@ -243,28 +243,78 @@ void playerManager::characterMove()
 				_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop"));
 				_baleog->getBaleogMotion()->start();
 			}
-			//else if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE)
-			//{
-			//	_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
-			//	_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
-			//	_olaf->getOlafMotion()->start();
-			//}
 			else if (_baleog->getBaleogState() == BALEOG_LEFT_MOVE)
 			{
 				_baleog->setBaleogState(BALEOG_LEFT_STOP);
 				_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
 				_baleog->getBaleogMotion()->start();
 			}
-			//else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE)
-			//{
-			//	_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
-			//	_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
-			//	_olaf->getOlafMotion()->start();
-			//}
+			if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE)
+			{
+				_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
+				_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
+				_olaf->getOlafMotion()->start();
+			}
+			else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE)
+			{
+				_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
+				_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
+				_olaf->getOlafMotion()->start();
+			}
 		}
-		else if (_choice == 2)
+		else if (_choice == BALEOG)
 		{
-			
+			if (_eric->getEricState() == ERIC_RIGHT_MOVE)
+			{
+				_eric->setEricState(ERIC_RIGHT_STOP);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+				_eric->getEricMotion()->start();
+			}
+			else if (_eric->getEricState() == ERIC_LEFT_MOVE)
+			{
+				_eric->setEricState(ERIC_LEFT_STOP);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+				_eric->getEricMotion()->start();
+			}
+			if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE)
+			{
+				_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
+				_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
+				_olaf->getOlafMotion()->start();
+			}
+			else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE)
+			{
+				_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
+				_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
+				_olaf->getOlafMotion()->start();
+			}
+		}
+		else if (_choice == OLAF)
+		{
+			if (_eric->getEricState() == ERIC_RIGHT_MOVE)
+			{
+				_eric->setEricState(ERIC_RIGHT_STOP);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+				_eric->getEricMotion()->start();
+			}
+			else if (_eric->getEricState() == ERIC_LEFT_MOVE)
+			{
+				_eric->setEricState(ERIC_LEFT_STOP);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+				_eric->getEricMotion()->start();
+			}
+			if (_baleog->getBaleogState() == BALEOG_RIGHT_MOVE)
+			{
+				_baleog->setBaleogState(BALEOG_RIGHT_STOP);
+				_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop"));
+				_baleog->getBaleogMotion()->start();
+			}
+			else if (_baleog->getBaleogState() == BALEOG_LEFT_MOVE)
+			{
+				_baleog->setBaleogState(BALEOG_LEFT_STOP);
+				_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
+				_baleog->getBaleogMotion()->start();
+			}
 		}
 	}
 }
@@ -273,19 +323,19 @@ void playerManager::characterChange()
 {
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
-		if (_choice == 1)
+		if (_choice == ERIC)
 		{
-			_choice = 2;
+			_choice = BALEOG;
 			_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 		}
-		else if (_choice == 2)
+		else if (_choice == BALEOG)
 		{
-			_choice = 3;
+			_choice = OLAF;
 			_camera->cameraChange(_x[OLAF], _y[OLAF]);
 		}
-		else if (_choice == 3)
+		else if (_choice == OLAF)
 		{
-			_choice = 1;
+			_choice = ERIC;
 			_camera->cameraChange(_x[ERIC], _y[ERIC]);
 		}
 	}
@@ -507,7 +557,7 @@ void playerManager::jumpGravity(int select)
 		if (_isJump)
 		{
 			_jumpCount++;
-			_y[select - 1] -= _jumpPower;
+			_y[select] -= _jumpPower;
 			_jumpPower -= _gravity;
 
 			if (_jumpCount > 50)
@@ -520,7 +570,7 @@ void playerManager::jumpGravity(int select)
 			_y[i] += 7.f;
 			_jumpCount = 0;
 		}
-		if (select == 1)
+		if (select == ERIC)
 		{
 			if (_jumpNum > 0)
 			{

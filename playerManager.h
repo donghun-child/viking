@@ -33,7 +33,7 @@ private:
 	float _viewX[3];
 	float _viewY[3];
 
-	float _choice;
+	Character _choice;
 	float _gravity;
 	float _jumpPower;
 	bool _isJump;

@@ -96,21 +96,21 @@ void baleog::update(float viewX, float viewY, float* x, float* y)
 	//°Ë°ø°İ
 	swordAttack();
 
-	switch (_baleogState)
-	{
-	case BALEOG_RIGHT_MOVE:
-		*x += _baleogPlayer.speed;
-		break;
-	case BALEOG_LEFT_MOVE:
-		*x -= _baleogPlayer.speed;
-		break;
-	case BALEOG_UP_MOVE:
-		if (KEYMANAGER->isStayKeyDown(VK_UP)) *y -= _baleogPlayer.speed;
-		break;
-	case BALEOG_DOWN_MOVE:
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN)) *y += _baleogPlayer.speed;
-		break;
-	}
+	//switch (_baleogState)
+	//{
+	//case BALEOG_RIGHT_MOVE:
+	//	*x += _baleogPlayer.speed;
+	//	break;
+	//case BALEOG_LEFT_MOVE:
+	//	*x -= _baleogPlayer.speed;
+	//	break;
+	//case BALEOG_UP_MOVE:
+	//	if (KEYMANAGER->isStayKeyDown(VK_UP)) *y -= _baleogPlayer.speed;
+	//	break;
+	//case BALEOG_DOWN_MOVE:
+	//	if (KEYMANAGER->isStayKeyDown(VK_DOWN)) *y += _baleogPlayer.speed;
+	//	break;
+	//}
 
 	_arrow->update();
 
