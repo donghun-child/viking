@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "stage1.h"
 #include "menu.h"
+#include "sound.h"
 
 //숫자패드 
 //0 픽셀보이기
@@ -22,7 +23,7 @@ class playGround : public gameNode
 private:
 	menu* _menu;
 	stage1* _stage1;
-
+	sound* _sound;
 
 
 public:
