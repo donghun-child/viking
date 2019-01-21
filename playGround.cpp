@@ -25,7 +25,7 @@ HRESULT playGround::init()
 	_stage1 = new stage1;
 	SCENEMANAGER->addScene("stage1", _stage1);
 
-	SCENEMANAGER->changeScene("menu");
+	SCENEMANAGER->changeScene("stage1");
 
 	
 	return S_OK;
