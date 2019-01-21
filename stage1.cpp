@@ -59,7 +59,8 @@ void stage1::update()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_TAB))
 	{
-		_uiChange = true;
+		if (_uiChange) _uiChange = false;
+		else _uiChange = true;
 	}
 
 	if (!_uiChange)
