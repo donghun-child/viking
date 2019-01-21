@@ -67,16 +67,17 @@ void olaf::update(float viewX, float viewY, float* x, float* y)
 	_olaf_x = viewX;
 	_olaf_y = viewY;
 
-	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
-	{
-		*x += _speed = 5;
-		
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
-	{
-		*y -= _speed = 5;
-		
-	}
+	//f (_olafDirection == OLAF_DIRECTION_RIGHT_MOVE)
+	//
+	//	*x += _speed ;
+	//	
+	//
+	//lse if (_olafDirection == OLAF_DIRECTION_LEFT_MOVE)
+	//
+	//	*y -= _speed ;
+	//	
+	//
+
 	olafMovement();
 
 	KEYANIMANAGER->update();
