@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "playerManager.h"
-
+#include "item.h"
 
 playerManager::playerManager()
 {
@@ -403,7 +403,9 @@ void playerManager::pixelCollisionGreen()
 				if (r == 0 && g == 255 && b == 0)
 				{
 					_y[OLAF] = i - 100;
-
+					//_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY);
+					//_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafShieldUpRightGravity"));
+					//_olaf->getOlafMotion()->start();
 					break;
 				}
 			}

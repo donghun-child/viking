@@ -24,37 +24,43 @@ HRESULT olaf::init()
 	_olaf_rc = RectMakeCenter(_olaf_x, _olaf_y, _olafimg->getFrameWidth(), _olafimg->getFrameHeight());
 
 
-	int rightStop[] = { 0 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightStop", "olaf", rightStop, 1, 6, true);
-	int rightShieldup[] = { 1 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightShield", "olaf", rightShieldup, 1, 6, true);
-	int leftStop[] = { 2 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftStop", "olaf", leftStop, 1, 6, true);
-	int leftShieldup[] = { 3 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightShield", "olaf", leftShieldup, 1, 6, true);
-	int rightMove[] = { 8, 9,10,11,12,13,14,15 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightMove", "olaf", rightMove, 8, 6, true);
-	int leftMove[] = { 23,22,21,20,19,18,17,16 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftMove", "olaf", leftMove, 8, 6, true);
-	int rightShieldUpMove[] = { 24,25,26,27,28,29,30,31 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightShieldUpMove", "olaf", rightShieldUpMove, 8, 6, true);
-	int leftShieldUpMove[] = { 39,38,37,36,35,34,33,32 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftShieldUpMove", "olaf", leftShieldUpMove, 8, 6, true);
-	int SadariUp[] = { 33,34,35,36 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafSadariUp", "olaf", SadariUp, 4, 6, true);
+int rightStop[] = { 0 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightStop", "olaf", rightStop, 1, 6, true);
+int rightShieldup[] = { 1 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightShield", "olaf", rightShieldup, 1, 6, true);
+int leftStop[] = { 2 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftStop", "olaf", leftStop, 1, 6, true);
+int leftShieldup[] = { 3 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftShield", "olaf", leftShieldup, 1, 6, true);
+int rightMove[] = { 8, 9,10,11,12,13,14,15 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightMove", "olaf", rightMove, 8, 6, true);
+int leftMove[] = { 23,22,21,20,19,18,17,16 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftMove", "olaf", leftMove, 8, 6, true);
+int rightShieldUpMove[] = { 24,25,26,27,28,29,30,31 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightShieldUpMove", "olaf", rightShieldUpMove, 8, 6, true);
+int leftShieldUpMove[] = { 39,38,37,36,35,34,33,32 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftShieldUpMove", "olaf", leftShieldUpMove, 8, 6, true);
+int SadariUp[] = { 33,34,35,36 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafSadariUp", "olaf", SadariUp, 4, 6, true);
 
-	int rightPush[] = { 64,65,66,67 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightPush", "olaf", rightPush, 4, 6, true);
-	int leftPush[] = { 68,69,70,71 };
-	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftPush", "olaf", leftPush, 4, 6, true);
+int ShieldUpGravity[] = { 51,50,49,48 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafShieldUpRightGravity", "olaf", ShieldUpGravity, 4, 6, true);
 
-	_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
+int ShieldDownGravity[] = {52,53 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafShieldDownRightGravity", "olaf", ShieldUpGravity, 2, 6, true);
+
+int rightPush[] = { 64,65,66,67 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafRightPush", "olaf", rightPush, 4, 6, true);
+int leftPush[] = { 68,69,70,71 };
+KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftPush", "olaf", leftPush, 4, 6, true);
+
+_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
 
 
-	num = 0;
-	_changeMode = false;
+num = 0;
+_changeMode = false;
 
-	return S_OK;
+return S_OK;
 }
 
 void olaf::release()
@@ -85,7 +91,7 @@ void olaf::update(float viewX, float viewY, float* x, float* y)
 
 void olaf::render(float viewX, float viewY)
 {
-	_olafimg->aniRender(getMemDC(), viewX, viewY, _olafMotion);
+	_olafimg->aniRender(getMemDC(), viewX+ 20, viewY - 10, _olafMotion);
 
 	char str[128];
 	sprintf_s(str, "상태확인 : %d    확인용 : %f", _olafDirection, _olaf_x);
@@ -95,7 +101,10 @@ void olaf::render(float viewX, float viewY)
 void olaf::olafMovement()
 {
 
+	
+
 	//==========================SHILED CHANGE==========================//
+	//==========================실드가 앞에 있을때 ====================//
 	if (_changeMode == false)
 	{
 		if (_olafDirection == OLAF_DIRECTION_RIGHT_STOP)
@@ -118,12 +127,18 @@ void olaf::olafMovement()
 				_changeMode = true;
 			}
 		}
-
 		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 		{
 			_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightMove");
 			_olafMotion->start();
+		}
+		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+		{
+			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
+			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShieldUpMove");
+			_olafMotion->start();
+			_changeMode = true;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_MOVE)
 		{
@@ -138,6 +153,13 @@ void olaf::olafMovement()
 			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftMove");
 			_olafMotion->start();
 		}
+		else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+		{
+			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE;
+			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShieldUpMove");
+			_olafMotion->start();
+			_changeMode = true;
+		}
 		if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_MOVE)
 		{
 			_olafDirection = OLAF_DIRECTION_LEFT_STOP;
@@ -146,6 +168,9 @@ void olaf::olafMovement()
 		}
 
 	}
+
+
+	//=============실드가 머리 위에 있을때======================//
 	else if (_changeMode == true)
 	{
 		if (_olafDirection == OLAF_DIRECTION_RIGHT_SHIELD)
@@ -169,12 +194,18 @@ void olaf::olafMovement()
 				_changeMode = false;
 			}
 		}
-
 		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 		{
 			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShieldUpMove");
 			_olafMotion->start();
+		}
+		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+		{
+			_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
+			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightMove");
+			_olafMotion->start();
+			_changeMode = false;
 		}
 		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE)
 		{
@@ -189,13 +220,19 @@ void olaf::olafMovement()
 			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShieldUpMove");
 			_olafMotion->start();
 		}
+		else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+		{
+			_olafDirection = OLAF_DIRECTION_LEFT_MOVE;
+			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftMove");
+			_olafMotion->start();
+			_changeMode = false;
+		}
 		if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE)
 		{
 			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD;
 			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
 			_olafMotion->start();
 		}
-
 	}
 
 

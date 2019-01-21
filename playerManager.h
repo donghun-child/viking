@@ -13,6 +13,8 @@ enum Character
 	OLAF
 };
 
+class item;
+
 class playerManager : public gameNode
 {
 private:
@@ -41,6 +43,8 @@ private:
 	//а║га х╫╪Ж
 	int _jumpNum;
 
+	item* _item;
+
 	int _attckCount;
 	bool _isAttack;
 
@@ -68,6 +72,10 @@ public:
 	void jumpGravity(int select);
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
+	void getItemLinkAddress(item* item) { _item = item; }
+
+
+
 
 	float getEricX() { return _x[ERIC]; };
 	float getEricY() { return _y[ERIC]; }
@@ -89,6 +97,7 @@ public:
 
 	Character getChoice() {return _choice;}
 	void setChoice(Character choice) {_choice = choice;}
+
 
 };
 

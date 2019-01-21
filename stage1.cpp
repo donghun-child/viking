@@ -22,9 +22,15 @@ HRESULT stage1::init()
 	_playerManager->init();
 
 	_item = new item;
+	_item->init();
+
 	_bubble = new item;
+	_bubble->init();
+
 	_item->getPlayerManagerLinkAddress(_playerManager);
 	_bubble->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_item);
+
 
 	_ui = new ui;
 	_ui->init();
@@ -66,7 +72,7 @@ void stage1::update()
 		createBubble();
 	}
 	else _ui->update();
-
+	
 	_ui->profileUpdate(_playerManager->getChoice());
 }
 
