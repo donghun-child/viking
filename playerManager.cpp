@@ -469,6 +469,7 @@ void playerManager::pixelCollisionYellow()
 			{
 				_x[OLAF] = i;
 
+			
 				break;
 			}
 		}
@@ -531,6 +532,19 @@ void playerManager::pixelCollisionEmerald()
 			{
 				_x[OLAF] = i - 100;
 
+				if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+				{
+					_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_WALL_PUSH);
+					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightPush"));
+					_olaf->getOlafMotion()->start();
+						
+				}
+				else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+				{
+					_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
+					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
+					_olaf->getOlafMotion()->start();
+				}
 				break;
 			}
 		}
