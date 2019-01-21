@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "playerManager.h"
 #include "item.h"
+#include "ui.h"
 
 enum ITEM
 {
@@ -19,6 +20,7 @@ class stage1 : public gameNode
 private:
 	playerManager* _playerManager;
 	item* _item;
+	ui* _ui;
 
 	bool _isPixel;
 
