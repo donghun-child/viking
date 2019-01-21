@@ -26,6 +26,8 @@ HRESULT menu::init()
 	_padeIn = true;
 	_padeOut = false;
 
+	SOUNDMANAGER->play("opening_bgm");
+
 	return S_OK;
 }
 
@@ -44,10 +46,16 @@ void menu::update()
 		{
 			if (_menuSelect_Y == 590) _menuSelect_Y = 525;
 			else _menuSelect_Y = 590;
+			SOUNDMANAGER->play("menu_SeletSound");
 		}
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 		{
-			if (_menuSelect_Y == 525) _padeOut = true;
+			if (_menuSelect_Y == 525)
+			{
+				_padeOut = true;
+				SOUNDMANAGER->stop("opening_bgm");
+				SOUNDMANAGER->play("viking_GameStart");
+			}
 			else PostQuitMessage(0);
 		}
 	}
@@ -56,6 +64,7 @@ void menu::update()
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && !_padeIn)
 		{
 			_padeOut = true;
+			
 		}
 	}
 }
@@ -100,7 +109,7 @@ void menu::padeOut()
 	{
 		if (_imageAlphaValue > 0)
 		{
-			_imageAlphaValue -= 2;
+			_imageAlphaValue -= 1;
 			if (_imageAlphaValue < 3)
 			{
 				_imageAlphaValue = 0;

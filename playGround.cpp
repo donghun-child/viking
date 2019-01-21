@@ -16,15 +16,17 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 
+	_sound = new sound;
+	_sound->init();
+
 	_menu = new menu;
+	_menu->init();
 	SCENEMANAGER->addScene("menu", _menu);
 	_stage1 = new stage1;
 	SCENEMANAGER->addScene("stage1", _stage1);
 
-	SCENEMANAGER->changeScene("stage1");
+	SCENEMANAGER->changeScene("menu");
 
-	_sound = new sound;
-	_sound->init();
 	
 	return S_OK;
 }

@@ -34,15 +34,13 @@ HRESULT sound::init()
 	SOUNDMANAGER->addSound("olaf_3", "sound/olaf_3.mp3", false, false);
 	SOUNDMANAGER->addSound("olaf_4", "sound/olaf_4.mp3", false, false);
 	SOUNDMANAGER->addSound("olaf_5", "sound/olaf_5.mp3", false, false);
-	SOUNDMANAGER->addSound("opening_bgm", "sound/opening_bgm.mp3", false, false);
-	SOUNDMANAGER->addSound("stage1_bgm", "sound/stage1_bgm.mp3", false, false);
+	SOUNDMANAGER->addSound("opening_bgm", "sound/opening_bgm.mp3", true, true);
+	SOUNDMANAGER->addSound("stage1_bgm", "sound/stage1_bgm.mp3", true, true);
 	SOUNDMANAGER->addSound("UI_BaleogPic", "sound/UI_BaleogPic.mp3", false, false);
 	SOUNDMANAGER->addSound("UI_EricPic", "sound/UI_EricPic.mp3", false, false);
 	SOUNDMANAGER->addSound("UI_OlafPic", "sound/UI_OlafPic.mp3", false, false);
 	SOUNDMANAGER->addSound("viking_GameStart", "sound/viking_GameStart.mp3", false, false);
 	SOUNDMANAGER->addSound("viking_Movement", "sound/viking_Movement.mp3", false, false);
-	
-
 	
 	
 	return S_OK;
