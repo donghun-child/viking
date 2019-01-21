@@ -55,6 +55,7 @@ void menu::update()
 				_padeOut = true;
 				SOUNDMANAGER->stop("opening_bgm");
 				SOUNDMANAGER->play("viking_GameStart");
+				
 			}
 			else PostQuitMessage(0);
 		}
@@ -121,6 +122,7 @@ void menu::padeOut()
 			if (!_opening)
 			{
 				_menuGameStart = true;
+				SOUNDMANAGER->play("stage1_bgm");
 				return;
 			}
 			_opening = false;

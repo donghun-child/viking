@@ -28,7 +28,6 @@ HRESULT stage1::init()
 	//_item->createItem("item", 500,200, REDKEY, 0);
 	//_item->createItem("item", 800, 300, REDLOCK, 0);
 
-
 	return S_OK;
 }
 
