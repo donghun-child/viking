@@ -19,7 +19,6 @@ HRESULT ui::init()
 	IMAGEMANAGER->addImage("life", "image/life.bmp", 105, 25, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("box", "image/box.bmp", 62, 62, true, RGB(255, 0, 255));
 
-
 	_ericCurrentX = _ericCurrentY = 0;
 	_baleogCurrentX = 1;
 	_baleogCurrentY = 1;
@@ -52,14 +51,13 @@ void ui::update(int choice, bool uiChange)
 {
 	if (uiChange)
 	{
-		keyControl(choice);
+		keyControl(choice);									//커서 움직임 키값
 		if (GetTickCount() - _oldTime >= 1 * 400)
 		{
 			if (choice == 0)
 			{
 				if (!_ericCursor) _ericCursor = true;
 				else _ericCursor = false;
-				
 			}
 			else if (choice == 1)
 			{
@@ -74,7 +72,7 @@ void ui::update(int choice, bool uiChange)
 			_oldTime = GetTickCount();
 		}
 	}
-	else
+	else													//커서 에러 예외 처리
 	{
 		_ericCursor = _baleogCursor = _olafCursor = false;
 	}
