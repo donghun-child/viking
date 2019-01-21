@@ -330,16 +330,19 @@ void playerManager::characterChange()
 		{
 			_choice = BALEOG;
 			_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+			SOUNDMANAGER->play("UI_EricPic");
 		}
 		else if (_choice == BALEOG)
 		{
 			_choice = OLAF;
 			_camera->cameraChange(_x[OLAF], _y[OLAF]);
+			SOUNDMANAGER->play("UI_BaleogPic");
 		}
 		else if (_choice == OLAF)
 		{
 			_choice = ERIC;
 			_camera->cameraChange(_x[ERIC], _y[ERIC]);
+			SOUNDMANAGER->play("UI_OlafPic");
 		}
 	}
 }
