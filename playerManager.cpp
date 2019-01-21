@@ -17,7 +17,9 @@ HRESULT playerManager::init()
 	_eric->init();
 	_baleog = new baleog;
 	_baleog->init();
-	
+	_olaf = new olaf;
+	_olaf->init();
+
 	for (int i = 0; i < 3; ++i)
 	{
 		_x[i] = 30 + 120 * i;
@@ -57,6 +59,7 @@ void playerManager::release()
 	SAFE_DELETE(_camera);
 	SAFE_DELETE(_eric);
 	SAFE_DELETE(_baleog);
+	SAFE_DELETE(_olaf);
 }
 
 void playerManager::update()
@@ -114,12 +117,18 @@ void playerManager::update()
 		_baleog->update(_viewX[BALEOG] + 50, _viewY[BALEOG] + 50, &_x[BALEOG], &_y[BALEOG]);
 	}
 
+	else if(_choice == 3)
+	{
+		_olaf->update(_viewX[OLAF] + 50, _viewY[OLAF] + 50, &_x[OLAF], &_y[OLAF]);
+	}
+
 }
 
 void playerManager::render()
 {
 	_eric->render(_viewX[ERIC] - 50, _viewY[ERIC] - 50);
 	_baleog->render(_viewX[BALEOG] - 50, _viewY[BALEOG] - 50);
+	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
 	if (_isDebug)
 	{
 		for (int i = 0; i < 3; ++i)
@@ -174,7 +183,7 @@ void playerManager::characterMove()
 			}
 			else if (_choice == 3)
 			{
-				_x[OLAF] -= 5;
+				_x[OLAF] -= _olaf->getSpeed();
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO)
@@ -190,7 +199,7 @@ void playerManager::characterMove()
 			}
 			else if (_choice == 3)
 			{
-				_x[OLAF] += 5;
+				_x[OLAF] += _olaf->getSpeed();
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -223,21 +232,19 @@ void playerManager::characterMove()
 				_y[OLAF] += 5;
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown('D'))
+		
+		if (_choice == 2)
 		{
-			if (_choice == 2)
+			if (KEYMANAGER->isOnceKeyDown('D'))
 			{
 				_baleog->swordAttack();
 				_baleog->setSwordAttack(true);
-
+			}
+			else if (KEYMANAGER->isOnceKeyUp('D'))
+			{
+				_baleog->setSwordAttack(false);
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp('D'))
-		{
-			_baleog->setSwordAttack(false);
-		}
-
-		
 	}
 }
 

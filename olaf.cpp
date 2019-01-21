@@ -20,6 +20,7 @@ HRESULT olaf::init()
 	_olaf_x = 100;
 	_olaf_y = 100;
 
+	_speed = 5;
 	_olaf_rc = RectMakeCenter(_olaf_x, _olaf_y, _olafimg->getFrameWidth(), _olafimg->getFrameHeight());
 
 
@@ -41,7 +42,6 @@ HRESULT olaf::init()
 	KEYANIMANAGER->addArrayFrameAnimation(_olafName, "olafLeftShieldUpMove", "olaf", leftShieldUpMove, 8, 6, true);
 	int SadariUp[] = { 33,34,35,36 };
 	KEYANIMANAGER->addArrayFrameAnimation(_olafName, "olafSadariUp", "olaf", SadariUp, 4, 6, true);
-
 
 	int rightPush[] = { 64,65,66,67 };
 	KEYANIMANAGER->addArrayFrameAnimation(_olafName, "olafRightPush", "olaf", rightPush, 4, 6, true);
@@ -65,50 +65,30 @@ void olaf::release()
 {
 }
 
-void olaf::update(POINTFLOAT StagePos, int choice)
+void olaf::update(float viewX, float viewY, float* x, float* y)
 {
 
-	_cameraPos = StagePos;
+	_olaf_x = viewX;
+	_olaf_y = viewY;
 
-	if (choice == 1)
+	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
-		{
-			if (_olaf_y > 0)
-			{
-				_olaf_y -= 10;
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-
-			_olaf_y += 10;
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-		{
-			if (_olaf_x > 0)
-			{
-				_olaf_x -= 10;
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		{
-			if (_olaf_x < 2950)
-			{
-				_olaf_x += 10;
-			}
-		}
+		_olaf_x += _speed = 5;
+		
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+	{
+		_olaf_x -= _speed = 5;
+		
 	}
 	olafMovement();
-
-	_olaf_rc = RectMakeCenter(_olaf_x, _olaf_y, _olafimg->getFrameWidth(), _olafimg->getFrameHeight());
 
 	KEYANIMANAGER->update();
 }
 
-void olaf::render()
+void olaf::render(float viewX, float viewY)
 {
-	Rectangle(getMemDC(), _olaf_x - _cameraPos.x + WINSIZEX / 2, _olaf_y - _cameraPos.y + WINSIZEY / 2, _olaf_x + 50 - _cameraPos.x + WINSIZEX / 2, _olaf_y + 50 - _cameraPos.y + WINSIZEY / 2);
+	_olafimg->aniRender(getMemDC(), viewX, viewY, _olafMotion);
 
 	char str[128];
 	sprintf_s(str, "상태확인 : %d    확인용 : %f", _olafDirection, _olaf_x);
@@ -144,8 +124,6 @@ void olaf::olafMovement()
 
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-			//_olaf_x += 3;
-			_olaf_rc = RectMakeCenter(_olaf_x, _olaf_y, _olafimg->getFrameWidth(), _olafimg->getFrameHeight());
 			_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafRightMove");
 			_olafMotion->start();
@@ -159,7 +137,6 @@ void olaf::olafMovement()
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 		{
-			//_olaf_x -= 3;
 			_olafDirection = OLAF_DIRECTION_LEFT_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafLeftMove");
 			_olafMotion->start();
@@ -198,7 +175,6 @@ void olaf::olafMovement()
 
 		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 		{
-			//	_olaf_x += 3;
 			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafRightShieldUpMove");
 			_olafMotion->start();
@@ -212,7 +188,6 @@ void olaf::olafMovement()
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 		{
-			//_olaf_x -= 3;
 			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafLeftShieldUpMove");
 			_olafMotion->start();
@@ -233,19 +208,13 @@ void olaf::olafMovement()
 		_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafRightPush");
 		_olafMotion->start();
 	}
-	if (KEYMANAGER->isOnceKeyDown('Q'))
+	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
 		_olafDirection = OLAF_DIRECTION_LEFT_WALL_PUSH;
 		_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafLeftPush");
 		_olafMotion->start();
 	}
-	//RECT rc;
-	//if (IntersectRect(&rc, &_olaf_rc, &_wall))
-	//{
-	//	_olafDirection = OLAF_DIRECTION_RIGHT_WALL_PUSH;
-	//	_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafRightPush");
-	//	_olafMotion->start();
-	//}
+
 
 
 

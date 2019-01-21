@@ -28,7 +28,7 @@ private:
 	image* _olafimg;
 	float _olaf_x, _olaf_y;
 	RECT _olaf_rc;
-
+	float _speed;
 	string _olafName;
 
 	bool _changeMode;
@@ -49,8 +49,8 @@ public:
 	HRESULT init();
 	HRESULT init(string name);
 	void release();
-	void update(POINTFLOAT StagePos, int choice);
-	void render();
+	void update(float viewX, float viewY, float* x, float* y);
+	void render(float viewX, float viewY);
 
 	OLAFDIRECTION getOlafDirection() { return _olafDirection; }
 	void setOlafDirection(OLAFDIRECTION direction) { _olafDirection = direction; }
@@ -66,6 +66,7 @@ public:
 
 	float getplayerX() { return _olaf_x; }
 	float getplayerY() { return _olaf_y; }
+	float getSpeed() { return _speed; }
 
 	void olafMovement();
 };
