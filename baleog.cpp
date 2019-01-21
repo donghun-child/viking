@@ -57,6 +57,12 @@ HRESULT baleog::init()
 	int downMove[] = {59, 58, 57, 56};
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "downMove", "벨로그", downMove, 4, 10, true);
 
+	int rightPush[] = {64, 65, 66, 67};
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "rightPush", "벨로그", rightPush, 4, 8, true);
+
+	int leftPush[] = {71, 70, 69, 68};
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftPush", "벨로그", leftPush, 4, 8, true);
+
 	_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
 
 	IMAGEMANAGER->addFrameImage("화살", "image/bullet.bmp", 85, 20, 5, 2, true, RGB(255, 0, 255));

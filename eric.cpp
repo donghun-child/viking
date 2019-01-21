@@ -52,6 +52,12 @@ HRESULT eric::init()
 	int downMove[] = {91, 90, 89, 88};
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "downMove", "eric", downMove, 4, 8, true);
 
+	int rightPush[] = {121, 122, 123, 124, 125};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightPush", "eric", rightPush, 5, 8, true);
+
+	int leftPush[] = {130, 129, 128, 127, 126};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftPush", "eric", leftPush, 5, 8, true);
+
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
 	_speed = 0;
