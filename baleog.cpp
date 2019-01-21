@@ -67,7 +67,12 @@ HRESULT baleog::init()
 
 	_arrowFireStop = false;
 	_isLadderColision = false;
-	_isSwordAttack = false;
+
+	//벨로그 모션 사운드
+	SOUNDMANAGER->addSound("arrow", "sound/baleog_Arrow.mp3", true, false);
+	SOUNDMANAGER->addSound("arrowPull", "sound/baleog_ArrowPull.mp3", true, false);
+	SOUNDMANAGER->addSound("attack", "sound/baleog_Attack.mp3", true, false);
+	SOUNDMANAGER->addSound("attack2", "sound/baleog_Attack2.mp3", true, false);
 
 	return S_OK;
 }
@@ -193,6 +198,7 @@ void baleog::arrowAttack()
 	{
 		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 		{
+			SOUNDMANAGER->play("arrow");
 			if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
 			{
 				_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
@@ -234,22 +240,25 @@ void baleog::arrowAttack()
 void baleog::swordAttack()
 {
 	//검공격
-	if(_isSwordAttack == true)
+	if(KEYMANAGER->isOnceKeyDown('D'))
 	{
-		_rndAttack = RND->getInt(2); //랜덤공격값 받기위함
+		 //랜덤공격값 받기위함
 		if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
 		{
+			_rndAttack = RND->getInt(2);
 			if (_rndAttack == 0)
 			{
 				_baleogState = BALEOG_RIGHT_SWORD_ATTACK_ONE;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightSwordAttackOne");
 				_baleogMotion->start();
+				SOUNDMANAGER->play("attack");
 			}
 			else if (_rndAttack == 1)
 			{
 				_baleogState = BALEOG_RIGHT_SWORD_ATTACK_TWO;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightSwordAttackTwo");
 				_baleogMotion->start();
+				SOUNDMANAGER->play("attack2");
 			}
 		}
 		else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
@@ -259,12 +268,14 @@ void baleog::swordAttack()
 				_baleogState = BALEOG_LEFT_SWORD_ATTACK_ONE;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftSwordAttackOne");
 				_baleogMotion->start();
+				SOUNDMANAGER->play("attack", 1.0f);
 			}
 			else if (_rndAttack == 1)
 			{
 				_baleogState = BALEOG_LEFT_SWORD_ATTACK_TWO;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftSwordAttackTwo");
 				_baleogMotion->start();
+				SOUNDMANAGER->play("attack2", 1.0f);
 			}
 		}
 	}
@@ -276,6 +287,7 @@ void baleog::arrowFire()
 	{
 		if (_baleogMotion->getFramePos().x == 750)
 		{
+			SOUNDMANAGER->play("arrowPull");
 			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI2);
 			_arrow->setArrowState(ARROW_RIGHT_FIRE);
 			_baleogMotion->resume();
@@ -285,6 +297,7 @@ void baleog::arrowFire()
 	{
 		if (_baleogMotion->getFramePos().x == 300)
 		{
+			SOUNDMANAGER->play("arrowPull");
 			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI);
 			_arrow->setArrowState(ARROW_LEFT_FIRE);
 			_baleogMotion->resume();

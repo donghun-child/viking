@@ -63,6 +63,8 @@ HRESULT eric::init()
 	_ericJump->init();
 	_isLadderCollision = false;
 
+	SOUNDMANAGER->addSound("jump", "sound/eric_Jump.mp3", true, false);
+
 	return S_OK;
 }
 
@@ -214,6 +216,7 @@ void eric::jumpKeySetting()
 {
 	if (!(_ericState == ERIC_RIGHT_DASH) && !(_ericState == ERIC_LEFT_DASH))
 	{
+		SOUNDMANAGER->play("jump");
 		if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE)
 		{
 			_ericState = ERIC_RIGHT_JUMP;

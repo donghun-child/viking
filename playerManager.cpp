@@ -232,18 +232,39 @@ void playerManager::characterMove()
 				_y[OLAF] += 5;
 			}
 		}
-		
-		if (_choice == 2)
+	}
+	else if (_camera->getChange() == true)
+	{
+		if (_choice == 1)
 		{
-			if (KEYMANAGER->isOnceKeyDown('D'))
+			if (_baleog->getBaleogState() == BALEOG_RIGHT_MOVE)
 			{
-				_baleog->swordAttack();
-				_baleog->setSwordAttack(true);
+				_baleog->setBaleogState(BALEOG_RIGHT_STOP);
+				_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop"));
+				_baleog->getBaleogMotion()->start();
 			}
-			else if (KEYMANAGER->isOnceKeyUp('D'))
+			//else if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE)
+			//{
+			//	_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
+			//	_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
+			//	_olaf->getOlafMotion()->start();
+			//}
+			else if (_baleog->getBaleogState() == BALEOG_LEFT_MOVE)
 			{
-				_baleog->setSwordAttack(false);
+				_baleog->setBaleogState(BALEOG_LEFT_STOP);
+				_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
+				_baleog->getBaleogMotion()->start();
 			}
+			//else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE)
+			//{
+			//	_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
+			//	_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
+			//	_olaf->getOlafMotion()->start();
+			//}
+		}
+		else if (_choice == 2)
+		{
+			
 		}
 	}
 }

@@ -46,12 +46,8 @@ private:
 
 	int _rndAttack;
 
-	bool _isSwordAttack;
-
 	bool _isLadderColision; //사다리 충돌했니
 	bool _arrowFireStop;
-
-
 
 public:
 	baleog();
@@ -93,6 +89,5 @@ public:
 	void setBaleogY(float y) {_baleogPlayer.y = y;}
 
 	float getSpeed() { return _baleogPlayer.speed; }
-	void setSwordAttack(bool attack) { _isSwordAttack = attack; }
 };
 
