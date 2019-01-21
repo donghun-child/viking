@@ -35,6 +35,12 @@ private:
 	float _viewX[3];
 	float _viewY[3];
 
+	RECT _camerc;
+	float _camerc_x;
+	float _camerc_y;
+	float _cameview_x;
+	float _cameview_y;
+
 	Character _choice;
 	float _gravity;
 	float _jumpPower;

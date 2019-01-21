@@ -42,6 +42,14 @@ HRESULT playerManager::init()
 		_prove_Y[i] = _rc[i].bottom;
 	}
 
+	_camerc_x = 100;
+	_camerc_y = 100;
+	_cameview_x = _camerc_x;
+	_cameview_y = _camerc_y;
+
+	_camerc = RectMake(_cameview_x, _cameview_y, 50, 50);
+
+
 	_jumpPower = 8.f;
 	_gravity = 0.3;
 	_isJump = false;
@@ -124,6 +132,30 @@ void playerManager::update()
 
 	//밸로그가 카메라 전환해도 화살은 독립적으로 계속 나가기 위함.
 	_baleog->getArrow()->update();
+
+
+	_cameview_x = _camerc_x - _camera->getCameraX();
+	_cameview_y = _camerc_y - _camera->getCameraY();
+
+	_camerc = RectMake(_cameview_x, _cameview_y, 50, 50);
+
+	if (KEYMANAGER->isStayKeyDown('L'))
+	{
+		_camerc_x += 15;
+	}
+	if (KEYMANAGER->isStayKeyDown('J'))
+	{
+		_camerc_x -= 15;
+	}
+	if (KEYMANAGER->isStayKeyDown('K'))
+	{
+		_camerc_y += 15;
+	}
+	if (KEYMANAGER->isStayKeyDown('I'))
+	{
+		_camerc_y -= 15;
+	}
+
 }
 
 void playerManager::render()
@@ -138,6 +170,8 @@ void playerManager::render()
 			Rectangle(getMemDC(), _rc[i]);
 		}
 	}
+
+	Rectangle(getMemDC(), _camerc);
 	_camera->render();
 	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
@@ -158,6 +192,7 @@ void playerManager::characterChoice()
 	if (_choice == ERIC)
 	{
 		_camera->update(_x[ERIC], _y[ERIC]);
+		_camera->update(_camerc_x, _camerc_y);
 	}
 	else if (_choice == BALEOG)
 	{
