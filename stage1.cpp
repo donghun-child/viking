@@ -26,6 +26,8 @@ HRESULT stage1::init()
 	_ui = new ui;
 	_ui->init();
 
+	_uiChange = false;
+
 	//아이템 만들거면 크리에이트 아이템 한후 
 	//좌표 입력후    무슨아이템인지 이넘문   그다음칸은 프레임Y입력
 	//_item->createItem("item", 500,200, REDKEY, 0);
@@ -42,12 +44,19 @@ void stage1::release()
 
 void stage1::update()
 {
-	_playerManager->update();
-	//픽셀 보이게하는 함수
-	viewPixel();
-	_item->update();
-	
+	if (KEYMANAGER->isOnceKeyDown(VK_TAB))
+	{
+		_uiChange = true;
+	}
 
+	if (!_uiChange)
+	{
+		_playerManager->update();
+		//픽셀 보이게하는 함수
+		viewPixel();
+		_item->update();
+	}
+	else _ui->update();
 }
 
 void stage1::render()
@@ -60,6 +69,7 @@ void stage1::render()
 	}
 	_playerManager->render();
 	_item->render();
+	_ui->render();
 
 
 

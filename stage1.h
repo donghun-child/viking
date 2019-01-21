@@ -23,6 +23,7 @@ private:
 	ui* _ui;
 
 	bool _isPixel;
+	bool _uiChange;
 
 
 public:

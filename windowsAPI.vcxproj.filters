@@ -70,14 +70,14 @@
     <Filter Include="PlayGround\sceen">
       <UniqueIdentifier>{f490692c-1cbb-488f-86f0-2b5ea6121413}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PlayGround\sceen\camera">
-      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="PlayGround\sceen\ui">
-      <UniqueIdentifier>{cd770a2c-cc8c-45c6-a7a4-fe83504f0907}</UniqueIdentifier>
-    </Filter>
     <Filter Include="PlayGround\item">
       <UniqueIdentifier>{ede14f05-3864-4d16-a4d9-034ba85bc648}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\camera">
+      <UniqueIdentifier>{4db3b0af-1090-465c-9256-101edd254537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlayGround\ui">
+      <UniqueIdentifier>{cd770a2c-cc8c-45c6-a7a4-fe83504f0907}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +160,7 @@
       <Filter>2DFramework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>PlayGround\sceen\camera</Filter>
+      <Filter>PlayGround\camera</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
       <Filter>PlayGround\sceen</Filter>
@@ -187,7 +187,7 @@
       <Filter>PlayGround\playerManager\olaf</Filter>
     </ClInclude>
     <ClInclude Include="ui.h">
-      <Filter>PlayGround\sceen\ui</Filter>
+      <Filter>PlayGround\ui</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
       <Filter>PlayGround\item</Filter>
@@ -264,7 +264,7 @@
       <Filter>2DFramework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>PlayGround\sceen\camera</Filter>
+      <Filter>PlayGround\camera</Filter>
     </ClCompile>
     <ClCompile Include="menu.cpp">
       <Filter>PlayGround\sceen</Filter>
@@ -291,7 +291,7 @@
       <Filter>PlayGround\playerManager\olaf</Filter>
     </ClCompile>
     <ClCompile Include="ui.cpp">
-      <Filter>PlayGround\sceen\ui</Filter>
+      <Filter>PlayGround\ui</Filter>
     </ClCompile>
     <ClCompile Include="item.cpp">
       <Filter>PlayGround\item</Filter>
