@@ -50,10 +50,6 @@ HRESULT olaf::init()
 
 	_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafRightStop");
 
-	_Wax = WINSIZEX / 2;
-	_Way = 150;
-
-	_wall = RectMakeCenter(_Wax, _Way, 30, 100);
 
 	num = 0;
 	_changeMode = false;
@@ -73,12 +69,12 @@ void olaf::update(float viewX, float viewY, float* x, float* y)
 
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 	{
-		_olaf_x += _speed = 5;
+		*x += _speed = 5;
 		
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
-		_olaf_x -= _speed = 5;
+		*y -= _speed = 5;
 		
 	}
 	olafMovement();
@@ -122,7 +118,7 @@ void olaf::olafMovement()
 			}
 		}
 
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 		{
 			_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
 			_olafMotion = KEYANIMANAGER->findAnimation(_olafName, "olafRightMove");

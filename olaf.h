@@ -47,7 +47,6 @@ public:
 	~olaf();
 
 	HRESULT init();
-	HRESULT init(string name);
 	void release();
 	void update(float viewX, float viewY, float* x, float* y);
 	void render(float viewX, float viewY);
