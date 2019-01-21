@@ -188,7 +188,7 @@ void playerManager::render()
 	}
 
 	//Rectangle(getMemDC(), _camerc);
-	_camera->render();
+	//_camera->render();
 	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
@@ -208,7 +208,6 @@ void playerManager::characterChoice()
 	if (_choice == ERIC)
 	{
 		_camera->update(_x[ERIC], _y[ERIC]);
-		
 	}
 	else if (_choice == BALEOG)
 	{

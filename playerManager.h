@@ -52,8 +52,6 @@ private:
 
 	item* _item;
 
-	int _attckCount;
-	bool _isAttack;
 	bool _isArrowFireStop;
 
 public:

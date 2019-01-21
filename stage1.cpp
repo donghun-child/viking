@@ -74,8 +74,7 @@ void stage1::release()
 	SAFE_DELETE(_bubble);
 	SAFE_DELETE(_banana);
 	SAFE_DELETE(_meat);
-
-
+	SAFE_DELETE(_ui);
 }
 
 void stage1::update()
@@ -136,9 +135,6 @@ void stage1::render()
 	_meat->render();
 	_bubble->render();
 	_ui->render();
-
-
-
 
 	//char str[100];
 	//sprintf_s(str, "플레이어 x : %d", _playerManager->getChoice());

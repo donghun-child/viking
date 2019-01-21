@@ -36,6 +36,8 @@ void playGround::release()
 {
 	gameNode::release();
 
+	SAFE_DELETE(_sound);
+
 	SCENEMANAGER->release();
 
 }
@@ -60,7 +62,6 @@ void playGround::render()
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//===========================================================
 	SCENEMANAGER->render();
-
 
 
 	TIMEMANAGER->render(getMemDC());
