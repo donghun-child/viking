@@ -17,21 +17,37 @@ HRESULT stage1::init()
 	IMAGEMANAGER->addImage("pixel", "image/pixel.bmp", 3000, 2240, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("item", "image/item.bmp", 330, 55, 6, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("bubble", "image/bubble.bmp", 900, 180, 5, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("dari", "image/dari.bmp", 2200, 436, 10, 2, true, RGB(255, 0, 255));
 
 	_playerManager = new playerManager;
 	_playerManager->init();
 
-	_item = new item;
-	_item->init();
+	_redKey = new item;
+	_redLock = new item;
+	_clockDari = new item;
+	_banana = new item;
+	_meat = new item;
 
 	_bubble = new item;
 	_bubble->init();
 
-	_item->getPlayerManagerLinkAddress(_playerManager);
+	//아이템
+	_redKey->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_redKey);
+	_redLock->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_redLock);
+	_clockDari->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_clockDari);
+	_banana->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_banana);
+	_meat->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_meat);
+
+	//버블
 	_bubble->getPlayerManagerLinkAddress(_playerManager);
-	_playerManager->getItemLinkAddress(_item);
+	_playerManager->getItemLinkAddress(_bubble);
 
-
+	//ui
 	_ui = new ui;
 	_ui->init();
 
@@ -40,10 +56,11 @@ HRESULT stage1::init()
 	_bubbleTime = 5.0f;
 	_worldTime = TIMEMANAGER->getWorldTime();
 
-	//아이템 만들거면 크리에이트 아이템 한후 
-	//좌표 입력후    무슨아이템인지 이넘문   그다음칸은 프레임Y입력
-	//_item->createItem("item", 500,200, REDKEY, 0);
-	//_item->createItem("item", 800, 300, REDLOCK, 0);
+	_redKey->createItem("item", 2930, 390, REDKEY, 0);
+	_redLock->createItem("item", 1100, 760, REDLOCK, 0);
+	_clockDari->createItem("dari", 870, 675, 0, 0);
+	_banana->createItem("item", 1435, 1670, BANANA, 0);
+	_meat->createItem("item", 2880, 2000, MEAT, 0);
 
 	return S_OK;
 }
@@ -51,8 +68,14 @@ HRESULT stage1::init()
 void stage1::release()
 {
 	SAFE_DELETE(_playerManager);
-	SAFE_DELETE(_item);
+	SAFE_DELETE(_redKey);
+	SAFE_DELETE(_redLock);
+	SAFE_DELETE(_clockDari);
 	SAFE_DELETE(_bubble);
+	SAFE_DELETE(_banana);
+	SAFE_DELETE(_meat);
+
+
 }
 
 void stage1::update()
@@ -68,12 +91,33 @@ void stage1::update()
 		_playerManager->update();
 		//픽셀 보이게하는 함수
 		viewPixel();
-		_item->update();
+		_redKey->update();
+		_redLock->update();
+		_clockDari->update();
+		_banana->update();
+		_meat->update();
 		_bubble->update();
 		createBubble();
 	}
 	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
+
+
+	//다리 움직이기
+	//if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD9))
+	//{
+	//	for (int i = 0; i < _clockDari->getVItem().size(); ++i)
+	//	{
+	//		(*_clockDari->getVItemAddress())[i].frameX += 1;
+	//	}
+	//}
+	//if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD8))
+	//{
+	//	for (int i = 0; i < _clockDari->getVItem().size(); ++i)
+	//	{
+	//		(*_clockDari->getVItemAddress())[i].frameX -= 1;
+	//	}
+	//}
 }
 
 void stage1::render()
@@ -85,16 +129,20 @@ void stage1::render()
 		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _playerManager->getCamera()->getCameraX(), _playerManager->getCamera()->getCameraY(), WINSIZEX, WINSIZEY);
 	}
 	_playerManager->render();
-	_item->render();
+	_redKey->render();
+	_redLock->render();
+	_clockDari->render();
+	_banana->render();
+	_meat->render();
 	_bubble->render();
 	_ui->render();
 
 
 
 
-	char str[100];
-	sprintf_s(str, "플레이어 x : %d", _playerManager->getChoice());
-	TextOut(getMemDC(), 300, 30, str, strlen(str));
+	//char str[100];
+	//sprintf_s(str, "플레이어 x : %d", _playerManager->getChoice());
+	//TextOut(getMemDC(), 300, 30, str, strlen(str));
 	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
 	//TextOut(getMemDC(), 300, 40, str, strlen(str));
 	//sprintf_s(str, "카메라 X : %f", _playerManager->getCamera()->getCameraX());

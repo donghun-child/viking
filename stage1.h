@@ -18,9 +18,20 @@ enum ITEM
 class stage1 : public gameNode
 {
 private:
+
 	playerManager* _playerManager;
-	item* _item;
+
+	//아이템
+	item* _redKey;
+	item* _redLock;
+	item* _banana;
+	item* _meat;
+
+	//오브젝트
+	item* _clockDari;
 	item* _bubble;
+
+	//UI
 	ui* _ui;
 
 	bool _isPixel;
