@@ -10,6 +10,10 @@ private:
 
 	int _choice;
 	int _ericLife, _baleogLife, _olafLife;
+	int _ericBox_X, _ericBox_Y;
+	int	_baleogBox_X, _baleogBox_Y;
+	int	_olafBox_X, _olafBox_Y;
+
 	bool _ericCursor, _baleogCursor, _olafCursor;
 
 	int _oldTime;
@@ -23,6 +27,7 @@ public:
 	void update(int choice, bool uiChange);
 	void render();
 	void profileUpdate(int choice);
+	void keyControl(int choice);
 
 	int getEricLife() { return _ericLife; }				// 35씩 뺄때마다 life 하나씩 줄어듬~
 	int getBaleogLife() { return _baleogLife; }

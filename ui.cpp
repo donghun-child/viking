@@ -30,6 +30,14 @@ HRESULT ui::init()
 	_baleogLife = 105;
 	_olafLife = 105;
 
+
+	_ericBox_X = 187; 
+	_ericBox_Y = 671;
+	_baleogBox_X = 470; 
+	_baleogBox_Y = 671;
+	_olafBox_X = 751; 
+	_olafBox_Y = 671;
+	
 	_ericCursor = _baleogCursor = _olafCursor = false;
 	_oldTime = GetTickCount();
 
@@ -44,12 +52,14 @@ void ui::update(int choice, bool uiChange)
 {
 	if (uiChange)
 	{
-		if (GetTickCount() - _oldTime >= 1 * 500)
+		keyControl(choice);
+		if (GetTickCount() - _oldTime >= 1 * 400)
 		{
 			if (choice == 0)
 			{
 				if (!_ericCursor) _ericCursor = true;
 				else _ericCursor = false;
+				
 			}
 			else if (choice == 1)
 			{
@@ -82,15 +92,15 @@ void ui::render()
 	IMAGEMANAGER->findImage("life")->render(getMemDC(), 630, 770, 0, 0, _olafLife, 25);
 	if (!_ericCursor)
 	{
-		IMAGEMANAGER->findImage("box")->render(getMemDC(), 187, 671);
+		IMAGEMANAGER->findImage("box")->render(getMemDC(), _ericBox_X, _ericBox_Y);
 	}
 	if (!_baleogCursor)
 	{
-		IMAGEMANAGER->findImage("box")->render(getMemDC(), 470, 671);
+		IMAGEMANAGER->findImage("box")->render(getMemDC(), _baleogBox_X, _baleogBox_Y);
 	}
 	if (!_olafCursor)
 	{
-		IMAGEMANAGER->findImage("box")->render(getMemDC(), 751, 671);
+		IMAGEMANAGER->findImage("box")->render(getMemDC(), _olafBox_X, _olafBox_Y);
 	}
 
 	//char str[128];
@@ -126,5 +136,102 @@ void ui::profileUpdate(int choice)
 		_baleogCurrentY = 1;
 		_olafCurrentX = 2;
 		_olafCurrentY = 0;
+	}
+}
+
+void ui::keyControl(int choice)
+{
+	if (choice == 0)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			if (_ericBox_X == 250)
+			{
+				_ericBox_X = 187;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			if (_ericBox_X == 187)
+			{
+				_ericBox_X = 250;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			if (_ericBox_Y == 734)
+			{
+				_ericBox_Y = 671;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			if (_ericBox_Y == 671)
+			{
+				_ericBox_Y = 734;
+			}
+		}
+	}
+	else if (choice == 1)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			if (_baleogBox_X == 532)
+			{
+				_baleogBox_X = 470;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			if (_baleogBox_X == 470)
+			{
+				_baleogBox_X = 532;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			if (_baleogBox_Y == 734)
+			{
+				_baleogBox_Y = 671;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			if (_baleogBox_Y == 671)
+			{
+				_baleogBox_Y = 734;
+			}
+		}
+	}
+	else if (choice == 2)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			if (_olafBox_X == 814)
+			{
+				_olafBox_X = 751;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			if (_olafBox_X == 751)
+			{
+				_olafBox_X = 814;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			if (_olafBox_Y == 734)
+			{
+				_olafBox_Y = 671;
+			}
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			if (_olafBox_Y == 671)
+			{
+				_olafBox_Y = 734;
+			}
+		}
 	}
 }
