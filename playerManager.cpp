@@ -64,6 +64,8 @@ HRESULT playerManager::init()
 	_camera = new camera;
 	_camera->init();
 
+	_isCameraMode = false;
+
 	return S_OK;
 }
 
@@ -218,7 +220,22 @@ void playerManager::characterChoice()
 		_camera->update(_x[OLAF], _y[OLAF]);
 	}
 
-	_camera->update(_camerc_x, _camerc_y);
+	//카메라모드 활성화
+	if (KEYMANAGER->isOnceKeyDown('W'))
+	{
+		if (!_isCameraMode)
+		{
+			_isCameraMode = true;
+		}
+		else if (_isCameraMode)
+		{
+			_isCameraMode = false;
+		}
+	}
+	if (_isCameraMode)
+	{
+		_camera->update(_camerc_x, _camerc_y);
+	}
 }
 
 void playerManager::characterMove()

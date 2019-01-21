@@ -54,6 +54,8 @@ private:
 
 	bool _isArrowFireStop;
 
+	bool _isCameraMode;
+
 public:
 	playerManager();
 	~playerManager();
