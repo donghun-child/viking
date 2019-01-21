@@ -110,7 +110,7 @@ void playerManager::update()
 
 	if (_choice == ERIC)
 	{
-		_eric->update(_viewX[ERIC] - 50, _viewY[ERIC] - 50, &_x[ERIC], &_y[ERIC]);
+		_eric->update(_viewX[ERIC] - 40, _viewY[ERIC] - 60, &_x[ERIC], &_y[ERIC]);
 	}
 	else if (_choice == BALEOG)
 	{
@@ -128,8 +128,8 @@ void playerManager::update()
 
 void playerManager::render()
 {
-	_eric->render(_viewX[ERIC] - 50, _viewY[ERIC] - 50);
-	_baleog->render(_viewX[BALEOG] - 50, _viewY[BALEOG] - 50);
+	_eric->render(_viewX[ERIC] - 40, _viewY[ERIC] - 60);
+	_baleog->render(_viewX[BALEOG] - 40, _viewY[BALEOG] - 50);
 	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
 	if (_isDebug)
 	{

@@ -21,7 +21,6 @@ private:
 	image* _ericImage;
 	RECT _eric_rc;
 	float _eric_X, _eric_Y;
-	float _start_X, _start_Y;
 	POINTFLOAT _cameraPos;
 
 	float _acceleration; //대쉬할때 가속도
@@ -30,6 +29,8 @@ private:
 	ERICSTATE _ericState; //에릭상태
 	bool _isLadderCollision; //사다리 충돌했니
 	bool _isJump;
+	float _motionTime; //모션타임
+	float _motionWorldTime;
 
 public:
 	eric();

@@ -15,11 +15,8 @@ HRESULT eric::init()
 {
 	_ericImage = IMAGEMANAGER->addFrameImage("eric", "image/eric.bmp", 0, 0, 1761, 2240, 11, 14, true, RGB(255, 0, 255));
 
-	_eric_X = 30;
-	_eric_Y = 75;
-
-	_start_X = _eric_X;
-	_start_Y = _eric_Y;
+	_eric_X = WINSIZEX / 2;
+	_eric_Y = WINSIZEY / 2;
 
 	_ericState = ERIC_RIGHT_STOP;
 
@@ -62,6 +59,8 @@ HRESULT eric::init()
 	_isLadderCollision = false;
 	_isJump = false;
 
+	_motionTime = 1.0f;
+	_motionWorldTime = TIMEMANAGER->getWorldTime();
 	return S_OK;
 }
 
@@ -78,6 +77,25 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 	keySetting();
 	dashKeySetting();
 	//jumpKeySetting();
+	//if (_isJump == false)
+	//{
+	//	if (_ericState != ERIC_RIGHT_MOVE && (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_JUMP))
+	//	{
+	//		if (_motionTime + _motionWorldTime <= TIMEMANAGER->getWorldTime())
+	//		{
+	//			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
+	//			_motionWorldTime = TIMEMANAGER->getWorldTime();
+	//		}
+	//	}
+	//	if (_ericState != ERIC_LEFT_MOVE && (_ericState == ERIC_LEFT_STOP || _ericState == ERIC_LEFT_JUMP))
+	//	{
+	//		if (_motionTime + _motionWorldTime <= TIMEMANAGER->getWorldTime())
+	//		{
+	//			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftStop");
+	//			_motionWorldTime = TIMEMANAGER->getWorldTime();
+	//		}
+	//	}
+	//}
 
 	//가속도 주기위함
 	if (_ericState == ERIC_RIGHT_MOVE)
@@ -117,13 +135,14 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 		*y += 7;
 	}
 
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _ericState == ERIC_RIGHT_STOP)
+	//대쉬나 점프할때 오른쪽이나 왼쪽 꾹눌러도 무브상태로 하기위함.
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_LEFT_STOP))
 	{
 		_ericState = ERIC_RIGHT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
 	}
-	else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _ericState == ERIC_LEFT_STOP)
+	else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && (_ericState == ERIC_LEFT_STOP || _ericState == ERIC_RIGHT_STOP))
 	{
 		_ericState = ERIC_LEFT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
@@ -135,9 +154,13 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 
 void eric::render(float viewX, float viewY)
 {
-	//char str[128];
-	//sprintf_s(str, "에릭 확인 : %f ", _eric_X);
-	//TextOut(getMemDC(), 200, 570, str, strlen(str));
+	char str[128];
+	sprintf_s(str, "_motionTime : %f ", _motionTime);
+	TextOut(getMemDC(), 200, 100, str, strlen(str));
+
+	sprintf_s(str, "_motionWorldTime : %f ", _motionWorldTime);
+	TextOut(getMemDC(), 200, 120, str, strlen(str));
+
 
 	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
 	//TextOut(getMemDC(), 200, 590, str, strlen(str));
@@ -152,20 +175,18 @@ void eric::render(float viewX, float viewY)
 }
 void eric::keySetting()
 {
-	//점프상태고 오른쪽 눌러도 점프모션 띄우기위함.
-
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH)
 	{
 		_speed = 0;
 		_ericState = ERIC_RIGHT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
+		//점프상태에서 오른쪽키 눌러도 점프모션 나오기 위함.
 		if (_isJump == true && _ericState == ERIC_RIGHT_MOVE)
 		{
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightJump");
 			_ericMotion->start();
 		}
-
 	}
 	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
@@ -173,6 +194,7 @@ void eric::keySetting()
 		_ericState = ERIC_RIGHT_STOP;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 		_ericMotion->start();
+		//점프상태에서 오른쪽키를 떼도 점프모션 나오기 위함.
 		if (_isJump == true)
 		{
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightJump");
@@ -185,6 +207,13 @@ void eric::keySetting()
 		_ericState = ERIC_LEFT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
 		_ericMotion->start();
+
+		//점프상태에서 왼쪽키 눌러도 점프모션 나오기 위함.
+		if (_isJump == true && _ericState == ERIC_LEFT_MOVE)
+		{
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftJump");
+			_ericMotion->start();
+		}
 	}
 	else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
@@ -192,6 +221,11 @@ void eric::keySetting()
 		_ericState = ERIC_LEFT_STOP;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftStop");
 		_ericMotion->start();
+		//점프상태에서 왼쪽키를 떼도 점프모션 나오기 위함.
+		if (_isJump == true)
+		{
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftJump");
+		}
 	}
 
 	//사다리 충돌했을경우만 위아래 움직이게함.
@@ -226,6 +260,8 @@ void eric::jumpKeySetting()
 	{
 		SOUNDMANAGER->play("eric_Jump");
 		_isJump = true;
+		_motionTime = 0.7f;
+
 		if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE)
 		{
 			_ericState = ERIC_RIGHT_JUMP;
