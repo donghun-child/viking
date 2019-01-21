@@ -66,21 +66,19 @@ HRESULT baleog::init()
 	_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
 
 	IMAGEMANAGER->addFrameImage("화살", "image/bullet.bmp", 85, 20, 5, 2, true, RGB(255, 0, 255));
-	_arrow = new arrow;
-	_arrow->init("화살", 0, 600);
 
 	_rndAttack = RND->getInt(2);
 
 	_arrowFireStop = false;
 	_isLadderColision = false;
-
+	_isFire = false;
 
 	return S_OK;
 }
 
 void baleog::release()
 {
-	SAFE_DELETE(_arrow);
+
 }
 
 void baleog::update(float viewX, float viewY, float* x, float* y)
@@ -146,7 +144,6 @@ void baleog::render(float viewX, float viewY)
 	//TextOut(getMemDC(), 100, 140, str, strlen(str));
 
 	_baleogPlayer.baleogImage->aniRender(getMemDC(), viewX + 10, viewY, _baleogMotion);
-	_arrow->render();
 }
 
 void baleog::keySetting()
@@ -207,45 +204,20 @@ void baleog::keySetting()
 void baleog::arrowAttack()
 {
 	//화살공격
-	if (_arrow->getVArrow().size() == 0)
+	if (_isFire == true && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 	{
-		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
+		SOUNDMANAGER->play("baleog_Arrow");
+		if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
 		{
-			SOUNDMANAGER->play("baleog_Arrow");
-			if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
-			{
-				_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
-				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightArrowAttack");
-				_baleogMotion->start();
-			}
-			else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
-			{
-				_baleogState = BALEOG_LEFT_ARROW_ATTACK;
-				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftArrowAttack");
-				_baleogMotion->start();
-			}
-	
+			_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
+			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightArrowAttack");
+			_baleogMotion->start();
 		}
-		else if (KEYMANAGER->isOnceKeyUp('S'))
+		else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
 		{
-			_arrowFireStop = false;
-		}
-		if (KEYMANAGER->isStayKeyDown('S'))
-		{
-			if (_baleogMotion->getFramePos().x == 750 && _baleogState == BALEOG_RIGHT_ARROW_ATTACK)
-			{
-				_baleogMotion->pause();
-				_arrowFireStop = true;
-			}
-			else if (_baleogMotion->getFramePos().x == 300 && _baleogState == BALEOG_LEFT_ARROW_ATTACK)
-			{
-				_baleogMotion->pause();
-				_arrowFireStop = true;
-			}
-		}
-		else if (_arrowFireStop == false)
-		{
-			arrowFire();
+			_baleogState = BALEOG_LEFT_ARROW_ATTACK;
+			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftArrowAttack");
+			_baleogMotion->start();
 		}
 	}
 }
@@ -292,31 +264,6 @@ void baleog::swordAttack()
 			}
 		}
 	}
-}
-
-void baleog::arrowFire()
-{
-	if (_baleogState == BALEOG_RIGHT_ARROW_ATTACK)
-	{
-		if (_baleogMotion->getFramePos().x == 750)
-		{
-			SOUNDMANAGER->play("baleog_ArrowPull");
-			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI2);
-			_arrow->setArrowState(ARROW_RIGHT_FIRE);
-			_baleogMotion->resume();
-		}
-	}
-	else if (_baleogState == BALEOG_LEFT_ARROW_ATTACK)
-	{
-		if (_baleogMotion->getFramePos().x == 300)
-		{
-			SOUNDMANAGER->play("baleog_ArrowPull");
-			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI);
-			_arrow->setArrowState(ARROW_LEFT_FIRE);
-			_baleogMotion->resume();
-		}
-	}
-
 }
 
 void baleog::rightFire(void* obj)

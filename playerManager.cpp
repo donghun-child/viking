@@ -20,6 +20,12 @@ HRESULT playerManager::init()
 	_olaf = new olaf;
 	_olaf->init();
 
+	//벨로그 화살부분
+	IMAGEMANAGER->addFrameImage("화살", "image/bullet.bmp", 85, 20, 5, 2, true, RGB(255, 0, 255));
+	_arrow = new arrow;
+	_arrow->init("화살", 0, 600);
+	_isArrowFireStop = false;
+
 	for (int i = 0; i < 3; ++i)
 	{
 		_x[i] = 30 + 120 * i;
@@ -49,7 +55,6 @@ HRESULT playerManager::init()
 
 	_camerc = RectMake(_cameview_x, _cameview_y, 50, 50);
 
-
 	_jumpPower = 8.f;
 	_gravity = 0.3;
 	_isJump = false;
@@ -68,10 +73,19 @@ void playerManager::release()
 	SAFE_DELETE(_eric);
 	SAFE_DELETE(_baleog);
 	SAFE_DELETE(_olaf);
+	SAFE_DELETE(_arrow);
 }
 
 void playerManager::update()
 {
+	//벨로그 화살
+	_arrow->update();
+	for (int i = 0; i < _arrow->getVArrow().size(); i++)
+	{
+		(*_arrow->getVArrowAddress())[i].viewX = (*_arrow->getVArrowAddress())[i].x - _camera->getCameraX();
+		(*_arrow->getVArrowAddress())[i].viewY = (*_arrow->getVArrowAddress())[i].y - _camera->getCameraY();
+	}
+
 	//에릭의 점프
 	jumpGravity(_choice);
 
@@ -130,10 +144,6 @@ void playerManager::update()
 		_olaf->update(_viewX[OLAF] + 50, _viewY[OLAF] + 50, &_x[OLAF], &_y[OLAF]);
 	}
 
-	//밸로그가 카메라 전환해도 화살은 독립적으로 계속 나가기 위함.
-	_baleog->getArrow()->update();
-
-
 	_cameview_x = _camerc_x - _camera->getCameraX();
 	_cameview_y = _camerc_y - _camera->getCameraY();
 
@@ -163,6 +173,12 @@ void playerManager::render()
 	_eric->render(_viewX[ERIC] - 40, _viewY[ERIC] - 60);
 	_baleog->render(_viewX[BALEOG] - 40, _viewY[BALEOG] - 50);
 	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
+
+	for (int i = 0; i < _arrow->getVArrow().size(); i++)
+	{
+		_arrow->render((*_arrow->getVArrowAddress())[i].viewX, (*_arrow->getVArrowAddress())[i].viewY);
+	}
+
 	if (_isDebug)
 	{
 		for (int i = 0; i < 3; ++i)
@@ -171,7 +187,7 @@ void playerManager::render()
 		}
 	}
 
-//	Rectangle(getMemDC(), _camerc);
+	//Rectangle(getMemDC(), _camerc);
 	_camera->render();
 	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
@@ -271,8 +287,13 @@ void playerManager::characterMove()
 				_y[OLAF] += 5;
 			}
 		}
+		//벨로그 화살쏘는부분
+		if (_choice == BALEOG)
+		{
+			baleogArrow();
+		}
 	}
-	//카메라 체인지 도중이면
+	//카메라 체인지 도중이면 다른애들 움직여도 멈추게함.
 	else if (_camera->getChange() == true)
 	{
 		if (_choice == ERIC)
@@ -701,6 +722,57 @@ void playerManager::jumpGravity(int select)
 
 					_eric->jumpKeySetting();
 				}
+			}
+		}
+	}
+}
+
+void playerManager::baleogArrow()
+{
+	if (_arrow->getVArrow().size() == 0)
+	{
+		if (KEYMANAGER->isOnceKeyDown('S'))
+		{
+			_baleog->setIsFire(true);
+		}
+		else if (KEYMANAGER->isOnceKeyUp('S'))
+		{
+			_baleog->setIsFire(false);
+			_baleog->getBaleogMotion()->resume();
+			_isArrowFireStop = false;
+		}
+
+		if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			_isArrowFireStop = true;
+			if (_baleog->getBaleogMotion()->getFramePos().x == 750 && _baleog->getBaleogState() == BALEOG_RIGHT_ARROW_ATTACK)
+			{
+				_baleog->getBaleogMotion()->pause();
+			}
+			else if (_baleog->getBaleogMotion()->getFramePos().x == 300 && _baleog->getBaleogState() == BALEOG_LEFT_ARROW_ATTACK)
+			{
+				_baleog->getBaleogMotion()->pause();
+			}
+		}
+	}
+	if (_isArrowFireStop == false)
+	{
+		if (_baleog->getBaleogState() == BALEOG_RIGHT_ARROW_ATTACK)
+		{
+			if (_baleog->getBaleogMotion()->getFramePos().x == 750)
+			{
+				SOUNDMANAGER->play("baleog_ArrowPull");
+				_arrow->arrowFire(_x[BALEOG], _y[BALEOG] + 50, 5, PI2);
+				_arrow->setArrowState(ARROW_RIGHT_FIRE);
+			}
+		}
+		else if (_baleog->getBaleogState() == BALEOG_LEFT_ARROW_ATTACK)
+		{
+			if (_baleog->getBaleogMotion()->getFramePos().x == 300)
+			{
+				SOUNDMANAGER->play("baleog_ArrowPull");
+				_arrow->arrowFire(_x[BALEOG], _y[BALEOG] + 50, 5, PI);
+				_arrow->setArrowState(ARROW_LEFT_FIRE);
 			}
 		}
 	}

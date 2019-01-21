@@ -1,6 +1,5 @@
 #pragma once
 #include "gameNode.h"
-#include "arrow.h"
 
 struct baleogPlayer
 {
@@ -43,13 +42,13 @@ private:
 	BALEOGSTATE _baleogState;
 	baleogPlayer _baleogPlayer;
 	
-	arrow* _arrow;
 	animation* _baleogMotion; //벨로그 모션 담아줄 빈 애니메이션
 
 	int _rndAttack;
 
 	bool _isLadderColision; //사다리 충돌했니
 	bool _arrowFireStop;
+	bool _isFire;
 
 public:
 	baleog();
@@ -63,7 +62,6 @@ public:
 	void keySetting(); //키셋팅
 	void arrowAttack(); //화살공격
 	void swordAttack(); //검공격
-	void arrowFire(); //모션이 취해질때 화살 발사할 함수
 
 	//콜백함수 불러올 함수
 	static void rightFire(void* obj);
@@ -82,8 +80,6 @@ public:
 	bool getLadderCollision() {return _isLadderColision;}
 	void setLadderCollision(bool collision) {_isLadderColision = collision;}
 
-	arrow* getArrow() {return _arrow;}
-
 	float getBaleogX() {return _baleogPlayer.x;}
 	float getBaleogY() {return _baleogPlayer.y;}
 
@@ -92,6 +88,6 @@ public:
 
 	float getSpeed() { return _baleogPlayer.speed; }
 
-	
+	void setIsFire(bool fire) { _isFire = fire; }
 };
 

@@ -17,7 +17,9 @@ struct tagArrow
 	float angle;
 	float fireX, fireY;
 	float radius;
+	float viewX, viewY;
 };
+
 class arrow : public gameNode
 {
 private:
@@ -38,7 +40,7 @@ public:
 	HRESULT init(const char* imageName, int arrowMax, float range);
 	void release();
 	void update();
-	void render();
+	void render(float viewX, float viewY);
 
 	void arrowFire(float x, float y, float speed, float angle);
 	void arrowMove();
@@ -47,6 +49,7 @@ public:
 	void setArrowState(ARROWSTATE state) { _arrowState = state; }
 
 	vector<tagArrow> getVArrow() { return _vArrow; }
+	vector<tagArrow>* getVArrowAddress() { return &_vArrow; }
 
 	float getArrowX()
 	{

@@ -19,13 +19,13 @@ HRESULT eric::init()
 	_eric_Y = WINSIZEY / 2;
 
 	_ericState = ERIC_RIGHT_STOP;
-	
+
 	_eric_rc = RectMakeCenter(_eric_X, _eric_Y, _ericImage->getFrameWidth(), _ericImage->getFrameHeight());
 
 	int rightStop[] = { 0,1 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightStop", "eric", rightStop, 2, 4, true);
 
-	int leftStop[] ={2,3};
+	int leftStop[] = { 2,3 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftStop", "eric", leftStop, 2, 4, true);
 
 	int rightMove[] = { 11,12,13,14,15,16,17,18 };
@@ -34,28 +34,28 @@ HRESULT eric::init()
 	int leftMove[] = { 29,28,27,26,25,24,23,22 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftMove", "eric", leftMove, 8, 10, true);
 
-	int rightDashArr[] = { 33, 34, 35, 36, 37, 38, 39, 40, 39, 38, 39, 40};
+	int rightDashArr[] = { 33, 34, 35, 36, 37, 38, 39, 40, 39, 38, 39, 40 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightDash", "eric", rightDashArr, 12, 10, false, rightDash, this);
 
 	int leftDashArr[] = { 51, 50, 49, 48, 47, 46, 45, 44, 45, 46, 45, 44 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftDash", "eric", leftDashArr, 12, 10, false, leftDash, this);
 
-	int rightJumpArr[] = {77, 78, 79, 80};
+	int rightJumpArr[] = { 77, 78, 79, 80 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightJump", "eric", rightJumpArr, 4, 5, false, rightJump, this);
 
-	int leftJumpArr[] = {84, 83, 82, 81};
+	int leftJumpArr[] = { 84, 83, 82, 81 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftJump", "eric", leftJumpArr, 4, 5, false, leftJump, this);
 
-	int upMove[] = {88, 89, 90, 91};
+	int upMove[] = { 88, 89, 90, 91 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "upMove", "eric", upMove, 4, 8, true);
 
-	int downMove[] = {91, 90, 89, 88};
+	int downMove[] = { 91, 90, 89, 88 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "downMove", "eric", downMove, 4, 8, true);
 
-	int rightPush[] = {121, 122, 123, 124, 125};
+	int rightPush[] = { 121, 122, 123, 124, 125 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightPush", "eric", rightPush, 5, 8, true);
 
-	int leftPush[] = {130, 129, 128, 127, 126};
+	int leftPush[] = { 130, 129, 128, 127, 126 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftPush", "eric", leftPush, 5, 8, true);
 
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
@@ -83,25 +83,25 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 	keySetting();
 	dashKeySetting();
 	//jumpKeySetting();
-	//if (_isJump == false)
-	//{
-	//	if (_ericState != ERIC_RIGHT_MOVE && (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_JUMP))
-	//	{
-	//		if (_motionTime + _motionWorldTime <= TIMEMANAGER->getWorldTime())
-	//		{
-	//			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
-	//			_motionWorldTime = TIMEMANAGER->getWorldTime();
-	//		}
-	//	}
-	//	if (_ericState != ERIC_LEFT_MOVE && (_ericState == ERIC_LEFT_STOP || _ericState == ERIC_LEFT_JUMP))
-	//	{
-	//		if (_motionTime + _motionWorldTime <= TIMEMANAGER->getWorldTime())
-	//		{
-	//			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftStop");
-	//			_motionWorldTime = TIMEMANAGER->getWorldTime();
-	//		}
-	//	}
-	//}
+	if (_isJump == false)
+	{
+		if (_ericState != ERIC_RIGHT_MOVE && (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_JUMP))
+		{
+			if (_motionTime + _motionWorldTime <= TIMEMANAGER->getWorldTime())
+			{
+				_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
+				_motionWorldTime = TIMEMANAGER->getWorldTime();
+			}
+		}
+		if (_ericState != ERIC_LEFT_MOVE && (_ericState == ERIC_LEFT_STOP || _ericState == ERIC_LEFT_JUMP))
+		{
+			if (_motionTime + _motionWorldTime <= TIMEMANAGER->getWorldTime())
+			{
+				_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftStop");
+				_motionWorldTime = TIMEMANAGER->getWorldTime();
+			}
+		}
+	}
 
 	//가속도 주기위함
 	if (_ericState == ERIC_RIGHT_MOVE)
@@ -149,8 +149,13 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 		}
 		break;
 	case ERIC_LEFT_DASH:
-		if(KEYMANAGER->isStayKeyDown(VK_RIGHT))
-		*x -= _speed;
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			_ericState = ERIC_RIGHT_MOVE;
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
+			_ericMotion->start();
+		}
+
 		break;
 	}
 

@@ -4,7 +4,7 @@
 #include "olaf.h"
 #include "eric.h"
 #include "camera.h"
-
+#include "arrow.h"
 
 enum Character
 {
@@ -27,6 +27,7 @@ private:
 	baleog* _baleog;
 	eric* _eric;
 	olaf* _olaf;
+	arrow* _arrow;
 
 	float _x[3];
 	float _y[3];
@@ -53,6 +54,7 @@ private:
 
 	int _attckCount;
 	bool _isAttack;
+	bool _isArrowFireStop;
 
 public:
 	playerManager();
@@ -77,11 +79,11 @@ public:
 	//중력
 	void jumpGravity(int select);
 
+	//벨로그 화살
+	void baleogArrow();
+
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 	void getItemLinkAddress(item* item) { _item = item; }
-
-
-
 
 	float getEricX() { return _x[ERIC]; };
 	float getEricY() { return _y[ERIC]; }
