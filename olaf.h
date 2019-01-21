@@ -29,7 +29,6 @@ private:
 	float _olaf_x, _olaf_y;
 	RECT _olaf_rc;
 	float _speed;
-	string _olafName;
 
 	bool _changeMode;
 	int num;
