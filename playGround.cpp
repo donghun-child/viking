@@ -23,6 +23,8 @@ HRESULT playGround::init()
 
 	SCENEMANAGER->changeScene("stage1");
 
+	_sound = new sound;
+	_sound->init();
 	
 	return S_OK;
 }
