@@ -20,11 +20,16 @@ class stage1 : public gameNode
 private:
 	playerManager* _playerManager;
 	item* _item;
+	item* _bubble;
 	ui* _ui;
 
 	bool _isPixel;
 	bool _uiChange;
 
+	float _bubbleTime;
+	float _worldTime;
+	int _bubbleFrameTime;
+	int _bubbleRemoveTime;
 
 public:
 	stage1();
@@ -37,7 +42,7 @@ public:
 
 	void viewPixel();
 	
-
+	void createBubble();
 
 
 };
