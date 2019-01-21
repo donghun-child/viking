@@ -87,5 +87,8 @@ public:
 
 	camera* getCamera() { return _camera; }
 
+	Character getChoice() {return _choice;}
+	void setChoice(Character choice) {_choice = choice;}
+
 };
 

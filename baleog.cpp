@@ -68,11 +68,6 @@ HRESULT baleog::init()
 	_arrowFireStop = false;
 	_isLadderColision = false;
 
-	//벨로그 모션 사운드
-	SOUNDMANAGER->addSound("arrow", "sound/baleog_Arrow.mp3", true, false);
-	SOUNDMANAGER->addSound("arrowPull", "sound/baleog_ArrowPull.mp3", true, false);
-	SOUNDMANAGER->addSound("attack", "sound/baleog_Attack.mp3", true, false);
-	SOUNDMANAGER->addSound("attack2", "sound/baleog_Attack2.mp3", true, false);
 
 	return S_OK;
 }
@@ -112,8 +107,6 @@ void baleog::update(float viewX, float viewY, float* x, float* y)
 	//	break;
 	//}
 
-	_arrow->update();
-
 	_baleogPlayer.baleogRc = RectMakeCenter(_baleogPlayer.x, _baleogPlayer.y, _baleogPlayer.baleogImage->getFrameWidth(), _baleogPlayer.baleogImage->getFrameHeight());
 
 	KEYANIMANAGER->update();
@@ -122,15 +115,15 @@ void baleog::update(float viewX, float viewY, float* x, float* y)
 
 void baleog::render(float viewX, float viewY)
 {
-	char str[128];
-	sprintf_s(str, "벨로그 상태 : %d", _baleogState);
-	TextOut(getMemDC(), 100, 100, str, strlen(str));
+	//char str[128];
+	//sprintf_s(str, "벨로그 상태 : %d", _baleogState);
+	//TextOut(getMemDC(), 100, 100, str, strlen(str));
 
-	sprintf_s(str, "벨로그 스피드 : %d", _baleogPlayer.speed);
-	TextOut(getMemDC(), 100, 120, str, strlen(str));
+	//sprintf_s(str, "벨로그 스피드 : %d", _baleogPlayer.speed);
+	//TextOut(getMemDC(), 100, 120, str, strlen(str));
 
-	sprintf_s(str, "프레임이미지 x좌표 : %d", _baleogMotion->getFramePos().x);
-	TextOut(getMemDC(), 100, 140, str, strlen(str));
+	//sprintf_s(str, "프레임이미지 x좌표 : %d", _baleogMotion->getFramePos().x);
+	//TextOut(getMemDC(), 100, 140, str, strlen(str));
 
 	_baleogPlayer.baleogImage->aniRender(getMemDC(), viewX, viewY, _baleogMotion);
 	_arrow->render();
@@ -198,7 +191,7 @@ void baleog::arrowAttack()
 	{
 		if (KEYMANAGER->isOnceKeyDown('S') && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 		{
-			SOUNDMANAGER->play("arrow");
+			SOUNDMANAGER->play("baleog_Arrow");
 			if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
 			{
 				_baleogState = BALEOG_RIGHT_ARROW_ATTACK;
@@ -251,14 +244,14 @@ void baleog::swordAttack()
 				_baleogState = BALEOG_RIGHT_SWORD_ATTACK_ONE;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightSwordAttackOne");
 				_baleogMotion->start();
-				SOUNDMANAGER->play("attack");
+				SOUNDMANAGER->play("baleog_Attack");
 			}
 			else if (_rndAttack == 1)
 			{
 				_baleogState = BALEOG_RIGHT_SWORD_ATTACK_TWO;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightSwordAttackTwo");
 				_baleogMotion->start();
-				SOUNDMANAGER->play("attack2");
+				SOUNDMANAGER->play("baleog_Attack2");
 			}
 		}
 		else if (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE)
@@ -268,14 +261,14 @@ void baleog::swordAttack()
 				_baleogState = BALEOG_LEFT_SWORD_ATTACK_ONE;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftSwordAttackOne");
 				_baleogMotion->start();
-				SOUNDMANAGER->play("attack", 1.0f);
+				SOUNDMANAGER->play("baleog_Attack");
 			}
 			else if (_rndAttack == 1)
 			{
 				_baleogState = BALEOG_LEFT_SWORD_ATTACK_TWO;
 				_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftSwordAttackTwo");
 				_baleogMotion->start();
-				SOUNDMANAGER->play("attack2", 1.0f);
+				SOUNDMANAGER->play("baleog_Attack2");
 			}
 		}
 	}
@@ -287,7 +280,7 @@ void baleog::arrowFire()
 	{
 		if (_baleogMotion->getFramePos().x == 750)
 		{
-			SOUNDMANAGER->play("arrowPull");
+			SOUNDMANAGER->play("baleog_ArrowPull");
 			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI2);
 			_arrow->setArrowState(ARROW_RIGHT_FIRE);
 			_baleogMotion->resume();
@@ -297,12 +290,13 @@ void baleog::arrowFire()
 	{
 		if (_baleogMotion->getFramePos().x == 300)
 		{
-			SOUNDMANAGER->play("arrowPull");
+			SOUNDMANAGER->play("baleog_ArrowPull");
 			_arrow->arrowFire(_baleogPlayer.x, _baleogPlayer.y, 10, PI);
 			_arrow->setArrowState(ARROW_LEFT_FIRE);
 			_baleogMotion->resume();
 		}
 	}
+
 }
 
 void baleog::rightFire(void* obj)

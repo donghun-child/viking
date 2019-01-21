@@ -1,6 +1,5 @@
 #pragma once
 #include "gameNode.h"
-#include "jump.h"
 
 enum ERICSTATE
 {
@@ -30,8 +29,7 @@ private:
 	animation* _ericMotion; //에릭 모션
 	ERICSTATE _ericState; //에릭상태
 	bool _isLadderCollision; //사다리 충돌했니
-
-	jump* _ericJump;
+	bool _isJump;
 
 public:
 	eric();
@@ -61,5 +59,7 @@ public:
 	float getplayerY() { return _eric_Y; }
 
 	float getSpeed() { return _speed; }
+
+	void setIsJumpMotion(bool jump) {_isJump = jump;}
 };
 

@@ -80,7 +80,7 @@ public:
 	bool getLadderCollision() {return _isLadderColision;}
 	void setLadderCollision(bool collision) {_isLadderColision = collision;}
 
-	image* getBaleogImage() {return _baleogPlayer.baleogImage;}
+	arrow* getArrow() {return _arrow;}
 
 	float getBaleogX() {return _baleogPlayer.x;}
 	float getBaleogY() {return _baleogPlayer.y;}
@@ -89,5 +89,7 @@ public:
 	void setBaleogY(float y) {_baleogPlayer.y = y;}
 
 	float getSpeed() { return _baleogPlayer.speed; }
+
+	
 };
 

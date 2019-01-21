@@ -122,6 +122,8 @@ void playerManager::update()
 		_olaf->update(_viewX[OLAF] + 50, _viewY[OLAF] + 50, &_x[OLAF], &_y[OLAF]);
 	}
 
+	//밸로그가 카메라 전환해도 화살은 독립적으로 계속 나가기 위함.
+	_baleog->getArrow()->update();
 }
 
 void playerManager::render()
@@ -171,7 +173,7 @@ void playerManager::characterMove()
 {
 	if (_camera->getChange() == false)
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO)
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK)
 		{
 			if (_choice == ERIC)
 			{
@@ -186,7 +188,7 @@ void playerManager::characterMove()
 				_x[OLAF] -= _olaf->getSpeed();
 			}
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO)
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK)
 		{
 			if (_choice == ERIC)
 			{
@@ -233,6 +235,7 @@ void playerManager::characterMove()
 			}
 		}
 	}
+	//카메라 체인지 도중이면
 	else if (_camera->getChange() == true)
 	{
 		if (_choice == ERIC)
@@ -361,6 +364,7 @@ void playerManager::pixelCollisionGreen()
 				{
 					_y[ERIC] = i - 100;
 					_jumpNum = 1;
+					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
 
 					break;
 				}

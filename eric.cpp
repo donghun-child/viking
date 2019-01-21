@@ -59,18 +59,15 @@ HRESULT eric::init()
 
 	_speed = 0;
 	_acceleration = 0;
-	_ericJump = new jump;
-	_ericJump->init();
 	_isLadderCollision = false;
-
-	SOUNDMANAGER->addSound("jump", "sound/eric_Jump.mp3", true, false);
+	_isJump = false;
 
 	return S_OK;
 }
 
 void eric::release()
 {
-	SAFE_DELETE(_ericJump);
+
 }
 
 void eric::update(float viewX, float viewY, float* x, float* y)
@@ -81,7 +78,6 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 	keySetting();
 	dashKeySetting();
 	//jumpKeySetting();
-	//_ericJump->update();
 
 	//가속도 주기위함
 	if (_ericState == ERIC_RIGHT_MOVE)
@@ -156,12 +152,20 @@ void eric::render(float viewX, float viewY)
 }
 void eric::keySetting()
 {
+	//점프상태고 오른쪽 눌러도 점프모션 띄우기위함.
+
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH)
 	{
 		_speed = 0;
 		_ericState = ERIC_RIGHT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
+		if (_isJump == true && _ericState == ERIC_RIGHT_MOVE)
+		{
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightJump");
+			_ericMotion->start();
+		}
+
 	}
 	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
@@ -169,6 +173,10 @@ void eric::keySetting()
 		_ericState = ERIC_RIGHT_STOP;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 		_ericMotion->start();
+		if (_isJump == true)
+		{
+			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightJump");
+		}
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH)
@@ -216,7 +224,8 @@ void eric::jumpKeySetting()
 {
 	if (!(_ericState == ERIC_RIGHT_DASH) && !(_ericState == ERIC_LEFT_DASH))
 	{
-		SOUNDMANAGER->play("jump");
+		SOUNDMANAGER->play("eric_Jump");
+		_isJump = true;
 		if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE)
 		{
 			_ericState = ERIC_RIGHT_JUMP;
