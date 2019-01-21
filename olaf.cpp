@@ -91,7 +91,7 @@ void olaf::update(float viewX, float viewY, float* x, float* y)
 
 void olaf::render(float viewX, float viewY)
 {
-	_olafimg->aniRender(getMemDC(), viewX+ 20, viewY - 10, _olafMotion);
+	_olafimg->aniRender(getMemDC(), viewX + 20, viewY - 10, _olafMotion);
 
 	char str[128];
 	sprintf_s(str, "상태확인 : %d    확인용 : %f", _olafDirection, _olaf_x);

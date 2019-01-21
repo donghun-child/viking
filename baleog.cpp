@@ -145,7 +145,7 @@ void baleog::render(float viewX, float viewY)
 	//sprintf_s(str, "프레임이미지 x좌표 : %d", _baleogMotion->getFramePos().x);
 	//TextOut(getMemDC(), 100, 140, str, strlen(str));
 
-	_baleogPlayer.baleogImage->aniRender(getMemDC(), viewX, viewY, _baleogMotion);
+	_baleogPlayer.baleogImage->aniRender(getMemDC(), viewX + 10, viewY, _baleogMotion);
 	_arrow->render();
 }
 

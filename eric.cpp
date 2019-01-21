@@ -190,7 +190,7 @@ void eric::render(float viewX, float viewY)
 	//sprintf_s(str, "에릭 속도 : %f ", _speed);
 	//TextOut(getMemDC(), 200, 630, str, strlen(str));
 
-	_ericImage->aniRender(getMemDC(), viewX, viewY, _ericMotion);
+	_ericImage->aniRender(getMemDC(), viewX + 10, viewY, _ericMotion);
 }
 void eric::keySetting()
 {

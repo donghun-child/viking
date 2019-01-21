@@ -171,7 +171,7 @@ void playerManager::render()
 		}
 	}
 
-	Rectangle(getMemDC(), _camerc);
+//	Rectangle(getMemDC(), _camerc);
 	_camera->render();
 	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
@@ -443,9 +443,8 @@ void playerManager::pixelCollisionGreen()
 				if (r == 0 && g == 255 && b == 0)
 				{
 					_y[OLAF] = i - 100;
-					//_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY);
-					//_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafShieldUpRightGravity"));
-					//_olaf->getOlafMotion()->start();
+						
+					
 					break;
 				}
 			}
@@ -470,7 +469,18 @@ void playerManager::pixelCollisionYellow()
 			if (r == 255 && g == 255 && b == 0)
 			{
 				_x[ERIC] = i;
-
+				if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+				{
+					_eric->setEricState(ERIC_LEFT_WALL_PUSH);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftPush"));
+					_eric->getEricMotion()->start();
+				}
+				else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
+				{
+					_eric->setEricState(ERIC_LEFT_STOP);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+					_eric->getEricMotion()->start();
+				}
 				break;
 			}
 		}
@@ -489,7 +499,18 @@ void playerManager::pixelCollisionYellow()
 			if (r == 255 && g == 255 && b == 0)
 			{
 				_x[BALEOG] = i;
-
+				if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+				{
+					_baleog->setBaleogState(BALEOG_LEFT_WALL_PUSH);
+					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftPush"));
+					_baleog->getBaleogMotion()->start();
+				}
+				else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
+				{
+					_baleog->setBaleogState(BALEOG_LEFT_STOP);
+					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
+					_baleog->getBaleogMotion()->start();
+				}
 				break;
 			}
 		}
@@ -509,6 +530,18 @@ void playerManager::pixelCollisionYellow()
 			{
 				_x[OLAF] = i;
 
+				if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+				{
+					_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_WALL_PUSH);
+					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftPush"));
+					_olaf->getOlafMotion()->start();
+				}
+				else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
+				{
+					_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
+					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
+					_olaf->getOlafMotion()->start();
+				}
 			
 				break;
 			}
@@ -534,6 +567,18 @@ void playerManager::pixelCollisionEmerald()
 			{
 				_x[ERIC] = i - 100;
 
+				if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+				{
+					_eric->setEricState(ERIC_RIGHT_WALL_PUSH);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightPush"));
+					_eric->getEricMotion()->start();
+				}
+				else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+				{
+					_eric->setEricState(ERIC_RIGHT_STOP);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+					_eric->getEricMotion()->start();
+				}
 				break;
 			}
 		}
@@ -552,6 +597,19 @@ void playerManager::pixelCollisionEmerald()
 			if (r == 0 && g == 255 && b == 255)
 			{
 				_x[BALEOG] = i - 100;
+
+				if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+				{
+					_baleog->setBaleogState(BALEOG_RIGHT_WALL_PUSH);
+					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightPush"));
+					_baleog->getBaleogMotion()->start();
+				}
+				else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+				{
+					_baleog->setBaleogState(BALEOG_RIGHT_STOP);
+					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop"));
+					_baleog->getBaleogMotion()->start();
+				}
 
 				break;
 			}
