@@ -23,6 +23,9 @@ HRESULT stage1::init()
 	_item = new item;
 	_item->getPlayerManagerLinkAddress(_playerManager);
 
+	_ui = new ui;
+	_ui->init();
+
 	//아이템 만들거면 크리에이트 아이템 한후 
 	//좌표 입력후    무슨아이템인지 이넘문   그다음칸은 프레임Y입력
 	//_item->createItem("item", 500,200, REDKEY, 0);
