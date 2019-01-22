@@ -105,6 +105,7 @@ void ui::update(int choice, bool uiChange)
 	{
 		_ericCursor = _baleogCursor = _olafCursor = false;
 		_fKeyMod = false;
+		_deleteItemFrameX = 7;
 	}
 }
 
@@ -200,6 +201,7 @@ void ui::keyControl(int choice)
 				{
 					_deleteItemFrameX = 7;
 					_fKeyMod = false;
+					_itemMove = 0;
 				}
 			}
 		}
