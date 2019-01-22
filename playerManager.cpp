@@ -698,8 +698,9 @@ void playerManager::pixelCollisionEmerald()
 			if (r == 0 && g == 255 && b == 255)
 			{
 				_x[ERIC] = i - 100;
+				_wallcheck++;
 
-				if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+				if (_wallcheck < 5)
 				{
 					_eric->setEricState(ERIC_RIGHT_WALL_PUSH);
 					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightPush"));
@@ -710,6 +711,7 @@ void playerManager::pixelCollisionEmerald()
 					_eric->setEricState(ERIC_RIGHT_STOP);
 					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
 					_eric->getEricMotion()->start();
+					_wallcheck = 0;
 				}
 				break;
 			}

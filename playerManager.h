@@ -69,6 +69,7 @@ private:
 	bool _gravityStop;
 
 	int _ladderChoice;
+	int _wallcheck;
 
 public:
 	playerManager();
