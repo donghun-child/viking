@@ -138,9 +138,9 @@ void stage1::render()
 	_bubble->render();
 	_ui->render();
 
-	//char str[100];
-	//sprintf_s(str, "플레이어 x : %d", _playerManager->getChoice());
-	//TextOut(getMemDC(), 300, 30, str, strlen(str));
+	char str[100];
+	sprintf_s(str, "플레이어 x : %d", _currentFrameX);
+	TextOut(getMemDC(), 300, 30, str, strlen(str));
 	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
 	//TextOut(getMemDC(), 300, 40, str, strlen(str));
 	//sprintf_s(str, "카메라 X : %f", _playerManager->getCamera()->getCameraX());
@@ -222,21 +222,21 @@ void stage1::itemCollision()
 		{
 			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
 			(*_redKey->getVItemAddress())[i].isLive = false;
-
+			_ui->setEricFrameX(_currentFrameX);
 		}
 		//벨로그
 		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
 		{
 			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
 			(*_redKey->getVItemAddress())[i].isLive = false;
-
+			
 		}
 		//올라프
 		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
 		{
 			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
 			(*_redKey->getVItemAddress())[i].isLive = false;
-
+			
 		}
 	}
 	//레드자물쇠 충돌

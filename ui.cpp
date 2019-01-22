@@ -38,12 +38,14 @@ HRESULT ui::init()
 	_baleogBox_Y = 671;
 	_olafBox_X = 751; 
 	_olafBox_Y = 671;
+
+	_setEricFrameX = _setBaleogFrameX = _setOlafFrameX = 0;
 	
 	for(int i = 0; i < 4; i++)
 	{ 
-		_ericItemFrameX[i] = 1, _ericItemFrameY[i] = 0;
-		_baleogItemFrameX[i] = 5, _baleogItemFrameY[i] = 0;
-		_olafItemFrameX[i] = 3, _olafItemFrameY[i] = 0;
+		_ericItemFrameX[i] = 0, _ericItemFrameY[i] = 0;
+		_baleogItemFrameX[i] = 0, _baleogItemFrameY[i] = 0;
+		_olafItemFrameX[i] = 0, _olafItemFrameY[i] = 0;
 	}
 
 	_fKeyMod = false;
@@ -68,6 +70,7 @@ void ui::update(int choice, bool uiChange)
 	vikingItemNumber(_choice);
 	if (uiChange)
 	{
+		uiEricItemSave();
 		keyControl(_choice);									//커서 움직임 키값
 
 		if (!_fKeyMod)
@@ -124,7 +127,7 @@ void ui::render()
 	}
 	uiItemRender();
 	char str[128];
-	sprintf_s(str, "에릭템번 : %d", _ericItemNumber);
+	sprintf_s(str, "아이템 : %d", _setEricFrameX);
 	TextOut(getMemDC(), 500, 100, str, strlen(str));
 	sprintf_s(str, "벨로그템번 : %d", _baleogItemNumber);
 	TextOut(getMemDC(), 600, 100, str, strlen(str));
@@ -397,9 +400,18 @@ void ui::keyControl(int choice)
 	}
 }
 
-void ui::uiItemSave(int itemFrameX)
+void ui::uiEricItemSave()
 {
+	_ericItemFrameX[0] = _setEricFrameX + 1;
+}
+void ui::uiBaleogItemSave()
+{
+	_baleogItemFrameX[0];
+}
 
+void ui::uiOlafItemSave()
+{
+	_olafItemFrameX[0];
 }
 
 void ui::uiItemRender()

@@ -19,6 +19,7 @@ private:
 	int _olafItemFrameX[4], _olafItemFrameY[4];
 	int _deleteItemFrameX;
 	int _saveFrameX, _itemMove;
+	int _setEricFrameX, _setBaleogFrameX, _setOlafFrameX;
 
 	bool _ericCursor, _baleogCursor, _olafCursor;	//커서 깜빡임
 	bool _fKeyMod;
@@ -37,7 +38,9 @@ public:
 	void render();
 	void profileUpdate(int choice);					//프로필 이미지 변경할 때
 	void keyControl(int choice);
-	void uiItemSave(int itemFrameX);
+	void uiEricItemSave();
+	void uiBaleogItemSave();
+	void uiOlafItemSave();
 	void uiItemRender();
 	void vikingItemNumber(int choice);
 
@@ -49,5 +52,9 @@ public:
 	int getEricItemNumber() { return _ericItemNumber;  }
 	int getBaleogItemNumber() { return _baleogItemNumber; }
 	int getOlafItemNumber() { return _olafItemNumber; }
+
+	void setEricFrameX(int currentFrameX) { _setEricFrameX = currentFrameX;}
+	void setBaleogFrameX(int currentFrameX) { _setBaleogFrameX = currentFrameX; }
+	void setOlafFrameX(int currentFrameX) { _setOlafFrameX = currentFrameX; }
 };
 
