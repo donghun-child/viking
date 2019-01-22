@@ -62,7 +62,10 @@ private:
 
 	bool _isArrowFireStop;
 
+	bool _isGravity;
+
 	bool _isCameraMode;
+	bool _isLadderCollision;
 
 public:
 	playerManager();
@@ -121,6 +124,7 @@ public:
 	RECT getBaleogRect() { return _rc[BALEOG]; }
 	RECT getOlafRect() { return _rc[OLAF]; }
 
+	void setGravity(bool gravity) {_isGravity = gravity;}
 
 };
 

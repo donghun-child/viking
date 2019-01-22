@@ -135,10 +135,10 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 	switch (_ericState)
 	{
 	case ERIC_UP_MOVE:
-		*y -= 7;
+		//*y -= 7;
 		break;
 	case ERIC_DOWN_MOVE:
-		*y += 7;
+		//*y += 7;
 		break;
 	case ERIC_RIGHT_DASH:
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
@@ -155,7 +155,6 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 			_ericMotion->start();
 		}
-
 		break;
 	}
 
@@ -179,15 +178,14 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 void eric::render(float viewX, float viewY)
 {
 	char str[128];
-	sprintf_s(str, "_motionTime : %f ", _motionTime);
+	sprintf_s(str, "에릭좌표 : %f ", _eric_X);
 	TextOut(getMemDC(), 200, 100, str, strlen(str));
 
 	sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-
-	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	//TextOut(getMemDC(), 200, 590, str, strlen(str));
+	sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	TextOut(getMemDC(), 200, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
@@ -253,7 +251,7 @@ void eric::keySetting()
 	}
 
 	//사다리 충돌했을경우만 위아래 움직이게함.
-	if (_isLadderCollision == true)
+	//if (_isLadderCollision == true)
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP))
 		{
