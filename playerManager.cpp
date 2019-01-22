@@ -299,8 +299,14 @@ void playerManager::render()
 	//sprintf_s(str, "_deadTime : %d", _deadTime);
 	//TextOut(getMemDC(), 300, 200, str, strlen(str));
 
-	//sprintf_s(str, "_isDead : %d", _isDead);
-	//TextOut(getMemDC(), 300, 220, str, strlen(str));
+	sprintf_s(str, "_isDead[ERIC] : %d", _isDead[ERIC]);
+	TextOut(getMemDC(), 300, 220, str, strlen(str));
+
+	sprintf_s(str, "_isDead[BALEOG] : %d", _isDead[BALEOG]);
+	TextOut(getMemDC(), 300, 240, str, strlen(str));
+
+	sprintf_s(str, "_isDead[OLAF] : %d", _isDead[OLAF]);
+	TextOut(getMemDC(), 300, 260, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -480,13 +486,13 @@ void playerManager::characterChange()
 	{
 		if (_choice == ERIC)
 		{
-			//if (_isDead == false)
+			if (_isDead[ERIC] == false)
 			{
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
 			}
-			//else
+			else if (_isDead[ERIC] == true)
 			{
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
@@ -495,13 +501,13 @@ void playerManager::characterChange()
 		}
 		else if (_choice == BALEOG)
 		{
-			//if (_isDead == false)
+			if (_isDead[BALEOG] == false)
 			{
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
 				SOUNDMANAGER->play("UI_BaleogPic");
 			}
-			//else
+			else
 			{
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
@@ -511,13 +517,13 @@ void playerManager::characterChange()
 		}
 		else if (_choice == OLAF)
 		{
-			//if (_isDead == false)
+			if (_isDead[OLAF] == false)
 			{
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
 				SOUNDMANAGER->play("UI_OlafPic");
 			}
-			//else
+			else
 			{
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
@@ -611,40 +617,34 @@ void playerManager::ladderCollision()
 
 void playerManager::deadZoneCollision()
 {
-
-	//if (_isDead == true)
+	if (_deadTime > 70)
 	{
-		if (_deadTime > 70)
+		if (_choice == ERIC)
 		{
-			if (_choice == ERIC)
-			{
-				_deadTime = 0;
-				//_isDead = false;
-				_choice = BALEOG;
-				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
-				SOUNDMANAGER->play("UI_EricPic");
+			_deadTime = 0;
+			_choice = BALEOG;
+			_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+			SOUNDMANAGER->play("UI_EricPic");
 
-			}
-			else if (_choice == BALEOG)
-			{
-				_deadTime = 0;
-				//_isDead = false;
-				_choice = OLAF;
-				_camera->cameraChange(_x[OLAF], _y[OLAF]);
-				SOUNDMANAGER->play("UI_BaleogPic");
+		}
+		else if (_choice == BALEOG)
+		{
+			_deadTime = 0;
+			_choice = OLAF;
+			_camera->cameraChange(_x[OLAF], _y[OLAF]);
+			SOUNDMANAGER->play("UI_BaleogPic");
 
-			}
-			else if (_choice == OLAF)
-			{
-				_deadTime = 0;
-				//_isDead = false;
-				_choice = ERIC;
-				_camera->cameraChange(_x[ERIC], _y[ERIC]);
-				SOUNDMANAGER->play("UI_OlafPic");
+		}
+		else if (_choice == OLAF)
+		{
+			_deadTime = 0;
+			_choice = ERIC;
+			_camera->cameraChange(_x[ERIC], _y[ERIC]);
+			SOUNDMANAGER->play("UI_OlafPic");
 
-			}
 		}
 	}
+	
 	RECT temp;
 	for (int i = 0; i < 3; i++)
 	{

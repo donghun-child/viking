@@ -336,6 +336,9 @@ void stage1::itemCollision()
 					_bottomTum = (_playerManager->getEricRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom - 50);
 
 					_playerManager->setEricY(_playerManager->getEricY() - _bottomTum);
+					_playerManager->getEric()->setIsJumpMotion(false);
+					_playerManager->setJumpNum(1);
+
 				}
 			}
 		}

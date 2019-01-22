@@ -140,5 +140,7 @@ public:
 
 	void setGravity(bool gravity) {_isGravity = gravity;}
 
+	eric* getEric() {return _eric;}
+	void setJumpNum(int jumpNum) {_jumpNum = jumpNum;}
 };
 
