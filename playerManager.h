@@ -73,9 +73,10 @@ private:
 	int _ladderChoice;
 	int _wallcheck;
 
-	int _deadTime, _deadWorldTime;
+	int _deadTime;
 	float _deadTum;
 	bool _isDead;
+	int _moveTime, _moveWorldTime;
 
 public:
 	playerManager();

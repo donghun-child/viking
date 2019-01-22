@@ -212,7 +212,7 @@ void baleog::arrowAttack()
 	//화살공격
 	if (_isFire == true && (_baleogState == BALEOG_LEFT_STOP || _baleogState == BALEOG_LEFT_MOVE || _baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE))
 	{
-		SOUNDMANAGER->play("baleog_Arrow");
+		SOUNDMANAGER->play("baleog_ArrowPull");
 		if (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_RIGHT_MOVE)
 		{
 			_baleogState = BALEOG_RIGHT_ARROW_ATTACK;

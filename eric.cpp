@@ -190,8 +190,8 @@ void eric::render(float viewX, float viewY)
 	//sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	//TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	//TextOut(getMemDC(), 200, 140, str, strlen(str));
+	sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	TextOut(getMemDC(), 600, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
@@ -212,6 +212,7 @@ void eric::keySetting()
 		//점프상태에서 오른쪽키 눌러도 점프모션 나오기 위함.
 		if (_isJump == true && _ericState == ERIC_RIGHT_MOVE)
 		{
+			_ericState = ERIC_RIGHT_JUMP;
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightJump");
 			_ericMotion->start();
 		}
@@ -239,6 +240,7 @@ void eric::keySetting()
 		//점프상태에서 왼쪽키 눌러도 점프모션 나오기 위함.
 		if (_isJump == true && _ericState == ERIC_LEFT_MOVE)
 		{
+			_ericState = ERIC_LEFT_JUMP;
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftJump");
 			_ericMotion->start();
 		}

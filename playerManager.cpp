@@ -118,7 +118,8 @@ HRESULT playerManager::init()
 	_isLadderCollision = false;
 
 	_deadTime = 0;
-	_deadWorldTime = TIMEMANAGER->getWorldTime();
+	_moveWorldTime = TIMEMANAGER->getWorldTime();
+	_moveTime = 1.0f;
 
 	return S_OK;
 }
@@ -297,6 +298,9 @@ void playerManager::render()
 	TextOut(getMemDC(), 300, 180, str, strlen(str));
 	sprintf_s(str, "_deadTime : %d", _deadTime);
 	TextOut(getMemDC(), 300, 200, str, strlen(str));
+
+	sprintf_s(str, "_isDead : %d", _isDead);
+	TextOut(getMemDC(), 300, 220, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -338,6 +342,7 @@ void playerManager::characterMove()
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK)
 		{
+			SOUNDMANAGER->play("viking_Movement");
 			if (_choice == ERIC)
 			{
 				_x[ERIC] -= _eric->getSpeed();
@@ -353,6 +358,7 @@ void playerManager::characterMove()
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK)
 		{
+			SOUNDMANAGER->play("viking_Movement");
 			if (_choice == ERIC)
 			{
 				_x[ERIC] += _eric->getSpeed();
@@ -604,27 +610,30 @@ void playerManager::deadZoneCollision()
 		{
 			if (_choice == ERIC)
 			{
+				_deadTime = 0;
+				_isDead = false;
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
-				_deadTime = 0;
-				_isDead = false;
+
 			}
 			else if (_choice == BALEOG)
 			{
+				_deadTime = 0;
+				_isDead = false;
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
 				SOUNDMANAGER->play("UI_BaleogPic");
-				_deadTime = 0;
-				_isDead = false;
+
 			}
 			else if (_choice == OLAF)
 			{
+				_deadTime = 0;
+				_isDead = false;
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
 				SOUNDMANAGER->play("UI_OlafPic");
-				_deadTime = 0;
-				_isDead = false;
+
 			}
 		}
 	}
@@ -637,11 +646,11 @@ void playerManager::deadZoneCollision()
 			{
 				if (_choice == ERIC)
 				{
-					if (_deadZone[j].rc.top < _rc[i].bottom)
+					if (_deadZone[j].rc.top < _rc[_choice].bottom)
 					{
 						_deadTime++;
 						_isDead = true;
-						_deadTum = _rc[i].bottom - _deadZone[j].rc.top;
+						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[ERIC] = _y[ERIC] - _deadTum;
 
 						if (_eric->getEricState() == ERIC_RIGHT_MOVE || _eric->getEricState() == ERIC_RIGHT_STOP)
@@ -660,11 +669,11 @@ void playerManager::deadZoneCollision()
 				}
 				else if (_choice == BALEOG)
 				{
-					if (_deadZone[j].rc.top < _rc[i].bottom)
+					if (_deadZone[j].rc.top < _rc[_choice].bottom)
 					{
 						_deadTime++;
 						_isDead = true;
-						_deadTum = _rc[i].bottom - _deadZone[j].rc.top;
+						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[BALEOG] = _y[BALEOG] - _deadTum;
 
 						if (_baleog->getBaleogState() == BALEOG_RIGHT_MOVE || _baleog->getBaleogState() == BALEOG_RIGHT_STOP)
@@ -683,11 +692,11 @@ void playerManager::deadZoneCollision()
 				}
 				else if (_choice == OLAF)
 				{
-					if (_deadZone[j].rc.top < _rc[i].bottom)
+					if (_deadZone[j].rc.top < _rc[_choice].bottom)
 					{
 						_deadTime++;
 						_isDead = true;
-						_deadTum = _rc[i].bottom - _deadZone[j].rc.top;
+						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[OLAF] = _y[OLAF] - _deadTum;
 
 						if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_STOP)
@@ -782,7 +791,7 @@ void playerManager::pixelCollisionYellow()
 	//if (select == 1)
 	{
 		//에릭
-		for (int i = _prove_X[ERIC] - 40; i > _prove_X[ERIC] - 50; --i)
+		for (int i = _prove_X[ERIC] - 30; i > _prove_X[ERIC] - 50; --i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[ERIC] - 50);
 
@@ -812,7 +821,7 @@ void playerManager::pixelCollisionYellow()
 	//else if (select == 2)
 	{
 		//벨로그
-		for (int i = _prove_X[BALEOG] - 40; i > _prove_X[BALEOG] - 50; --i)
+		for (int i = _prove_X[BALEOG] - 30; i > _prove_X[BALEOG] - 50; --i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[BALEOG] - 50);
 
@@ -842,7 +851,7 @@ void playerManager::pixelCollisionYellow()
 	//else if (select == 3)
 	{
 		//올라프
-		for (int i = _prove_X[OLAF] - 40; i > _prove_X[OLAF] - 50; --i)
+		for (int i = _prove_X[OLAF] - 30; i > _prove_X[OLAF] - 50; --i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[OLAF] - 50);
 
@@ -879,7 +888,7 @@ void playerManager::pixelCollisionEmerald()
 	//if (select == 1)
 	{
 		//에릭
-		for (int i = _prove_X[ERIC] + 45; i < _prove_X[ERIC] + 50; ++i)
+		for (int i = _prove_X[ERIC] + 30; i < _prove_X[ERIC] + 50; ++i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[ERIC] - 50);
 
@@ -915,7 +924,7 @@ void playerManager::pixelCollisionEmerald()
 	//else if (select == 2)
 	{
 		//벨로그
-		for (int i = _prove_X[BALEOG] + 45; i < _prove_X[BALEOG] + 50; ++i)
+		for (int i = _prove_X[BALEOG] + 30; i < _prove_X[BALEOG] + 50; ++i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[BALEOG] - 50);
 
@@ -947,7 +956,7 @@ void playerManager::pixelCollisionEmerald()
 	//else if (select == 3)
 	{
 		//올라프
-		for (int i = _prove_X[OLAF] + 45; i < _prove_X[OLAF] + 50; ++i)
+		for (int i = _prove_X[OLAF] + 30; i < _prove_X[OLAF] + 50; ++i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel")->getMemDC(), i, _prove_Y[OLAF] - 50);
 
@@ -1078,8 +1087,8 @@ void playerManager::baleogArrow()
 		{
 			if (_baleog->getBaleogMotion()->getFramePos().x == 750)
 			{
-				SOUNDMANAGER->play("baleog_ArrowPull");
-				_arrow->arrowFire(_x[BALEOG], _y[BALEOG] + 50, 5, PI2);
+				SOUNDMANAGER->play("baleog_Arrow");
+				_arrow->arrowFire(_x[BALEOG], _y[BALEOG] + 50, 10, PI2);
 				_arrow->setArrowState(ARROW_RIGHT_FIRE);
 			}
 		}
@@ -1087,8 +1096,8 @@ void playerManager::baleogArrow()
 		{
 			if (_baleog->getBaleogMotion()->getFramePos().x == 300)
 			{
-				SOUNDMANAGER->play("baleog_ArrowPull");
-				_arrow->arrowFire(_x[BALEOG], _y[BALEOG] + 50, 5, PI);
+				SOUNDMANAGER->play("baleog_Arrow");
+				_arrow->arrowFire(_x[BALEOG], _y[BALEOG] + 50, 10, PI);
 				_arrow->setArrowState(ARROW_LEFT_FIRE);
 			}
 		}
