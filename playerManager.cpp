@@ -119,7 +119,7 @@ HRESULT playerManager::init()
 
 	_deadTime = 0;
 	_moveWorldTime = TIMEMANAGER->getWorldTime();
-	_moveTime = 1.0f;
+	_moveTime = 0.45f;
 
 	return S_OK;
 }
@@ -292,15 +292,15 @@ void playerManager::render()
 	//sprintf_s(str, "_prove_Y : %f", _prove_Y[0]);
 	//TextOut(getMemDC(), 300, 140, str, strlen(str));
 	//
-	sprintf_s(str, "_isLadderCollision : %d", _isLadderCollision);
-	TextOut(getMemDC(), 300, 160, str, strlen(str));
-	sprintf_s(str, "_gravityStop : %d", _gravityStop);
-	TextOut(getMemDC(), 300, 180, str, strlen(str));
-	sprintf_s(str, "_deadTime : %d", _deadTime);
-	TextOut(getMemDC(), 300, 200, str, strlen(str));
+	//sprintf_s(str, "_isLadderCollision : %d", _isLadderCollision);
+	//TextOut(getMemDC(), 300, 160, str, strlen(str));
+	//sprintf_s(str, "_gravityStop : %d", _gravityStop);
+	//TextOut(getMemDC(), 300, 180, str, strlen(str));
+	//sprintf_s(str, "_deadTime : %d", _deadTime);
+	//TextOut(getMemDC(), 300, 200, str, strlen(str));
 
-	sprintf_s(str, "_isDead : %d", _isDead);
-	TextOut(getMemDC(), 300, 220, str, strlen(str));
+	//sprintf_s(str, "_isDead : %d", _isDead);
+	//TextOut(getMemDC(), 300, 220, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -342,7 +342,11 @@ void playerManager::characterMove()
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK)
 		{
-			SOUNDMANAGER->play("viking_Movement");
+			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
+			{
+				_moveWorldTime = TIMEMANAGER->getWorldTime();
+				SOUNDMANAGER->play("viking_Movement", 0.3f);
+			}
 			if (_choice == ERIC)
 			{
 				_x[ERIC] -= _eric->getSpeed();
@@ -358,7 +362,11 @@ void playerManager::characterMove()
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK)
 		{
-			SOUNDMANAGER->play("viking_Movement");
+			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
+			{
+				_moveWorldTime = TIMEMANAGER->getWorldTime();
+				SOUNDMANAGER->play("viking_Movement", 0.3f);
+			}
 			if (_choice == ERIC)
 			{
 				_x[ERIC] += _eric->getSpeed();
@@ -472,13 +480,13 @@ void playerManager::characterChange()
 	{
 		if (_choice == ERIC)
 		{
-			if (_isDead == false)
+			//if (_isDead == false)
 			{
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
 			}
-			else
+			//else
 			{
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
@@ -487,13 +495,13 @@ void playerManager::characterChange()
 		}
 		else if (_choice == BALEOG)
 		{
-			if (_isDead == false)
+			//if (_isDead == false)
 			{
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
 				SOUNDMANAGER->play("UI_BaleogPic");
 			}
-			else
+			//else
 			{
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
@@ -503,13 +511,13 @@ void playerManager::characterChange()
 		}
 		else if (_choice == OLAF)
 		{
-			if (_isDead == false)
+			//if (_isDead == false)
 			{
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
 				SOUNDMANAGER->play("UI_OlafPic");
 			}
-			else
+			//else
 			{
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
@@ -604,14 +612,14 @@ void playerManager::ladderCollision()
 void playerManager::deadZoneCollision()
 {
 
-	if (_isDead == true)
+	//if (_isDead == true)
 	{
 		if (_deadTime > 70)
 		{
 			if (_choice == ERIC)
 			{
 				_deadTime = 0;
-				_isDead = false;
+				//_isDead = false;
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
@@ -620,7 +628,7 @@ void playerManager::deadZoneCollision()
 			else if (_choice == BALEOG)
 			{
 				_deadTime = 0;
-				_isDead = false;
+				//_isDead = false;
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
 				SOUNDMANAGER->play("UI_BaleogPic");
@@ -629,7 +637,7 @@ void playerManager::deadZoneCollision()
 			else if (_choice == OLAF)
 			{
 				_deadTime = 0;
-				_isDead = false;
+				//_isDead = false;
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
 				SOUNDMANAGER->play("UI_OlafPic");
@@ -649,7 +657,7 @@ void playerManager::deadZoneCollision()
 					if (_deadZone[j].rc.top < _rc[_choice].bottom)
 					{
 						_deadTime++;
-						_isDead = true;
+						_isDead[ERIC] = true;
 						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[ERIC] = _y[ERIC] - _deadTum;
 
@@ -672,7 +680,7 @@ void playerManager::deadZoneCollision()
 					if (_deadZone[j].rc.top < _rc[_choice].bottom)
 					{
 						_deadTime++;
-						_isDead = true;
+						_isDead[BALEOG] = true;
 						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[BALEOG] = _y[BALEOG] - _deadTum;
 
@@ -695,7 +703,7 @@ void playerManager::deadZoneCollision()
 					if (_deadZone[j].rc.top < _rc[_choice].bottom)
 					{
 						_deadTime++;
-						_isDead = true;
+						_isDead[OLAF] = true;
 						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[OLAF] = _y[OLAF] - _deadTum;
 

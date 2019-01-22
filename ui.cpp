@@ -132,12 +132,12 @@ void ui::render()
 	}
 	uiItemRender();
 	char str[128];
-	sprintf_s(str, "아이템 : %d", _uiItemBling);
-	TextOut(getMemDC(), 500, 100, str, strlen(str));
-	sprintf_s(str, "충돌 : %d", _itemCollision);
-	TextOut(getMemDC(), 600, 100, str, strlen(str));
-	sprintf_s(str, "올라프템번 : %d", _olafItemNumber);
-	TextOut(getMemDC(), 700, 100, str, strlen(str));
+	//sprintf_s(str, "아이템 : %d", _uiItemBling);
+	//TextOut(getMemDC(), 500, 100, str, strlen(str));
+	//sprintf_s(str, "충돌 : %d", _itemCollision);
+	//TextOut(getMemDC(), 600, 100, str, strlen(str));
+	//sprintf_s(str, "올라프템번 : %d", _olafItemNumber);
+	//TextOut(getMemDC(), 700, 100, str, strlen(str));
 }
 //프로필 업데이트
 void ui::profileUpdate(int choice)

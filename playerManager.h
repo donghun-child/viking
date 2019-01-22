@@ -75,8 +75,8 @@ private:
 
 	int _deadTime;
 	float _deadTum;
-	bool _isDead;
-	int _moveTime, _moveWorldTime;
+	bool _isDead[3];
+	float _moveTime, _moveWorldTime;
 
 public:
 	playerManager();

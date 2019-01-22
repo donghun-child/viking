@@ -41,6 +41,7 @@ HRESULT sound::init()
 	SOUNDMANAGER->addSound("UI_OlafPic", "sound/UI_OlafPic.mp3", false, false);
 	SOUNDMANAGER->addSound("viking_GameStart", "sound/viking_GameStart.mp3", false, false);
 	SOUNDMANAGER->addSound("viking_Movement", "sound/viking_Movement.mp3", false, false);
+	SOUNDMANAGER->addSound("eric_Walk", "sound/eric_Walk.mp3", false, false);
 	
 	
 	return S_OK;

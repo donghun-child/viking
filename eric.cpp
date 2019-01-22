@@ -112,13 +112,13 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 	//가속도 주기위함
 	if (_ericState == ERIC_RIGHT_MOVE)
 	{
-		if (_speed < 5)
+		if (_speed < 4)
 		{
-			_acceleration = 0.05f;
+			_acceleration = 0.09f;
 			*x += _speed;
 			_speed += _acceleration;
 		}
-		else if (_speed >= 5)
+		else if (_speed >= 4)
 		{
 			_speed = 7;
 		}
@@ -126,13 +126,13 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 	//가속도 주기위함
 	else if (_ericState == ERIC_LEFT_MOVE)
 	{
-		if (_speed < 5)
+		if (_speed < 4)
 		{
-			_acceleration = 0.05f;
+			_acceleration = 0.09f;
 			*x -= _speed;
 			_speed += _acceleration;
 		}
-		else if (_speed >= 5)
+		else if (_speed >= 4)
 		{
 			_speed = 7;
 		}
@@ -190,8 +190,8 @@ void eric::render(float viewX, float viewY)
 	//sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	//TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-	sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	TextOut(getMemDC(), 600, 140, str, strlen(str));
+	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	//TextOut(getMemDC(), 600, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
@@ -205,7 +205,7 @@ void eric::keySetting()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH)
 	{
-		_speed = 0;
+		_speed = 1;
 		_ericState = ERIC_RIGHT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightMove");
 		_ericMotion->start();
@@ -219,7 +219,7 @@ void eric::keySetting()
 	}
 	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
-		_speed = 0;
+		_speed = 1;
 		_ericState = ERIC_RIGHT_STOP;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 		_ericMotion->start();
@@ -232,7 +232,7 @@ void eric::keySetting()
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH)
 	{
-		_speed = 0;
+		_speed = 1;
 		_ericState = ERIC_LEFT_MOVE;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftMove");
 		_ericMotion->start();
@@ -247,7 +247,7 @@ void eric::keySetting()
 	}
 	else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
 	{
-		_speed = 0;
+		_speed = 1;
 		_ericState = ERIC_LEFT_STOP;
 		_ericMotion = KEYANIMANAGER->findAnimation("ericName", "leftStop");
 		_ericMotion->start();
@@ -312,6 +312,7 @@ void eric::dashKeySetting()
 	{
 		if (_speed >= 7)
 		{
+			SOUNDMANAGER->play("eric_Walk");
 			if (_ericState == ERIC_RIGHT_STOP || _ericState == ERIC_RIGHT_MOVE)
 			{
 				_ericState = ERIC_RIGHT_DASH;
