@@ -50,7 +50,7 @@ void menu::update()
 		}
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 		{
-			if (_menuSelect_Y == 525)
+			if (_menuSelect_Y == 390)
 			{
 				_padeOut = true;
 				SOUNDMANAGER->stop("opening_bgm");

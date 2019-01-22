@@ -70,9 +70,18 @@ void ui::update(int choice, bool uiChange)
 {
 	_choice = choice;
 	vikingItemNumber(_choice);
-	uiEricItemSave();
-	uiBaleogItemSave();
-	uiOlafItemSave();
+	if (_choice == 0)
+	{
+		uiEricItemSave();
+	}
+	else if (_choice == 1)
+	{
+		uiBaleogItemSave();
+	}
+	else if (_choice == 2)
+	{
+		uiOlafItemSave();
+	}
 	if (uiChange)
 	{
 	

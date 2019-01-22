@@ -1,7 +1,7 @@
 #pragma once
 #include "gameNode.h"
 
-#define CAMERA_CHANGING_SPEED 1.5f
+#define CAMERA_CHANGING_SPEED 1.0f
 
 class camera : public gameNode
 {
