@@ -334,7 +334,8 @@ void stage1::itemCollision()
 		//¿¡¸¯
 		if (IntersectRect(&temp, &(*_bubble->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
 		{
-			if (_playerManager->getEricRect().left > (*_bubble->getVItemAddress())[i].rc.left && _playerManager->getEricRect().right < (*_bubble->getVItemAddress())[i].rc.right)
+			if (_playerManager->getEricRect().left > (*_bubble->getVItemAddress())[i].rc.left && _playerManager->getEricRect().right < (*_bubble->getVItemAddress())[i].rc.right 
+				&& _playerManager->getEricRect().top < (*_bubble->getVItemAddress())[i].rc.bottom - 70)
 			{
 				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getEricRect().bottom)
 				{
