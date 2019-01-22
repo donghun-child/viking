@@ -23,11 +23,12 @@ private:
 
 	bool _ericCursor, _baleogCursor, _olafCursor;	//Ä¿¼­ ±ôºýÀÓ
 	bool _fKeyMod;
+	bool _uiItemBling;
 	bool _itemCollision;
 
 	int _ericItemNumber, _baleogItemNumber, _olafItemNumber;
 
-	int _oldTime;									//Ä¿¼­ ±ôºýÀÏ¶§ ½Ã°£
+	int _cursorOldTime;									//Ä¿¼­ ±ôºýÀÏ¶§ ½Ã°£
 
 public:
 	ui();
@@ -59,5 +60,6 @@ public:
 	void setOlafFrameX(int currentFrameX) { _setOlafFrameX = currentFrameX; }
 
 	void setItemCollision(bool itemCOllision) { _itemCollision = itemCOllision; }
+
 };
 

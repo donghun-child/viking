@@ -57,7 +57,7 @@ HRESULT ui::init()
 	_deleteItemFrameX = 7;
 
 	_ericCursor = _baleogCursor = _olafCursor = false;
-	_oldTime = GetTickCount();
+	_cursorOldTime = GetTickCount();
 
 	return S_OK;
 }
@@ -80,7 +80,7 @@ void ui::update(int choice, bool uiChange)
 
 		if (!_fKeyMod)
 		{
-			if (GetTickCount() - _oldTime >= 1 * 300)
+			if (GetTickCount() - _cursorOldTime >= 1 * 300)
 			{
 				if (_choice == 0)
 				{
@@ -97,7 +97,7 @@ void ui::update(int choice, bool uiChange)
 					if (!_olafCursor) _olafCursor = true;
 					else _olafCursor = false;
 				}
-				_oldTime = GetTickCount();
+				_cursorOldTime = GetTickCount();
 			}
 		}
 	}
@@ -131,14 +131,14 @@ void ui::render()
 	}
 	uiItemRender();
 	char str[128];
-	sprintf_s(str, "아이템 : %d", _setEricFrameX);
+	sprintf_s(str, "아이템 : %d", _uiItemBling);
 	TextOut(getMemDC(), 500, 100, str, strlen(str));
 	sprintf_s(str, "충돌 : %d", _itemCollision);
 	TextOut(getMemDC(), 600, 100, str, strlen(str));
 	sprintf_s(str, "올라프템번 : %d", _olafItemNumber);
 	TextOut(getMemDC(), 700, 100, str, strlen(str));
 }
-
+//프로필 업데이트
 void ui::profileUpdate(int choice)
 {
 	_choice = choice;
@@ -169,7 +169,7 @@ void ui::profileUpdate(int choice)
 		_olafCurrentY = 0;
 	}
 }
-
+//키 컨트롤
 void ui::keyControl(int choice)
 {
 	if (choice == 0)
@@ -180,8 +180,14 @@ void ui::keyControl(int choice)
 			{
 				if (_deleteItemFrameX == 7)
 				{
-					if (!_fKeyMod) _fKeyMod = true;
-					else _fKeyMod = false;
+					if (!_fKeyMod)
+					{
+						_fKeyMod = true;
+					}
+					else
+					{
+						_fKeyMod = false;
+					}
 					_ericCursor = false;
 				}
 			}
@@ -403,7 +409,7 @@ void ui::keyControl(int choice)
 		}
 	}
 }
-
+//에릭이 아이템 충돌했을때 에릭 인벤에 저장
 void ui::uiEricItemSave()
 {
 	if (_itemCollision)
@@ -427,6 +433,7 @@ void ui::uiEricItemSave()
 		_itemCollision = false;
 	}
 }
+//벨로그이 아이템 충돌했을때 벨로그 인벤에 저장
 void ui::uiBaleogItemSave()
 {
 	if (_itemCollision)
@@ -450,7 +457,7 @@ void ui::uiBaleogItemSave()
 		_itemCollision = false;
 	}
 }
-
+//올라프이 아이템 충돌했을때 올라프 인벤에 저장
 void ui::uiOlafItemSave()
 {
 	if (_itemCollision)
@@ -474,27 +481,26 @@ void ui::uiOlafItemSave()
 		_itemCollision = false;
 	}
 }
-
+//인벤에 있는 아이템 프레임을 이용하여 활성화
 void ui::uiItemRender()
 {
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 187, 671, _ericItemFrameX[0], _ericItemFrameY[0]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 250, 671, _ericItemFrameX[1], _ericItemFrameY[1]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 187, 734, _ericItemFrameX[2], _ericItemFrameY[2]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 250, 734, _ericItemFrameX[3], _ericItemFrameY[3]);
+		
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 470, 671, _baleogItemFrameX[0], _baleogItemFrameY[0]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 533, 671, _baleogItemFrameX[1], _baleogItemFrameY[1]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 470, 734, _baleogItemFrameX[2], _baleogItemFrameY[2]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 533, 734, _baleogItemFrameX[3], _baleogItemFrameY[3]);
+		
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 751, 671, _olafItemFrameX[0], _olafItemFrameY[0]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 814, 671, _olafItemFrameX[1], _olafItemFrameY[1]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 751, 734, _olafItemFrameX[2], _olafItemFrameY[2]);
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 814, 734, _olafItemFrameX[3], _olafItemFrameY[3]);
+		
+		IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 880, 671, _deleteItemFrameX, 0);
 
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 187, 671, _ericItemFrameX[0], _ericItemFrameY[0]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 250, 671, _ericItemFrameX[1], _ericItemFrameY[1]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 187, 734, _ericItemFrameX[2], _ericItemFrameY[2]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 250, 734, _ericItemFrameX[3], _ericItemFrameY[3]);
-
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 470, 671, _baleogItemFrameX[0], _baleogItemFrameY[0]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 533, 671, _baleogItemFrameX[1], _baleogItemFrameY[1]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 470, 734, _baleogItemFrameX[2], _baleogItemFrameY[2]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 533, 734, _baleogItemFrameX[3], _baleogItemFrameY[3]);
-
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 751, 671, _olafItemFrameX[0], _olafItemFrameY[0]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 814, 671, _olafItemFrameX[1], _olafItemFrameY[1]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 751, 734, _olafItemFrameX[2], _olafItemFrameY[2]);
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 814, 734, _olafItemFrameX[3], _olafItemFrameY[3]);
-
-	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 880, 671, _deleteItemFrameX, 0);
-	
 }
 //각 바이킹 아이템 넘버 꼴보기 싫음
 void ui::vikingItemNumber(int choice)
