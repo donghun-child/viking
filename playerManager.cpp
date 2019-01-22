@@ -492,7 +492,7 @@ void playerManager::characterChange()
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
 			}
-			else if (_isDead[ERIC] == true)
+			else
 			{
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
