@@ -69,6 +69,25 @@ HRESULT playerManager::init()
 	_ladder[4].viewX = _ladder[4].x;
 	_ladder[4].viewY = _ladder[4].y;
 	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 495);
+
+	//데드존
+	_deadZone[0].x = 840;
+	_deadZone[0].y = 940;
+	_deadZone[0].viewX = _deadZone[0].x;
+	_deadZone[0].viewY = _deadZone[0].y;
+	_deadZone[0].rc = RectMake(_deadZone[0].viewX, _deadZone[0].viewY, 285, 85);
+
+	_deadZone[1].x = 1025;
+	_deadZone[1].y = 1740;
+	_deadZone[1].viewX = _deadZone[1].x;
+	_deadZone[1].viewY = _deadZone[1].y;
+	_deadZone[1].rc = RectMake(_deadZone[1].viewX, _deadZone[1].viewY, 200, 80);
+
+	_deadZone[2].x = 1690;
+	_deadZone[2].y = 2180;
+	_deadZone[2].viewX = _deadZone[2].x;
+	_deadZone[2].viewY = _deadZone[2].y;
+	_deadZone[2].rc = RectMake(_deadZone[2].viewX, _deadZone[2].viewY, 140, 60);
 	
 	_isDebug = false;
 
@@ -98,6 +117,9 @@ HRESULT playerManager::init()
 	_isCameraMode = false;
 	_isLadderCollision = false;
 
+	_deadTime = 0;
+	_deadWorldTime = TIMEMANAGER->getWorldTime();
+
 	return S_OK;
 }
 
@@ -125,6 +147,8 @@ void playerManager::update()
 
 	//사다리 충돌
 	ladderCollision();
+	//데드존 충돌
+	deadZoneCollision();
 	//픽셀충돌
 	pixelCollisionGreen();
 	pixelCollisionYellow();
@@ -169,6 +193,16 @@ void playerManager::update()
 	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 300);
 	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 260);
 	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 490);
+
+	//데드존 갱신
+	for (int i = 0; i < 3; i++)
+	{
+		_deadZone[i].viewX = _deadZone[i].x - _camera->getCameraX();
+		_deadZone[i].viewY = _deadZone[i].y - _camera->getCameraY();
+	}
+	_deadZone[0].rc = RectMake(_deadZone[0].viewX, _deadZone[0].viewY, 285, 85);
+	_deadZone[1].rc = RectMake(_deadZone[1].viewX, _deadZone[1].viewY, 200, 80);
+	_deadZone[2].rc = RectMake(_deadZone[2].viewX, _deadZone[2].viewY, 140, 60);
 
 	//갱신
 	for (int i = 0; i < 3; ++i)
@@ -223,9 +257,14 @@ void playerManager::render()
 	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
 
 	//사다리 렉트
-	for (int i = 0; i < 5; i++)
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	Rectangle(getMemDC(), _ladder[i].rc);
+	//}
+	//데드존 렉트
+	for (int i = 0; i < 3; i++)
 	{
-		Rectangle(getMemDC(), _ladder[i].rc);
+		Rectangle(getMemDC(), _deadZone[i].rc);
 	}
 	for (int i = 0; i < _arrow->getVArrow().size(); i++)
 	{
@@ -256,7 +295,7 @@ void playerManager::render()
 	TextOut(getMemDC(), 300, 160, str, strlen(str));
 	sprintf_s(str, "_gravityStop : %d", _gravityStop);
 	TextOut(getMemDC(), 300, 180, str, strlen(str));
-	sprintf_s(str, "_isGravity : %d", _isGravity);
+	sprintf_s(str, "_deadTime : %d", _deadTime);
 	TextOut(getMemDC(), 300, 200, str, strlen(str));
 }
 
@@ -427,21 +466,49 @@ void playerManager::characterChange()
 	{
 		if (_choice == ERIC)
 		{
-			_choice = BALEOG;
-			_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
-			SOUNDMANAGER->play("UI_EricPic");
+			if (_isDead == false)
+			{
+				_choice = BALEOG;
+				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+				SOUNDMANAGER->play("UI_EricPic");
+			}
+			else
+			{
+				_choice = OLAF;
+				_camera->cameraChange(_x[OLAF], _y[OLAF]);
+				SOUNDMANAGER->play("UI_BaleogPic");
+			}
 		}
 		else if (_choice == BALEOG)
 		{
-			_choice = OLAF;
-			_camera->cameraChange(_x[OLAF], _y[OLAF]);
-			SOUNDMANAGER->play("UI_BaleogPic");
+			if (_isDead == false)
+			{
+				_choice = OLAF;
+				_camera->cameraChange(_x[OLAF], _y[OLAF]);
+				SOUNDMANAGER->play("UI_BaleogPic");
+			}
+			else
+			{
+				_choice = ERIC;
+				_camera->cameraChange(_x[ERIC], _y[ERIC]);
+				SOUNDMANAGER->play("UI_OlafPic");
+			}
+
 		}
 		else if (_choice == OLAF)
 		{
-			_choice = ERIC;
-			_camera->cameraChange(_x[ERIC], _y[ERIC]);
-			SOUNDMANAGER->play("UI_OlafPic");
+			if (_isDead == false)
+			{
+				_choice = ERIC;
+				_camera->cameraChange(_x[ERIC], _y[ERIC]);
+				SOUNDMANAGER->play("UI_OlafPic");
+			}
+			else
+			{
+				_choice = BALEOG;
+				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+				SOUNDMANAGER->play("UI_EricPic");
+			}
 		}
 	}
 }
@@ -522,6 +589,120 @@ void playerManager::ladderCollision()
 					_eric->setLadderCollision(false);
 					_baleog->setLadderCollision(false);
 					_olaf->setLadderCollision(false);
+				}
+			}
+		}
+	}
+}
+
+void playerManager::deadZoneCollision()
+{
+
+	if (_isDead == true)
+	{
+		if (_deadTime > 70)
+		{
+			if (_choice == ERIC)
+			{
+				_choice = BALEOG;
+				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+				SOUNDMANAGER->play("UI_EricPic");
+				_deadTime = 0;
+				_isDead = false;
+			}
+			else if (_choice == BALEOG)
+			{
+				_choice = OLAF;
+				_camera->cameraChange(_x[OLAF], _y[OLAF]);
+				SOUNDMANAGER->play("UI_BaleogPic");
+				_deadTime = 0;
+				_isDead = false;
+			}
+			else if (_choice == OLAF)
+			{
+				_choice = ERIC;
+				_camera->cameraChange(_x[ERIC], _y[ERIC]);
+				SOUNDMANAGER->play("UI_OlafPic");
+				_deadTime = 0;
+				_isDead = false;
+			}
+		}
+	}
+	RECT temp;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (IntersectRect(&temp, &_rc[i], &_deadZone[j].rc))
+			{
+				if (_choice == ERIC)
+				{
+					if (_deadZone[j].rc.top < _rc[i].bottom)
+					{
+						_deadTime++;
+						_isDead = true;
+						_deadTum = _rc[i].bottom - _deadZone[j].rc.top;
+						_y[ERIC] = _y[ERIC] - _deadTum;
+
+						if (_eric->getEricState() == ERIC_RIGHT_MOVE || _eric->getEricState() == ERIC_RIGHT_STOP)
+						{
+							_eric->setEricState(ERIC_RIGHT_DEAD);
+							_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightDead"));
+							_eric->getEricMotion()->start();
+						}
+						else if (_eric->getEricState() == ERIC_LEFT_MOVE || _eric->getEricState() == ERIC_LEFT_STOP)
+						{
+							_eric->setEricState(ERIC_LEFT_DEAD);
+							_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftDead"));
+							_eric->getEricMotion()->start();
+						}
+					}
+				}
+				else if (_choice == BALEOG)
+				{
+					if (_deadZone[j].rc.top < _rc[i].bottom)
+					{
+						_deadTime++;
+						_isDead = true;
+						_deadTum = _rc[i].bottom - _deadZone[j].rc.top;
+						_y[BALEOG] = _y[BALEOG] - _deadTum;
+
+						if (_baleog->getBaleogState() == BALEOG_RIGHT_MOVE || _baleog->getBaleogState() == BALEOG_RIGHT_STOP)
+						{
+							_baleog->setBaleogState(BALEOG_RIGHT_DEAD);
+							_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightDead"));
+							_baleog->getBaleogMotion()->start();
+						}
+						else if (_baleog->getBaleogState() == BALEOG_LEFT_MOVE || _baleog->getBaleogState() == BALEOG_LEFT_STOP)
+						{
+							_baleog->setBaleogState(BALEOG_LEFT_DEAD);
+							_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftDead"));
+							_baleog->getBaleogMotion()->start();
+						}
+					}
+				}
+				else if (_choice == OLAF)
+				{
+					if (_deadZone[j].rc.top < _rc[i].bottom)
+					{
+						_deadTime++;
+						_isDead = true;
+						_deadTum = _rc[i].bottom - _deadZone[j].rc.top;
+						_y[OLAF] = _y[OLAF] - _deadTum;
+
+						if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_STOP)
+						{
+							_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_DEAD);
+							_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "rightDead"));
+							_olaf->getOlafMotion()->start();
+						}
+						else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_STOP)
+						{
+							_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_DEAD);
+							_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "leftDead"));
+							_olaf->getOlafMotion()->start();
+						}
+					}
 				}
 			}
 		}

@@ -13,7 +13,7 @@ baleog::~baleog()
 
 HRESULT baleog::init()
 {
-	_baleogPlayer.baleogImage = IMAGEMANAGER->addFrameImage("벨로그", "image/Baleog.bmp", 0, 0, 1200, 1950, 8, 13, true, RGB(255, 0, 255));
+	_baleogPlayer.baleogImage = IMAGEMANAGER->addFrameImage("벨로그", "image/Baleog.bmp", 0, 0, 1200, 2250, 8, 15, true, RGB(255, 0, 255));
 	_baleogPlayer.x = BALEOG_X;
 	_baleogPlayer.y = BALEOG_Y;
 	_baleogPlayer.speed = BALEOG_SPEED;
@@ -62,6 +62,12 @@ HRESULT baleog::init()
 
 	int leftPush[] = {71, 70, 69, 68};
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftPush", "벨로그", leftPush, 4, 8, true);
+
+	int rightDead[] = {105, 106, 107, 108, 109, 110, 111, 112};
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "rightDead", "벨로그", rightDead, 8, 6, false);
+
+	int leftDead[] = {119, 118, 117, 116, 115, 114, 113, 112};
+	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftDead", "벨로그", leftDead, 8, 6, false);
 
 	_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
 

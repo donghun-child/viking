@@ -13,12 +13,13 @@ enum Character
 	OLAF
 };
 
-struct ladder //사다리
+struct object //사다리
 {
 	RECT rc;
 	float x, y;
 	float viewX, viewY;
 };
+
 
 class item;
 
@@ -31,7 +32,8 @@ private:
 
 	bool _isDebug;
 
-	ladder _ladder[5]; //사다리
+	object _ladder[5]; //사다리
+	object _deadZone[3];
 	baleog* _baleog;
 	eric* _eric;
 	olaf* _olaf;
@@ -71,7 +73,9 @@ private:
 	int _ladderChoice;
 	int _wallcheck;
 
-	
+	int _deadTime, _deadWorldTime;
+	float _deadTum;
+	bool _isDead;
 
 public:
 	playerManager();
@@ -89,6 +93,9 @@ public:
 
 	//사다리 충돌
 	void ladderCollision();
+
+	//데드존 충돌
+	void deadZoneCollision();
 
 	//픽셀충돌
 	void pixelCollisionGreen();

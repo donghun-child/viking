@@ -58,6 +58,12 @@ HRESULT eric::init()
 	int leftPush[] = { 130, 129, 128, 127, 126 };
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftPush", "eric", leftPush, 5, 8, true);
 
+	int rightDead[] = {132, 133, 134, 135, 136, 137, 138, 139};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightDead", "eric", rightDead, 8, 6, false);
+
+	int leftDead[] = {149, 148, 147, 146, 145, 144, 143, 142};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftDead", "eric", leftDead, 8, 6, false);
+
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
 	_speed = 0;
@@ -178,14 +184,14 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 void eric::render(float viewX, float viewY)
 {
 	char str[128];
-	sprintf_s(str, "에릭좌표 : %f ", _eric_X);
-	TextOut(getMemDC(), 200, 100, str, strlen(str));
+	//sprintf_s(str, "에릭좌표 : %f ", _eric_X);
+	//TextOut(getMemDC(), 200, 100, str, strlen(str));
 
-	sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
-	TextOut(getMemDC(), 200, 120, str, strlen(str));
+	//sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
+	//TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-	sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	TextOut(getMemDC(), 200, 140, str, strlen(str));
+	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	//TextOut(getMemDC(), 200, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
