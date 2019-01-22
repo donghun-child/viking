@@ -21,6 +21,8 @@ private:
 
 	playerManager* _playerManager;
 
+	RECT temp;
+
 	//æ∆¿Ã≈€
 	item* _redKey;
 	item* _redLock;
@@ -42,6 +44,10 @@ private:
 	int _bubbleFrameTime;
 	int _bubbleRemoveTime;
 
+	int _currentFrameX;
+
+	float _bottomTum;
+
 public:
 	stage1();
 	~stage1();
@@ -55,6 +61,6 @@ public:
 	
 	void createBubble();
 
-
+	void itemCollision();
 };
 

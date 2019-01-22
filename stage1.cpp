@@ -101,6 +101,7 @@ void stage1::update()
 	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
 
+	itemCollision();
 
 	//다리 움직이기
 	//if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD9))
@@ -205,6 +206,152 @@ void stage1::createBubble()
 			{
 				(*_bubble->getVItemAddress())[i].isLive = false;
 				_bubbleRemoveTime = 0;
+			}
+		}
+	}
+}
+
+void stage1::itemCollision()
+{
+	//레드키 충돌
+	for (int i = 0; i < _redKey->getVItem().size(); ++i)
+	{
+		//에릭
+		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+		{
+			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
+			(*_redKey->getVItemAddress())[i].isLive = false;
+
+		}
+		//벨로그
+		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+		{
+			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
+			(*_redKey->getVItemAddress())[i].isLive = false;
+
+		}
+		//올라프
+		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+		{
+			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
+			(*_redKey->getVItemAddress())[i].isLive = false;
+
+		}
+	}
+	//레드자물쇠 충돌
+	for (int i = 0; i < _redLock->getVItem().size(); ++i)
+	{
+		//에릭
+		if (IntersectRect(&temp, &(*_redLock->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+		{
+
+
+		}
+		//벨로그
+		if (IntersectRect(&temp, &(*_redLock->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+		{
+
+
+		}
+		//올라프
+		if (IntersectRect(&temp, &(*_redLock->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+		{
+
+
+		}
+	}
+	//바나나 충돌
+	for (int i = 0; i < _banana->getVItem().size(); ++i)
+	{
+		//에릭
+		if (IntersectRect(&temp, &(*_banana->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+		{
+			_currentFrameX = (*_banana->getVItemAddress())[i].frameX;
+			(*_banana->getVItemAddress())[i].isLive = false;
+
+		}
+		//벨로그
+		if (IntersectRect(&temp, &(*_banana->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+		{
+			_currentFrameX = (*_banana->getVItemAddress())[i].frameX;
+			(*_banana->getVItemAddress())[i].isLive = false;
+
+		}
+		//올라프
+		if (IntersectRect(&temp, &(*_banana->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+		{
+			_currentFrameX = (*_banana->getVItemAddress())[i].frameX;
+			(*_banana->getVItemAddress())[i].isLive = false;
+
+		}
+	}
+	//고기 충돌
+	for (int i = 0; i < _meat->getVItem().size(); ++i)
+	{
+		//에릭
+		if (IntersectRect(&temp, &(*_meat->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+		{
+			_currentFrameX = (*_meat->getVItemAddress())[i].frameX;
+			(*_meat->getVItemAddress())[i].isLive = false;
+
+		}
+		//벨로그
+		if (IntersectRect(&temp, &(*_meat->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+		{
+			_currentFrameX = (*_meat->getVItemAddress())[i].frameX;
+			(*_meat->getVItemAddress())[i].isLive = false;
+
+		}
+		//올라프
+		if (IntersectRect(&temp, &(*_meat->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+		{
+			_currentFrameX = (*_meat->getVItemAddress())[i].frameX;
+			(*_meat->getVItemAddress())[i].isLive = false;
+
+		}
+	}
+	//버블 충돌
+	for (int i = 0; i < _bubble->getVItem().size(); ++i)
+	{
+		//에릭
+		if (IntersectRect(&temp, &(*_bubble->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+		{
+			if (_playerManager->getEricRect().left > (*_bubble->getVItemAddress())[i].rc.left && _playerManager->getEricRect().right < (*_bubble->getVItemAddress())[i].rc.right)
+			{
+				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getEricRect().bottom)
+				{
+					_bottomTum = (_playerManager->getEricRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom);
+
+					_playerManager->setEricY(_playerManager->getEricY() - _bottomTum - 50);
+				}
+			}
+		}
+
+		//벨로그
+		if (IntersectRect(&temp, &(*_bubble->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+		{
+			if (_playerManager->getBaleogRect().left > (*_bubble->getVItemAddress())[i].rc.left && _playerManager->getBaleogRect().right < (*_bubble->getVItemAddress())[i].rc.right)
+			{
+				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getBaleogRect().bottom)
+				{
+					_bottomTum = (_playerManager->getBaleogRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom);
+
+					_playerManager->setBalogY(_playerManager->getBalogY() - _bottomTum - 50);
+				}
+			}
+		}
+
+		//올라프
+		if (IntersectRect(&temp, &(*_bubble->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+		{
+			if (_playerManager->getOlafRect().left > (*_bubble->getVItemAddress())[i].rc.left && _playerManager->getOlafRect().right < (*_bubble->getVItemAddress())[i].rc.right)
+			{
+				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getOlafRect().bottom)
+				{
+					_bottomTum = (_playerManager->getOlafRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom);
+
+					_playerManager->setOlafY(_playerManager->getOlafY() - _bottomTum - 50);
+				}
 			}
 		}
 	}
