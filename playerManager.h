@@ -71,6 +71,8 @@ private:
 	int _ladderChoice;
 	int _wallcheck;
 
+	
+
 public:
 	playerManager();
 	~playerManager();

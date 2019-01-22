@@ -47,28 +47,28 @@ HRESULT playerManager::init()
 	_ladder[0].rc = RectMake(_ladder[0].viewX, _ladder[0].viewY, 30, 285);
 
 	_ladder[1].x = 2000;
-	_ladder[1].y = 1170;
+	_ladder[1].y = 1150;
 	_ladder[1].viewX = _ladder[1].x;
 	_ladder[1].viewY = _ladder[1].y;
-	_ladder[1].rc = RectMake(_ladder[1].viewX, _ladder[1].viewY, 30, 650);
+	_ladder[1].rc = RectMake(_ladder[1].viewX, _ladder[1].viewY, 30, 680);
 
 	_ladder[2].x = 2140;
-	_ladder[2].y = 1825;
+	_ladder[2].y = 1805;
 	_ladder[2].viewX = _ladder[2].x;
 	_ladder[2].viewY = _ladder[2].y;
-	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 275);
+	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 295);
 
 	_ladder[3].x = 2515;
-	_ladder[3].y = 1540;
+	_ladder[3].y = 1520;
 	_ladder[3].viewX = _ladder[3].x;
 	_ladder[3].viewY = _ladder[3].y;
-	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 235);
+	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 255);
 
 	_ladder[4].x = 2890;
-	_ladder[4].y = 1305;
+	_ladder[4].y = 1285;
 	_ladder[4].viewX = _ladder[4].x;
 	_ladder[4].viewY = _ladder[4].y;
-	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 475);
+	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 495);
 	
 	_isDebug = false;
 
@@ -165,10 +165,10 @@ void playerManager::update()
 		_ladder[i].viewY = _ladder[i].y - _camera->getCameraY();
 	}
 	_ladder[0].rc = RectMake(_ladder[0].viewX, _ladder[0].viewY, 30, 285);
-	_ladder[1].rc = RectMake(_ladder[1].viewX, _ladder[1].viewY, 30, 650);
-	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 275);
-	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 235);
-	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 475);
+	_ladder[1].rc = RectMake(_ladder[1].viewX, _ladder[1].viewY, 30, 670);
+	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 300);
+	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 260);
+	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 490);
 
 	//갱신
 	for (int i = 0; i < 3; ++i)
@@ -223,10 +223,10 @@ void playerManager::render()
 	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
 
 	//사다리 렉트
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	Rectangle(getMemDC(), _ladder[i].rc);
-	//}
+	for (int i = 0; i < 5; i++)
+	{
+		Rectangle(getMemDC(), _ladder[i].rc);
+	}
 	for (int i = 0; i < _arrow->getVArrow().size(); i++)
 	{
 		_arrow->render((*_arrow->getVArrowAddress())[i].viewX, (*_arrow->getVArrowAddress())[i].viewY);
@@ -448,8 +448,6 @@ void playerManager::characterChange()
 
 void playerManager::ladderCollision()
 {
-
-	RECT temp;
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 5; j++)
@@ -466,38 +464,48 @@ void playerManager::ladderCollision()
 				{
 					if (KEYMANAGER->isStayKeyDown(VK_UP))
 					{
-						_isLadderCollision = true;
-
-						_gravityStop = true; //중력 멈추고
 						if (_choice == ERIC)
 						{
 							_y[ERIC] -= 5;
+							_isLadderCollision = true;
+							_gravityStop = true; //중력 멈추고
 						}
 						else if (_choice == BALEOG)
 						{
 							_y[BALEOG] -= 5;
+							_isLadderCollision = true;
+							_gravityStop = true; //중력 멈추고
 						}
 						else if (_choice == OLAF)
 						{
 							_y[OLAF] -= 5;
+							_isLadderCollision = true;
+							_gravityStop = true; //중력 멈추고
 						}
 					}
 
-	
-					if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+					if (_rc[i].bottom < _ladder[j].rc.bottom)
 					{
-						_isLadderCollision = true;
-						if (_choice == ERIC)
+						if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 						{
-							_y[ERIC] += 5;
-						}
-						else if (_choice == BALEOG)
-						{
-							_y[BALEOG] += 5;
-						}
-						else if (_choice == OLAF)
-						{
-							_y[OLAF] += 5;
+							if (_choice == ERIC)
+							{
+								_y[ERIC] += 5;
+								_isLadderCollision = true;
+								_gravityStop = true; //중력 멈추고
+							}
+							else if (_choice == BALEOG)
+							{
+								_y[BALEOG] += 5;
+								_isLadderCollision = true;
+								_gravityStop = true; //중력 멈추고
+							}
+							else if (_choice == OLAF)
+							{
+								_y[OLAF] += 5;
+								_isLadderCollision = true;
+								_gravityStop = true; //중력 멈추고
+							}
 						}
 					}
 
@@ -507,11 +515,14 @@ void playerManager::ladderCollision()
 			else if	(!(_rc[_choice].left < _ladder[_ladderChoice].rc.right - 50 && _rc[_choice].right > _ladder[_ladderChoice].rc.left + 50 && _rc[_choice].top < _ladder[_ladderChoice].rc.bottom && _rc[_choice].bottom > _ladder[_ladderChoice].rc.top))
 			//else if (!IntersectRect(&temp, &_rc[_choice], &_ladder[_ladderChoice].rc))
 			{
-				_gravityStop = false;
-				_isLadderCollision = false;
-				_eric->setLadderCollision(false);
-				_baleog->setLadderCollision(false);
-				_olaf->setLadderCollision(false);
+				if (_camera->getChange() == false)
+				{
+					_gravityStop = false;
+					_isLadderCollision = false;
+					_eric->setLadderCollision(false);
+					_baleog->setLadderCollision(false);
+					_olaf->setLadderCollision(false);
+				}
 			}
 		}
 	}
@@ -700,18 +711,21 @@ void playerManager::pixelCollisionEmerald()
 				_x[ERIC] = i - 100;
 				_wallcheck++;
 
-				if (_wallcheck < 5)
+				if (_isJump == false)
 				{
-					_eric->setEricState(ERIC_RIGHT_WALL_PUSH);
-					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightPush"));
-					_eric->getEricMotion()->start();
-				}
-				else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
-				{
-					_eric->setEricState(ERIC_RIGHT_STOP);
-					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
-					_eric->getEricMotion()->start();
-					_wallcheck = 0;
+					if (_wallcheck < 5)
+					{
+						_eric->setEricState(ERIC_RIGHT_WALL_PUSH);
+						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightPush"));
+						_eric->getEricMotion()->start();
+					}
+					else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+					{
+						_eric->setEricState(ERIC_RIGHT_STOP);
+						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+						_eric->getEricMotion()->start();
+						_wallcheck = 0;
+					}
 				}
 				break;
 			}
