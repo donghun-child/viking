@@ -321,9 +321,9 @@ void stage1::itemCollision()
 			{
 				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getEricRect().bottom)
 				{
-					_bottomTum = (_playerManager->getEricRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom);
+					_bottomTum = (_playerManager->getEricRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom - 50);
 
-					_playerManager->setEricY(_playerManager->getEricY() - _bottomTum - 50);
+					_playerManager->setEricY(_playerManager->getEricY() - _bottomTum);
 				}
 			}
 		}
@@ -335,9 +335,9 @@ void stage1::itemCollision()
 			{
 				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getBaleogRect().bottom)
 				{
-					_bottomTum = (_playerManager->getBaleogRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom);
+					_bottomTum = (_playerManager->getBaleogRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom - 50);
 
-					_playerManager->setBalogY(_playerManager->getBalogY() - _bottomTum - 50);
+					_playerManager->setBalogY(_playerManager->getBalogY() - _bottomTum );
 				}
 			}
 		}
@@ -349,9 +349,9 @@ void stage1::itemCollision()
 			{
 				if ((*_bubble->getVItemAddress())[i].rc.bottom - 50 < _playerManager->getOlafRect().bottom)
 				{
-					_bottomTum = (_playerManager->getOlafRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom);
+					_bottomTum = (_playerManager->getOlafRect().bottom) - ((*_bubble->getVItemAddress())[i].rc.bottom - 50);
 
-					_playerManager->setOlafY(_playerManager->getOlafY() - _bottomTum - 50);
+					_playerManager->setOlafY(_playerManager->getOlafY() - _bottomTum );
 				}
 			}
 		}
