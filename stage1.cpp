@@ -97,11 +97,12 @@ void stage1::update()
 		_meat->update();
 		_bubble->update();
 		createBubble();
+		itemCollision();
 	}
 	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
 
-	itemCollision();
+	
 
 	//다리 움직이기
 	//if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD9))
