@@ -30,7 +30,7 @@ private:
 	item* _meat;
 
 	//오브젝트
-	item* _clockDari;
+	item* _dari;
 	item* _bubble;
 
 	//UI
@@ -48,6 +48,11 @@ private:
 
 	float _bottomTum;
 
+	bool _redKeyOn;
+	float _oldTime;
+	int _dariCount;
+	float _dariTum;
+
 public:
 	stage1();
 	~stage1();
@@ -62,5 +67,8 @@ public:
 	void createBubble();
 
 	void itemCollision();
+
+	void dariOn();
+
 };
 

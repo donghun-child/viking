@@ -24,7 +24,7 @@ HRESULT stage1::init()
 
 	_redKey = new item;
 	_redLock = new item;
-	_clockDari = new item;
+	_dari = new item;
 	_banana = new item;
 	_meat = new item;
 
@@ -36,8 +36,8 @@ HRESULT stage1::init()
 	_playerManager->getItemLinkAddress(_redKey);
 	_redLock->getPlayerManagerLinkAddress(_playerManager);
 	_playerManager->getItemLinkAddress(_redLock);
-	_clockDari->getPlayerManagerLinkAddress(_playerManager);
-	_playerManager->getItemLinkAddress(_clockDari);
+	_dari->getPlayerManagerLinkAddress(_playerManager);
+	_playerManager->getItemLinkAddress(_dari);
 	_banana->getPlayerManagerLinkAddress(_playerManager);
 	_playerManager->getItemLinkAddress(_banana);
 	_meat->getPlayerManagerLinkAddress(_playerManager);
@@ -58,9 +58,12 @@ HRESULT stage1::init()
 
 	_redKey->createItem("item", 2930, 390, REDKEY, 0);
 	_redLock->createItem("item", 1100, 760, REDLOCK, 0);
-	_clockDari->createItem("dari", 870, 675, 0, 0);
+	_dari->createItem("dari", 870, 675, 0, 0);
 	_banana->createItem("item", 1435, 1670, BANANA, 0);
 	_meat->createItem("item", 2880, 2000, MEAT, 0);
+
+	_redKeyOn = false;
+	_oldTime = GetTickCount();
 
 	return S_OK;
 }
@@ -70,7 +73,7 @@ void stage1::release()
 	SAFE_DELETE(_playerManager);
 	SAFE_DELETE(_redKey);
 	SAFE_DELETE(_redLock);
-	SAFE_DELETE(_clockDari);
+	SAFE_DELETE(_dari);
 	SAFE_DELETE(_bubble);
 	SAFE_DELETE(_banana);
 	SAFE_DELETE(_meat);
@@ -92,12 +95,13 @@ void stage1::update()
 		viewPixel();
 		_redKey->update();
 		_redLock->update();
-		_clockDari->update();
+		_dari->update();
 		_banana->update();
 		_meat->update();
 		_bubble->update();
 		createBubble();
 		itemCollision();
+		dariOn();
 	}
 	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
@@ -129,13 +133,13 @@ void stage1::render()
 	{
 		IMAGEMANAGER->render("pixel", getMemDC(), 0, 0, _playerManager->getCamera()->getCameraX(), _playerManager->getCamera()->getCameraY(), WINSIZEX, WINSIZEY);
 	}
-	_playerManager->render();
 	_redKey->render();
 	_redLock->render();
-	_clockDari->render();
+	_dari->render();
 	_banana->render();
 	_meat->render();
 	_bubble->render();
+	_playerManager->render();
 	_ui->render();
 
 	char str[100];
@@ -358,6 +362,96 @@ void stage1::itemCollision()
 					_playerManager->setOlafY(_playerManager->getOlafY() - _bottomTum );
 				}
 			}
+		}
+	}
+}
+
+void stage1::dariOn()
+{
+	//다리 내리기
+	if (_redKeyOn)
+	{
+		for (int i = 0; i < _dari->getVItem().size(); ++i)
+		{
+			if (GetTickCount() - _oldTime >= 0.03 * 1000)
+			{
+				if ((*_dari->getVItemAddress())[i].frameX < 9)
+				{
+					(*_dari->getVItemAddress())[i].frameX += 1;
+				}
+				_oldTime = GetTickCount();
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < _dari->getVItem().size(); ++i)
+		{
+			if (GetTickCount() - _oldTime >= 0.03 * 1000)
+			{
+				if ((*_dari->getVItemAddress())[i].frameX > 0)
+				{
+					(*_dari->getVItemAddress())[i].frameX -= 1;
+				}
+				_oldTime = GetTickCount();
+			}
+		}
+	}
+
+	//다리 건너기
+	if (_redKeyOn)
+	{
+		//다리가 다 놓여진후 건널수있게용
+		_dariCount++;
+
+		if (_dariCount > 70)
+		{
+			for (int i = 0; i < _dari->getVItem().size(); ++i)
+			{
+				//에릭
+				if (IntersectRect(&temp, &(*_dari->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+				{
+					if ((*_dari->getVItemAddress())[i].rc.bottom - 60 < _playerManager->getEricRect().bottom)
+					{
+						_dariTum = _playerManager->getEricRect().bottom - ((*_dari->getVItemAddress())[i].rc.bottom - 60) ;
+
+						_playerManager->setEricY(_playerManager->getEricY() - _dariTum);
+					}
+				}
+				//벨로그
+				if (IntersectRect(&temp, &(*_dari->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+				{
+					if ((*_dari->getVItemAddress())[i].rc.bottom - 60 < _playerManager->getBaleogRect().bottom)
+					{
+						_dariTum = _playerManager->getBaleogRect().bottom - ((*_dari->getVItemAddress())[i].rc.bottom - 60);
+
+						_playerManager->setBalogY(_playerManager->getBalogY() - _dariTum);
+					}
+				}
+				//올라프
+				if (IntersectRect(&temp, &(*_dari->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+				{
+					if ((*_dari->getVItemAddress())[i].rc.bottom - 60 < _playerManager->getOlafRect().bottom)
+					{
+						_dariTum = _playerManager->getOlafRect().bottom - ((*_dari->getVItemAddress())[i].rc.bottom - 60);
+
+						_playerManager->setOlafY(_playerManager->getOlafY() - _dariTum);
+					}
+				}
+			}
+		}
+	}
+
+	//다리 내리고 올리는 키
+	if (KEYMANAGER->isOnceKeyDown('E'))
+	{
+		if (!_redKeyOn)
+		{
+			_redKeyOn = true;
+		}
+		else
+		{
+			_redKeyOn = false;
 		}
 	}
 }
