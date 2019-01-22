@@ -182,7 +182,7 @@ void eric::render(float viewX, float viewY)
 	sprintf_s(str, "_motionTime : %f ", _motionTime);
 	TextOut(getMemDC(), 200, 100, str, strlen(str));
 
-	sprintf_s(str, "_motionWorldTime : %f ", _motionWorldTime);
+	sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	TextOut(getMemDC(), 200, 120, str, strlen(str));
 
 

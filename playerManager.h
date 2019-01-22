@@ -13,6 +13,13 @@ enum Character
 	OLAF
 };
 
+struct ladder //사다리
+{
+	RECT rc;
+	float x, y;
+	float viewX, viewY;
+};
+
 class item;
 
 class playerManager : public gameNode
@@ -24,6 +31,7 @@ private:
 
 	bool _isDebug;
 
+	ladder _ladder[5]; //사다리
 	baleog* _baleog;
 	eric* _eric;
 	olaf* _olaf;
@@ -70,6 +78,9 @@ public:
 	void characterMove();
 	void characterChange();
 
+	//사다리 충돌
+	void ladderCollision();
+
 	//픽셀충돌
 	void pixelCollisionGreen();
 	void pixelCollisionYellow();
@@ -105,6 +116,10 @@ public:
 
 	Character getChoice() {return _choice;}
 	void setChoice(Character choice) {_choice = choice;}
+
+	RECT getEricRect() {return _rc[ERIC]; }
+	RECT getBaleogRect() { return _rc[BALEOG]; }
+	RECT getOlafRect() { return _rc[OLAF]; }
 
 
 };

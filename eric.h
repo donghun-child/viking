@@ -64,5 +64,7 @@ public:
 	float getSpeed() { return _speed; }
 
 	void setIsJumpMotion(bool jump) {_isJump = jump;}
+
+	void setLadderCollision(bool collision) {_isLadderCollision = collision;}
 };
 

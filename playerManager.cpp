@@ -39,6 +39,37 @@ HRESULT playerManager::init()
 		_rc[i] = RectMake(_viewX[i], _viewY[i], 100, 100);
 	}
 
+	//사다리 부분
+	_ladder[0].x = 920;
+	_ladder[0].y = 1350;
+	_ladder[0].viewX = _ladder[0].x;
+	_ladder[0].viewY = _ladder[0].y;
+	_ladder[0].rc = RectMake(_ladder[0].viewX, _ladder[0].viewY, 30, 285);
+
+	_ladder[1].x = 2000;
+	_ladder[1].y = 1170;
+	_ladder[1].viewX = _ladder[1].x;
+	_ladder[1].viewY = _ladder[1].y;
+	_ladder[1].rc = RectMake(_ladder[1].viewX, _ladder[1].viewY, 30, 650);
+
+	_ladder[2].x = 2140;
+	_ladder[2].y = 1825;
+	_ladder[2].viewX = _ladder[2].x;
+	_ladder[2].viewY = _ladder[2].y;
+	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 275);
+
+	_ladder[3].x = 2515;
+	_ladder[3].y = 1540;
+	_ladder[3].viewX = _ladder[3].x;
+	_ladder[3].viewY = _ladder[3].y;
+	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 235);
+
+	_ladder[4].x = 2890;
+	_ladder[4].y = 1305;
+	_ladder[4].viewX = _ladder[4].x;
+	_ladder[4].viewY = _ladder[4].y;
+	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 475);
+	
 	_isDebug = false;
 
 	for (int i = 0; i < 3; ++i)
@@ -91,6 +122,8 @@ void playerManager::update()
 	//에릭의 점프
 	jumpGravity(_choice);
 
+	//사다리 충돌
+	ladderCollision();
 	//픽셀충돌
 	pixelCollisionGreen();
 	pixelCollisionYellow();
@@ -123,6 +156,18 @@ void playerManager::update()
 		_viewX[i] = _x[i] - _camera->getCameraX();
 		_viewY[i] = _y[i] - _camera->getCameraY();
 	}
+
+	//사다리 갱신
+	for (int i = 0; i < 5; i++)
+	{
+		_ladder[i].viewX = _ladder[i].x - _camera->getCameraX();
+		_ladder[i].viewY = _ladder[i].y - _camera->getCameraY();
+	}
+	_ladder[0].rc = RectMake(_ladder[0].viewX, _ladder[0].viewY, 30, 285);
+	_ladder[1].rc = RectMake(_ladder[1].viewX, _ladder[1].viewY, 30, 650);
+	_ladder[2].rc = RectMake(_ladder[2].viewX, _ladder[2].viewY, 30, 275);
+	_ladder[3].rc = RectMake(_ladder[3].viewX, _ladder[3].viewY, 30, 235);
+	_ladder[4].rc = RectMake(_ladder[4].viewX, _ladder[4].viewY, 30, 475);
 
 	//갱신
 	for (int i = 0; i < 3; ++i)
@@ -176,6 +221,10 @@ void playerManager::render()
 	_baleog->render(_viewX[BALEOG] - 40, _viewY[BALEOG] - 50);
 	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
 
+	for (int i = 0; i < 5; i++)
+	{
+		Rectangle(getMemDC(), _ladder[i].rc);
+	}
 	for (int i = 0; i < _arrow->getVArrow().size(); i++)
 	{
 		_arrow->render((*_arrow->getVArrowAddress())[i].viewX, (*_arrow->getVArrowAddress())[i].viewY);
@@ -271,36 +320,6 @@ void playerManager::characterMove()
 			else if (_choice == OLAF)
 			{
 				_x[OLAF] += _olaf->getSpeed();
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_UP))
-		{
-			if (_choice == ERIC)
-			{
-				_y[ERIC] -= 5;
-			}
-			else if (_choice == BALEOG)
-			{
-				_y[BALEOG] -= 5;
-			}
-			else if (_choice == OLAF)
-			{
-				_y[OLAF] -= 5;
-			}
-		}
-		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-		{
-			if (_choice == ERIC)
-			{
-				_y[ERIC] += 5;
-			}
-			else if (_choice == BALEOG)
-			{
-				_y[BALEOG] += 5;
-			}
-			else if (_choice == OLAF)
-			{
-				_y[OLAF] += 5;
 			}
 		}
 		//벨로그 화살쏘는부분
@@ -417,6 +436,60 @@ void playerManager::characterChange()
 			_choice = ERIC;
 			_camera->cameraChange(_x[ERIC], _y[ERIC]);
 			SOUNDMANAGER->play("UI_OlafPic");
+		}
+	}
+}
+
+void playerManager::ladderCollision()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			RECT temp;
+			if(IntersectRect(&temp, &_rc[i], &_ladder[j].rc))
+			{
+				_baleog->setLadderCollision(true); //사다리 충돌
+				_eric->setLadderCollision(true);
+				if (_camera->getChange() == false)
+				{
+					if (KEYMANAGER->isStayKeyDown(VK_UP))
+					{
+			
+						if (_choice == ERIC)
+						{
+							_y[ERIC] -= _eric->getSpeed();
+						}
+						else if (_choice == BALEOG)
+						{
+							_y[BALEOG] -= 5;
+						}
+						else if (_choice == OLAF)
+						{
+							_y[OLAF] -= 5;
+						}
+					}
+					else if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+					{
+						if (_choice == ERIC)
+						{
+							_y[ERIC] += 5;
+						}
+						else if (_choice == BALEOG)
+						{
+							_y[BALEOG] += 5;
+						}
+						else if (_choice == OLAF)
+						{
+							_y[OLAF] += 5;
+						}
+					}
+				}
+			}
+			else if (!IntersectRect(&temp, &_rc[i], &_ladder[j].rc))
+			{
+				//_eric->setLadderCollision(false);
+			}
 		}
 	}
 }
