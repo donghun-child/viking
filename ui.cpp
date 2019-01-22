@@ -18,6 +18,7 @@ HRESULT ui::init()
 	IMAGEMANAGER->addFrameImage("profile", "image/profile.bmp", 375, 270, 3, 3, false, RGB(0, 0, 0));
 	IMAGEMANAGER->addImage("life", "image/life.bmp", 105, 25, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("box", "image/box.bmp", 62, 62, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("uiItem", "image/uiItem.bmp", 440, 55, 8, 1, true, RGB(255, 0, 255));
 
 	_ericCurrentX = _ericCurrentY = 0;
 	_baleogCurrentX = 1;
@@ -29,6 +30,7 @@ HRESULT ui::init()
 	_baleogLife = 105;
 	_olafLife = 105;
 
+	_itemMove = 0;
 
 	_ericBox_X = 187; 
 	_ericBox_Y = 671;
@@ -37,6 +39,19 @@ HRESULT ui::init()
 	_olafBox_X = 751; 
 	_olafBox_Y = 671;
 	
+	for(int i = 0; i < 4; i++)
+	{ 
+		_ericItemFrameX[i] = 1, _ericItemFrameY[i] = 0;
+		_baleogItemFrameX[i] = 5, _baleogItemFrameY[i] = 0;
+		_olafItemFrameX[i] = 3, _olafItemFrameY[i] = 0;
+	}
+
+	_fKeyMod = false;
+
+	_ericItemNumber = _baleogItemNumber = _olafItemNumber = 0;
+
+	_deleteItemFrameX = 7;
+
 	_ericCursor = _baleogCursor = _olafCursor = false;
 	_oldTime = GetTickCount();
 
@@ -49,32 +64,39 @@ void ui::release()
 
 void ui::update(int choice, bool uiChange)
 {
+	_choice = choice;
+	vikingItemNumber(_choice);
 	if (uiChange)
 	{
-		keyControl(choice);									//커서 움직임 키값
-		if (GetTickCount() - _oldTime >= 1 * 400)
+		keyControl(_choice);									//커서 움직임 키값
+
+		if (!_fKeyMod)
 		{
-			if (choice == 0)
+			if (GetTickCount() - _oldTime >= 1 * 300)
 			{
-				if (!_ericCursor) _ericCursor = true;
-				else _ericCursor = false;
+				if (_choice == 0)
+				{
+					if (!_ericCursor) _ericCursor = true;
+					else _ericCursor = false;
+				}
+				else if (_choice == 1)
+				{
+					if (!_baleogCursor)_baleogCursor = true;
+					else _baleogCursor = false;
+				}
+				else if (_choice == 2)
+				{
+					if (!_olafCursor) _olafCursor = true;
+					else _olafCursor = false;
+				}
+				_oldTime = GetTickCount();
 			}
-			else if (choice == 1)
-			{
-				if (!_baleogCursor)_baleogCursor = true;
-				else _baleogCursor = false;
-			}
-			else if (choice == 2)
-			{
-				if (!_olafCursor) _olafCursor = true;
-				else _olafCursor = false;
-			}
-			_oldTime = GetTickCount();
 		}
 	}
 	else													//커서 에러 예외 처리
 	{
 		_ericCursor = _baleogCursor = _olafCursor = false;
+		_fKeyMod = false;
 	}
 
 }
@@ -100,10 +122,14 @@ void ui::render()
 	{
 		IMAGEMANAGER->findImage("box")->render(getMemDC(), _olafBox_X, _olafBox_Y);
 	}
-
-	//char str[128];
-	//sprintf_s(str, "초이스 : %d", _choice);
-	//TextOut(getMemDC(), 100, 100, str, strlen(str));
+	uiItemRender();
+	char str[128];
+	sprintf_s(str, "에릭템번 : %d", _ericItemNumber);
+	TextOut(getMemDC(), 500, 100, str, strlen(str));
+	sprintf_s(str, "벨로그템번 : %d", _baleogItemNumber);
+	TextOut(getMemDC(), 600, 100, str, strlen(str));
+	sprintf_s(str, "올라프템번 : %d", _olafItemNumber);
+	TextOut(getMemDC(), 700, 100, str, strlen(str));
 }
 
 void ui::profileUpdate(int choice)
@@ -141,95 +167,320 @@ void ui::keyControl(int choice)
 {
 	if (choice == 0)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		if (!(_ericItemFrameX[_ericItemNumber] == 0))
 		{
-			if (_ericBox_X == 250)
+			if (KEYMANAGER->isOnceKeyDown('F'))
 			{
-				_ericBox_X = 187;
+				if (_deleteItemFrameX == 7)
+				{
+					if (!_fKeyMod) _fKeyMod = true;
+					else _fKeyMod = false;
+					_ericCursor = false;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		else
 		{
-			if (_ericBox_X == 187)
+			if (KEYMANAGER->isOnceKeyDown('F'))
 			{
-				_ericBox_X = 250;
+				if (!(_deleteItemFrameX == 7))
+				{
+					_deleteItemFrameX = 7;
+					_fKeyMod = false;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+
+		if (!_fKeyMod)
 		{
-			if (_ericBox_Y == 734)
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_ericBox_Y = 671;
+				if (_ericBox_X == 250)
+				{
+					_ericBox_X = 187;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				if (_ericBox_X == 187)
+				{
+					_ericBox_X = 250;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_UP))
+			{
+				if (_ericBox_Y == 734)
+				{
+					_ericBox_Y = 671;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+			{
+				if (_ericBox_Y == 671)
+				{
+					_ericBox_Y = 734;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		else
 		{
-			if (_ericBox_Y == 671)
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) || KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_ericBox_Y = 734;
+				if (_itemMove == 0)
+				{
+					_itemMove++;
+					_saveFrameX = _ericItemFrameX[_ericItemNumber];
+					_deleteItemFrameX = _ericItemFrameX[_ericItemNumber];
+					_ericItemFrameX[_ericItemNumber] = 0;
+				}
+				else
+				{
+					_itemMove--;
+					_ericItemFrameX[_ericItemNumber] = _saveFrameX;
+					_deleteItemFrameX = 7;
+				}
 			}
 		}
 	}
 	else if (choice == 1)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		if (!(_baleogItemFrameX[_baleogItemNumber] == 0))
 		{
-			if (_baleogBox_X == 532)
+			if (KEYMANAGER->isOnceKeyDown('F'))
 			{
-				_baleogBox_X = 470;
+				if (_deleteItemFrameX == 7)
+				{
+					if (!_fKeyMod) _fKeyMod = true;
+					else _fKeyMod = false;
+					_baleogCursor = false;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		else
 		{
-			if (_baleogBox_X == 470)
+			if (KEYMANAGER->isOnceKeyDown('F'))
 			{
-				_baleogBox_X = 532;
+				if (!(_deleteItemFrameX == 7))
+				{
+					_deleteItemFrameX = 7;
+					_fKeyMod = false;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+
+		if (!_fKeyMod)
 		{
-			if (_baleogBox_Y == 734)
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_baleogBox_Y = 671;
+				if (_baleogBox_X == 533)
+				{
+					_baleogBox_X = 470;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				if (_baleogBox_X == 470)
+				{
+					_baleogBox_X = 533;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_UP))
+			{
+				if (_baleogBox_Y == 734)
+				{
+					_baleogBox_Y = 671;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+			{
+				if (_baleogBox_Y == 671)
+				{
+					_baleogBox_Y = 734;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		else
 		{
-			if (_baleogBox_Y == 671)
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) || KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_baleogBox_Y = 734;
+				if (_itemMove == 0)
+				{
+					_itemMove++;
+					_saveFrameX = _baleogItemFrameX[_baleogItemNumber];
+					_deleteItemFrameX = _baleogItemFrameX[_baleogItemNumber];
+					_baleogItemFrameX[_baleogItemNumber] = 0;
+				}
+				else
+				{
+					_itemMove--;
+					_baleogItemFrameX[_baleogItemNumber] = _saveFrameX;
+					_deleteItemFrameX = 7;
+				}
 			}
 		}
 	}
 	else if (choice == 2)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		if (!(_olafItemFrameX[_olafItemNumber] == 0))
 		{
-			if (_olafBox_X == 814)
+			if (KEYMANAGER->isOnceKeyDown('F'))
 			{
-				_olafBox_X = 751;
+				if (_deleteItemFrameX == 7)
+				{
+					if (!_fKeyMod) _fKeyMod = true;
+					else _fKeyMod = false;
+					_olafCursor = false;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		else
 		{
-			if (_olafBox_X == 751)
+			if (KEYMANAGER->isOnceKeyDown('F'))
 			{
-				_olafBox_X = 814;
+				if (!(_deleteItemFrameX == 7))
+				{
+					_deleteItemFrameX = 7;
+					_fKeyMod = false;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		if (!_fKeyMod)
 		{
-			if (_olafBox_Y == 734)
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_olafBox_Y = 671;
+				if (_olafBox_X == 814)
+				{
+					_olafBox_X = 751;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				if (_olafBox_X == 751)
+				{
+					_olafBox_X = 814;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_UP))
+			{
+				if (_olafBox_Y == 734)
+				{
+					_olafBox_Y = 671;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+			{
+				if (_olafBox_Y == 671)
+				{
+					_olafBox_Y = 734;
+				}
 			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		else
 		{
-			if (_olafBox_Y == 671)
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) || KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_olafBox_Y = 734;
+				if (_itemMove == 0)
+				{
+					_itemMove++;
+					_saveFrameX = _olafItemFrameX[_olafItemNumber];
+					_deleteItemFrameX = _olafItemFrameX[_olafItemNumber];
+					_olafItemFrameX[_olafItemNumber] = 0;
+				}
+				else
+				{
+					_itemMove--;
+					_olafItemFrameX[_olafItemNumber] = _saveFrameX;
+					_deleteItemFrameX = 7;
+				}
 			}
+		}
+	}
+}
+
+void ui::uiItemSave(int itemFrameX)
+{
+
+}
+
+void ui::uiItemRender()
+{
+
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 187, 671, _ericItemFrameX[0], _ericItemFrameY[0]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 250, 671, _ericItemFrameX[1], _ericItemFrameY[1]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 187, 734, _ericItemFrameX[2], _ericItemFrameY[2]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 250, 734, _ericItemFrameX[3], _ericItemFrameY[3]);
+
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 470, 671, _baleogItemFrameX[0], _baleogItemFrameY[0]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 533, 671, _baleogItemFrameX[1], _baleogItemFrameY[1]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 470, 734, _baleogItemFrameX[2], _baleogItemFrameY[2]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 533, 734, _baleogItemFrameX[3], _baleogItemFrameY[3]);
+
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 751, 671, _olafItemFrameX[0], _olafItemFrameY[0]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 814, 671, _olafItemFrameX[1], _olafItemFrameY[1]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 751, 734, _olafItemFrameX[2], _olafItemFrameY[2]);
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 814, 734, _olafItemFrameX[3], _olafItemFrameY[3]);
+
+	IMAGEMANAGER->findImage("uiItem")->frameRender(getMemDC(), 880, 671, _deleteItemFrameX, 0);
+	
+}
+//각 바이킹 아이템 넘버 꼴보기 싫음
+void ui::vikingItemNumber(int choice)
+{
+	if (choice == 0)
+	{
+		if (_ericBox_X == 187 && _ericBox_Y == 671)
+		{
+			_ericItemNumber = 0;
+		}
+		else if (_ericBox_X == 250 && _ericBox_Y == 671)
+		{
+			_ericItemNumber = 1;
+		}
+		else if (_ericBox_X == 187 && _ericBox_Y == 734)
+		{
+			_ericItemNumber = 2;
+		}
+		else if (_ericBox_X == 250 && _ericBox_Y == 734)
+		{
+			_ericItemNumber = 3;
+		}
+	}
+	else if (choice == 1)
+	{
+		if (_baleogBox_X == 470 && _baleogBox_Y == 671)
+		{
+			_baleogItemNumber = 0;
+		}
+		else if (_baleogBox_X == 533 && _baleogBox_Y == 671)
+		{
+			_baleogItemNumber = 1;
+		}
+		else if (_baleogBox_X == 470 && _baleogBox_Y == 734)
+		{
+			_baleogItemNumber = 2;
+		}
+		else if (_baleogBox_X == 533 && _baleogBox_Y == 734)
+		{
+			_baleogItemNumber = 3;
+		}
+	}
+	else if (choice == 2)
+	{
+		if (_olafBox_X == 751 && _olafBox_Y == 671)
+		{
+			_olafItemNumber = 0;
+		}
+		else if (_olafBox_X == 814 && _olafBox_Y == 671)
+		{
+			_olafItemNumber = 1;
+		}
+		else if (_olafBox_X == 751 && _olafBox_Y == 734)
+		{
+			_olafItemNumber = 2;
+		}
+		else if (_olafBox_X == 814 && _olafBox_Y == 734)
+		{
+			_olafItemNumber = 3;
 		}
 	}
 }
