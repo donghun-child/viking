@@ -66,6 +66,9 @@ private:
 
 	bool _isCameraMode;
 	bool _isLadderCollision;
+	bool _gravityStop;
+
+	int _ladderChoice;
 
 public:
 	playerManager();

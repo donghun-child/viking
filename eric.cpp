@@ -251,7 +251,7 @@ void eric::keySetting()
 	}
 
 	//사다리 충돌했을경우만 위아래 움직이게함.
-	//if (_isLadderCollision == true)
+	if (_isLadderCollision == true)
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP))
 		{

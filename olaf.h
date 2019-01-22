@@ -9,6 +9,8 @@ enum OLAFDIRECTION
 	OLAF_DIRECTION_LEFT_SHIELD,
 	OLAF_DIRECTION_RIGHT_MOVE,
 	OLAF_DIRECTION_LEFT_MOVE,
+	OLAF_DIRECTION_UP_MOVE,
+	OLAF_DIRECTION_DOWN_MOVE,
 	OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE,
 	OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE,
 	OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY,
@@ -37,6 +39,7 @@ private:
 	RECT _wall;
 	float _Wax, _Way;
 
+	bool _isLadderCollision; //사다리 충돌했니
 	POINTFLOAT _cameraPos;
 
 
@@ -65,6 +68,8 @@ public:
 	float getplayerX() { return _olaf_x; }
 	float getplayerY() { return _olaf_y; }
 	float getSpeed() { return _speed; }
+
+	void setLadderCollision(bool collision) { _isLadderCollision = collision; }
 
 	void olafMovement();
 };

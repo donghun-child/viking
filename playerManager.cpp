@@ -222,10 +222,11 @@ void playerManager::render()
 	_baleog->render(_viewX[BALEOG] - 40, _viewY[BALEOG] - 50);
 	_olaf->render(_viewX[OLAF] - 50, _viewY[OLAF] - 50);
 
-	for (int i = 0; i < 5; i++)
-	{
-		Rectangle(getMemDC(), _ladder[i].rc);
-	}
+	//사다리 렉트
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	Rectangle(getMemDC(), _ladder[i].rc);
+	//}
 	for (int i = 0; i < _arrow->getVArrow().size(); i++)
 	{
 		_arrow->render((*_arrow->getVArrowAddress())[i].viewX, (*_arrow->getVArrowAddress())[i].viewY);
@@ -241,7 +242,7 @@ void playerManager::render()
 
 	//Rectangle(getMemDC(), _camerc);
 	//_camera->render();
-	//char str[100];
+	char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
 
@@ -251,8 +252,12 @@ void playerManager::render()
 	//sprintf_s(str, "_prove_Y : %f", _prove_Y[0]);
 	//TextOut(getMemDC(), 300, 140, str, strlen(str));
 	//
-	//sprintf_s(str, "중력값 : %f", _gravity);
-	//TextOut(getMemDC(), 300, 160, str, strlen(str));
+	sprintf_s(str, "_isLadderCollision : %d", _isLadderCollision);
+	TextOut(getMemDC(), 300, 160, str, strlen(str));
+	sprintf_s(str, "_gravityStop : %d", _gravityStop);
+	TextOut(getMemDC(), 300, 180, str, strlen(str));
+	sprintf_s(str, "_isGravity : %d", _isGravity);
+	TextOut(getMemDC(), 300, 200, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -443,21 +448,27 @@ void playerManager::characterChange()
 
 void playerManager::ladderCollision()
 {
+
 	RECT temp;
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 5; j++)
-		{
-			if(IntersectRect(&temp, &_rc[i], &_ladder[j].rc))
+		{			
+			if (_rc[i].left < _ladder[j].rc.right - 50 && _rc[i].right > _ladder[j].rc.left + 50 && _rc[i].top < _ladder[j].rc.bottom && _rc[i].bottom > _ladder[j].rc.top)
 			{
-				_isLadderCollision = true;
-				_baleog->setLadderCollision(true); //사다리 충돌
+				_ladderChoice = j;
+				//사다리 충돌
+				_baleog->setLadderCollision(true); 
 				_eric->setLadderCollision(true);
-				
+				_olaf->setLadderCollision(true);
+
 				if (_camera->getChange() == false)
 				{
 					if (KEYMANAGER->isStayKeyDown(VK_UP))
 					{
+						_isLadderCollision = true;
+
+						_gravityStop = true; //중력 멈추고
 						if (_choice == ERIC)
 						{
 							_y[ERIC] -= 5;
@@ -471,26 +482,36 @@ void playerManager::ladderCollision()
 							_y[OLAF] -= 5;
 						}
 					}
-					//else if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-					//{
-					//	if (_choice == ERIC)
-					//	{
-					//		_y[ERIC] += 5;
-					//	}
-					//	else if (_choice == BALEOG)
-					//	{
-					//		_y[BALEOG] += 5;
-					//	}
-					//	else if (_choice == OLAF)
-					//	{
-					//		_y[OLAF] += 5;
-					//	}
-					//}
+
+	
+					if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+					{
+						_isLadderCollision = true;
+						if (_choice == ERIC)
+						{
+							_y[ERIC] += 5;
+						}
+						else if (_choice == BALEOG)
+						{
+							_y[BALEOG] += 5;
+						}
+						else if (_choice == OLAF)
+						{
+							_y[OLAF] += 5;
+						}
+					}
+
 				}
+
 			}
-			else if (!IntersectRect(&temp, &_rc[i], &_ladder[j].rc))
+			else if	(!(_rc[_choice].left < _ladder[_ladderChoice].rc.right - 50 && _rc[_choice].right > _ladder[_ladderChoice].rc.left + 50 && _rc[_choice].top < _ladder[_ladderChoice].rc.bottom && _rc[_choice].bottom > _ladder[_ladderChoice].rc.top))
+			//else if (!IntersectRect(&temp, &_rc[_choice], &_ladder[_ladderChoice].rc))
 			{
-				//_eric->setLadderCollision(false);
+				_gravityStop = false;
+				_isLadderCollision = false;
+				_eric->setLadderCollision(false);
+				_baleog->setLadderCollision(false);
+				_olaf->setLadderCollision(false);
 			}
 		}
 	}
@@ -499,7 +520,7 @@ void playerManager::ladderCollision()
 void playerManager::pixelCollisionGreen()
 {
 	//위로 올라서게
-	if (!_isJump)
+	if (!_isJump && !_isLadderCollision)
 	{
 		//if (select == 1)
 		{
@@ -519,7 +540,6 @@ void playerManager::pixelCollisionGreen()
 					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
 					break;
 				}
-				
 			}
 		}
 		//else if (select == 2)
@@ -802,8 +822,11 @@ void playerManager::jumpGravity(int select)
 		}
 		if (_isGravity)
 		{
-			_y[i] += 7.f;
-			_jumpCount = 0;
+			if (_gravityStop == false)
+			{
+				_y[i] += 7.f;
+				_jumpCount = 0;
+			}
 		}
 
 		if (select == ERIC)
