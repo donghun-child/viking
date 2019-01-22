@@ -13,12 +13,12 @@ menu::~menu()
 
 HRESULT menu::init()
 {
-	IMAGEMANAGER->addImage("오프닝", "image/theLostVikings.bmp", 1000, 800, true, RGB(255, 0 ,255));
-	IMAGEMANAGER->addImage("메뉴", "image/menu.bmp", 1000, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("오프닝", "image/theLostVikings.bmp", 1000, 609, true, RGB(255, 0 ,255));
+	IMAGEMANAGER->addImage("메뉴", "image/menu.bmp", 1000, 609, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("메뉴선택", "image/menuselect.bmp", 50, 50, true, RGB(255, 0, 255));
 
 	_menuSelect_X = 320;
-	_menuSelect_Y = 525;
+	_menuSelect_Y = 390;
 	_imageAlphaValue = 0;
 
 	_menuGameStart = false;
@@ -44,8 +44,8 @@ void menu::update()
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP) || KEYMANAGER->isOnceKeyDown(VK_DOWN))
 		{
-			if (_menuSelect_Y == 590) _menuSelect_Y = 525;
-			else _menuSelect_Y = 590;
+			if (_menuSelect_Y == 455) _menuSelect_Y = 390;
+			else _menuSelect_Y = 455;
 			SOUNDMANAGER->play("menu_SeletSound");
 		}
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))

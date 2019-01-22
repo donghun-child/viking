@@ -154,10 +154,10 @@ HRESULT image::init(const char * fileName, int width, int height, BOOL trans, CO
 	_blendImage->loadType = LOAD_EMPTY;
 	_blendImage->resID = 0;
 	_blendImage->hMemDC = CreateCompatibleDC(hdc);
-	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, WINSIZEY);
+	_blendImage->hBit = (HBITMAP)CreateCompatibleBitmap(hdc, WINSIZEX, height);
 	_blendImage->hOBit = (HBITMAP)SelectObject(_blendImage->hMemDC, _blendImage->hBit);
 	_blendImage->width = WINSIZEX;
-	_blendImage->height = WINSIZEY;
+	_blendImage->height = height;
 
 	if (_imageInfo->hBit == NULL)
 	{
