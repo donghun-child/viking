@@ -220,23 +220,25 @@ void stage1::itemCollision()
 		//에릭
 		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
 		{
-			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX + 1;
 			(*_redKey->getVItemAddress())[i].isLive = false;
 			_ui->setEricFrameX(_currentFrameX);
+			_ui->setItemCollision(true);
 		}
 		//벨로그
 		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
 		{
-			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX + 1;
 			(*_redKey->getVItemAddress())[i].isLive = false;
+			_ui->setBaleogFrameX(_currentFrameX);
 			
 		}
 		//올라프
 		if (IntersectRect(&temp, &(*_redKey->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
 		{
-			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_redKey->getVItemAddress())[i].frameX + 1;
 			(*_redKey->getVItemAddress())[i].isLive = false;
-			
+			_ui->setOlafFrameX(_currentFrameX);
 		}
 	}
 	//레드자물쇠 충돌
@@ -267,23 +269,24 @@ void stage1::itemCollision()
 		//에릭
 		if (IntersectRect(&temp, &(*_banana->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
 		{
-			_currentFrameX = (*_banana->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_banana->getVItemAddress())[i].frameX + 1;
 			(*_banana->getVItemAddress())[i].isLive = false;
-
+			_ui->setEricFrameX(_currentFrameX);
+			_ui->setItemCollision(true);
 		}
 		//벨로그
 		if (IntersectRect(&temp, &(*_banana->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
 		{
-			_currentFrameX = (*_banana->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_banana->getVItemAddress())[i].frameX + 1;
 			(*_banana->getVItemAddress())[i].isLive = false;
-
+			_ui->setBaleogFrameX(_currentFrameX);
 		}
 		//올라프
 		if (IntersectRect(&temp, &(*_banana->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
 		{
-			_currentFrameX = (*_banana->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_banana->getVItemAddress())[i].frameX + 1;
 			(*_banana->getVItemAddress())[i].isLive = false;
-
+			_ui->setOlafFrameX(_currentFrameX);
 		}
 	}
 	//고기 충돌
@@ -292,23 +295,24 @@ void stage1::itemCollision()
 		//에릭
 		if (IntersectRect(&temp, &(*_meat->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
 		{
-			_currentFrameX = (*_meat->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_meat->getVItemAddress())[i].frameX + 1;
 			(*_meat->getVItemAddress())[i].isLive = false;
-
+			_ui->setEricFrameX(_currentFrameX);
+			_ui->setItemCollision(true);
 		}
 		//벨로그
 		if (IntersectRect(&temp, &(*_meat->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
 		{
-			_currentFrameX = (*_meat->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_meat->getVItemAddress())[i].frameX + 1;
 			(*_meat->getVItemAddress())[i].isLive = false;
-
+			_ui->setBaleogFrameX(_currentFrameX);
 		}
 		//올라프
 		if (IntersectRect(&temp, &(*_meat->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
 		{
-			_currentFrameX = (*_meat->getVItemAddress())[i].frameX;
+			_currentFrameX = (*_meat->getVItemAddress())[i].frameX + 1;
 			(*_meat->getVItemAddress())[i].isLive = false;
-
+			_ui->setOlafFrameX(_currentFrameX);
 		}
 	}
 	//버블 충돌

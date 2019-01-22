@@ -50,6 +50,8 @@ HRESULT ui::init()
 
 	_fKeyMod = false;
 
+	_itemCollision = false;
+
 	_ericItemNumber = _baleogItemNumber = _olafItemNumber = 0;
 
 	_deleteItemFrameX = 7;
@@ -68,9 +70,12 @@ void ui::update(int choice, bool uiChange)
 {
 	_choice = choice;
 	vikingItemNumber(_choice);
+	uiEricItemSave();
+	uiBaleogItemSave();
+	uiOlafItemSave();
 	if (uiChange)
 	{
-		uiEricItemSave();
+	
 		keyControl(_choice);									//커서 움직임 키값
 
 		if (!_fKeyMod)
@@ -101,7 +106,6 @@ void ui::update(int choice, bool uiChange)
 		_ericCursor = _baleogCursor = _olafCursor = false;
 		_fKeyMod = false;
 	}
-
 }
 
 void ui::render()
@@ -129,7 +133,7 @@ void ui::render()
 	char str[128];
 	sprintf_s(str, "아이템 : %d", _setEricFrameX);
 	TextOut(getMemDC(), 500, 100, str, strlen(str));
-	sprintf_s(str, "벨로그템번 : %d", _baleogItemNumber);
+	sprintf_s(str, "충돌 : %d", _itemCollision);
 	TextOut(getMemDC(), 600, 100, str, strlen(str));
 	sprintf_s(str, "올라프템번 : %d", _olafItemNumber);
 	TextOut(getMemDC(), 700, 100, str, strlen(str));
@@ -402,16 +406,73 @@ void ui::keyControl(int choice)
 
 void ui::uiEricItemSave()
 {
-	_ericItemFrameX[0] = _setEricFrameX + 1;
+	if (_itemCollision)
+	{
+		if (_ericItemFrameX[0] == 0)
+		{
+			_ericItemFrameX[0] = _setEricFrameX;
+		}
+		else if (_ericItemFrameX[1] == 0)
+		{
+			_ericItemFrameX[1] = _setEricFrameX;
+		}
+		else if (_ericItemFrameX[2] == 0)
+		{
+			_ericItemFrameX[2] = _setEricFrameX;
+		}
+		else if (_ericItemFrameX[3] == 0)
+		{
+			_ericItemFrameX[3] = _setEricFrameX;
+		}
+		_itemCollision = false;
+	}
 }
 void ui::uiBaleogItemSave()
 {
-	_baleogItemFrameX[0];
+	if (_itemCollision)
+	{
+		if (_baleogItemFrameX[0] == 0)
+		{
+			_baleogItemFrameX[0] = _setBaleogFrameX;
+		}
+		else if (_baleogItemFrameX[1] == 0)
+		{
+			_baleogItemFrameX[1] = _setBaleogFrameX;
+		}
+		else if (_baleogItemFrameX[2] == 0)
+		{
+			_baleogItemFrameX[2] = _setBaleogFrameX;
+		}
+		else if (_baleogItemFrameX[3] == 0)
+		{
+			_baleogItemFrameX[3] = _setBaleogFrameX;
+		}
+		_itemCollision = false;
+	}
 }
 
 void ui::uiOlafItemSave()
 {
-	_olafItemFrameX[0];
+	if (_itemCollision)
+	{
+		if (_olafItemFrameX[0] == 0)
+		{
+			_olafItemFrameX[0] = _setOlafFrameX;
+		}
+		else if (_olafItemFrameX[1] == 0)
+		{
+			_olafItemFrameX[1] = _setOlafFrameX;
+		}
+		else if (_olafItemFrameX[2] == 0)
+		{
+			_olafItemFrameX[2] = _setOlafFrameX;
+		}
+		else if (_olafItemFrameX[3] == 0)
+		{
+			_olafItemFrameX[3] = _setOlafFrameX;
+		}
+		_itemCollision = false;
+	}
 }
 
 void ui::uiItemRender()

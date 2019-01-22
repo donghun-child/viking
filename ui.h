@@ -23,6 +23,7 @@ private:
 
 	bool _ericCursor, _baleogCursor, _olafCursor;	//Ä¿¼­ ±ôºýÀÓ
 	bool _fKeyMod;
+	bool _itemCollision;
 
 	int _ericItemNumber, _baleogItemNumber, _olafItemNumber;
 
@@ -56,5 +57,7 @@ public:
 	void setEricFrameX(int currentFrameX) { _setEricFrameX = currentFrameX;}
 	void setBaleogFrameX(int currentFrameX) { _setBaleogFrameX = currentFrameX; }
 	void setOlafFrameX(int currentFrameX) { _setOlafFrameX = currentFrameX; }
+
+	void setItemCollision(bool itemCOllision) { _itemCollision = itemCOllision; }
 };
 
