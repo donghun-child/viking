@@ -57,10 +57,14 @@ HRESULT stage1::init()
 	_worldTime = TIMEMANAGER->getWorldTime();
 
 	_redKey->createItem("item", 2930, 390, REDKEY, 0);
+	_redKey->createItem("item", 2450, 220, REDKEY, 0);
 	_redLock->createItem("item", 1100, 760, REDLOCK, 0);
 	_dari->createItem("dari", 870, 675, 0, 0);
 	_banana->createItem("item", 1435, 1670, BANANA, 0);
+	_banana->createItem("item", 2300, 262, BANANA, 0);
 	_meat->createItem("item", 2880, 2000, MEAT, 0);
+	_meat->createItem("item", 2370, 242, MEAT, 0);
+	_meat->createItem("item", 2520, 242, MEAT, 0);
 
 	_redKeyOn = false;
 	_oldTime = GetTickCount();
