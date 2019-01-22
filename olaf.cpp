@@ -57,10 +57,10 @@ HRESULT olaf::init()
 	int leftPush[] = { 68,69,70,71 };
 	KEYANIMANAGER->addArrayFrameAnimation("olafName", "olafLeftPush", "olaf", leftPush, 4, 6, true);
 
-	int rightDead[] = {120, 121, 122, 123, 124, 125, 126, 127};
+	int rightDead[] = {112, 113, 114, 115, 116, 117, 118, 119};
 	KEYANIMANAGER->addArrayFrameAnimation("olafName", "rightDead", "olaf", rightDead, 8, 6, false);
 
-	int leftDead[] = {134, 133, 132, 131, 130, 129, 128, 127};
+	int leftDead[] = {127, 126, 125, 124, 123, 122, 121, 120};
 	KEYANIMANAGER->addArrayFrameAnimation("olafName", "leftDead", "olaf", leftDead, 8, 6, false);
 
 	_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
