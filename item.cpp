@@ -31,6 +31,8 @@ void item::update()
 	{
 		_viItem->viewX = _viItem->x - _playerManager->getCamera()->getCameraX();
 		_viItem->viewY = _viItem->y - _playerManager->getCamera()->getCameraY();
+
+		_viItem->rc = RectMake(_viItem->viewX, _viItem->viewY, _viItem->image->getFrameWidth(), _viItem->image->getFrameHeight());
 	}
 
 }
@@ -41,6 +43,7 @@ void item::render()
 	for (_viItem = _vItem.begin(); _viItem != _vItem.end(); ++_viItem)
 	{
 		_viItem->image->frameRender(getMemDC(), _viItem->viewX, _viItem->viewY, _viItem->frameX, _viItem->frameY);
+		//Rectangle(getMemDC(), _viItem->rc);
 	}
 
 
