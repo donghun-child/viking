@@ -263,6 +263,7 @@ void playerManager::update()
 	olafwallcheck();
 	olafShieldUpMove();
 	olafSHieldDownMove();
+	SideIn();
 }
 
 void playerManager::render()
@@ -1374,4 +1375,33 @@ void playerManager::olafSHieldDownMove()
 	else
 		shieldDowncount = 0;
 }
+void playerManager::SideIn()
+{
+	if (_x[ERIC] < 0)
+	{
+		_x[ERIC] = 0;
+	}
+	else if (_x[ERIC] > 2900)
+	{
+		_x[ERIC] = 2900;
+	}
 
+	if (_x[OLAF] < 0)
+	{
+		_x[OLAF] = 0;
+	}
+	else if (_x[OLAF] > 2900)
+	{
+		_x[OLAF] = 2900;
+	}
+
+	if (_x[BALEOG] < 0)
+	{
+		_x[BALEOG] = 0;
+	}
+	else if (_x[BALEOG] > 2900)
+	{
+		_x[BALEOG] = 2900;
+	}
+
+}

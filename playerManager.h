@@ -137,7 +137,7 @@ public:
 
 	void olafShieldUpMove();
 	void olafSHieldDownMove();
-
+	void SideIn();
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 	void getItemLinkAddress(item* item) { _item = item; }
 
