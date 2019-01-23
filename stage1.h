@@ -73,5 +73,7 @@ public:
 
 	void characterCollision();
 
+	playerManager* getPlayerManager() { return _playerManager; }
+
 };
 

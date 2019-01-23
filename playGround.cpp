@@ -33,6 +33,8 @@ HRESULT playGround::init()
 
 	SCENEMANAGER->changeScene("stage1");
 
+	_gameOverCount = 0;
+	_gameOverNum = 0;
 	
 	return S_OK;
 }
@@ -58,7 +60,31 @@ void playGround::update()
 	{
 		SCENEMANAGER->changeScene("stage1");
 	}
+	
+	if (_gameOverNum == 0)
+	{
+		if (_gameOverCount < 66)
+		{
+			if (_stage1->getPlayerManager()->getEricDead() == true &&
+				_stage1->getPlayerManager()->getBaleogDead() == true &&
+				_stage1->getPlayerManager()->getOlafDead() == true)
+			{
+				_gameOverCount++;
+				if (_gameOverCount == 65)
+				{
+					_gameOverNum = 1;
+					SCENEMANAGER->changeScene("gameOver");
+				}
+			}
+		}
+	}
+	
+
 	SCENEMANAGER->update();
+
+	
+
+
 }
 
 

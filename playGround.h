@@ -29,6 +29,8 @@ private:
 	gameClear* _gameClear;
 	sound* _sound;
 
+	int _gameOverCount;
+	int _gameOverNum;
 
 public:
 	virtual HRESULT init();

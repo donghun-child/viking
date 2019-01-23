@@ -13,7 +13,7 @@ gameOver::~gameOver()
 
 HRESULT gameOver::init()
 {
-	_over = IMAGEMANAGER->addFrameImage("gameOver", "image/gameOver.bmp", 16000, 800, 16, 1, true, RGB(255, 0, 255));
+	_over = IMAGEMANAGER->addFrameImage("gameOver", "image/gameOver.bmp", 16000, 609, 16, 1, true, RGB(255, 0, 255));
 
 	_frameX = 0;
 	_oldTime = GetTickCount();
