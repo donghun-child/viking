@@ -78,6 +78,11 @@ private:
 	bool _isDead[3];
 	float _moveTime, _moveWorldTime;
 
+	bool _isButt; //박치기했니
+	int _buttTime;
+
+	float _buttAngle;
+
 public:
 	playerManager();
 	~playerManager();

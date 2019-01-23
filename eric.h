@@ -17,6 +17,8 @@ enum ERICSTATE
 	ERIC_LEFT_WALL_PUSH,
 	ERIC_RIGHT_DEAD,
 	ERIC_LEFT_DEAD,
+	ERIC_RIGHT_BUTT, //오른쪽 박치기
+	ERIC_LEFT_BUTT, //왼쪽 박치기
 
 };
 class eric : public gameNode
@@ -25,7 +27,6 @@ private:
 	image* _ericImage;
 	RECT _eric_rc;
 	float _eric_X, _eric_Y;
-	POINTFLOAT _cameraPos;
 
 	float _acceleration; //대쉬할때 가속도
 	float _speed;
@@ -53,6 +54,8 @@ public:
 	static void leftDash(void* obj);
 	static void rightJump(void* obj);
 	static void leftJump(void* obj);
+	static void rightButt(void* obj);
+	static void leftButt(void* obj);
 
 	ERICSTATE getEricState() {return _ericState;}
 	void setEricState(ERICSTATE state) {_ericState = state;}

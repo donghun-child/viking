@@ -116,6 +116,7 @@ HRESULT playerManager::init()
 
 	_isCameraMode = false;
 	_isLadderCollision = false;
+	_isButt = false;
 
 	_deadTime = 0;
 	_moveWorldTime = TIMEMANAGER->getWorldTime();
@@ -308,8 +309,8 @@ void playerManager::render()
 	//sprintf_s(str, "_isDead[OLAF] : %d", _isDead[OLAF]);
 	//TextOut(getMemDC(), 300, 260, str, strlen(str));
 
-	//sprintf_s(str, "_choice: %d", _choice);
-	//TextOut(getMemDC(), 300, 280, str, strlen(str));
+	sprintf_s(str, "_buttTime: %d", _buttTime);
+	TextOut(getMemDC(), 300, 280, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -349,7 +350,7 @@ void playerManager::characterMove()
 {
 	if (_camera->getChange() == false)
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK)
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT)
 		{
 			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
 			{
@@ -359,17 +360,23 @@ void playerManager::characterMove()
 			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
 				_x[ERIC] -= _eric->getSpeed();
+				_gravityStop = false;
+				_isLadderCollision = false;
 			}
 			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
 				_x[BALEOG] -= _baleog->getSpeed();
+				_gravityStop = false;
+				_isLadderCollision = false;
 			}
 			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
 				_x[OLAF] -= _olaf->getSpeed();
+				_gravityStop = false;
+				_isLadderCollision = false;
 			}
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK)
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT)
 		{
 			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
 			{
@@ -379,15 +386,21 @@ void playerManager::characterMove()
 			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
 				_x[ERIC] += _eric->getSpeed();
+				_gravityStop = false;
+				_isLadderCollision = false;
 			}
 			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
 				_x[BALEOG] += _baleog->getSpeed();
+				_gravityStop = false;
+				_isLadderCollision = false;
 			
 			}
 			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
 				_x[OLAF] += _olaf->getSpeed();
+				_gravityStop = false;
+				_isLadderCollision = false;
 			}
 		}
 		//벨로그 화살쏘는부분
@@ -830,8 +843,16 @@ void playerManager::pixelCollisionYellow()
 					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
 					_eric->getEricMotion()->start();
 				}
+				if (_eric->getEricState() == ERIC_LEFT_DASH)
+				{
+					_eric->setEricState(ERIC_LEFT_BUTT);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftButt"));
+					_eric->getEricMotion()->start();
+				}
+
 				break;
 			}
+
 		}
 	}
 	//else if (select == 2)
@@ -917,7 +938,12 @@ void playerManager::pixelCollisionEmerald()
 				_x[ERIC] = i - 100;
 				_wallcheck++;
 
-				if (_isJump == false)
+				if (_eric->getEricState() == ERIC_RIGHT_DASH)
+				{
+					_isButt = true;
+				}
+
+				if (_isJump == false && _isButt == false)
 				{
 					if (_wallcheck < 5)
 					{
@@ -933,9 +959,22 @@ void playerManager::pixelCollisionEmerald()
 						_wallcheck = 0;
 					}
 				}
+				_buttTime++;
+				if (_isButt == true && _buttTime < 5)
+				{
+					_eric->setEricState(ERIC_RIGHT_BUTT);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightButt"));
+					_eric->getEricMotion()->start();
+				}
+				else if (_buttTime > 10)
+				{
+					_buttTime = 0;
+				}
+		
 				break;
 			}
 		}
+
 	}
 	//else if (select == 2)
 	{

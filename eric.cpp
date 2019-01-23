@@ -64,6 +64,12 @@ HRESULT eric::init()
 	int leftDead[] = {149, 148, 147, 146, 145, 144, 143, 142};
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftDead", "eric", leftDead, 8, 6, false);
 
+	int right_Butt[] = {55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightButt", "eric", right_Butt, 11, 4, false, rightButt, this);
+
+	int left_Butt[] = {75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftButt", "eric", left_Butt, 11, 4, false, leftButt, this);
+
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
 	_speed = 0;
@@ -199,7 +205,7 @@ void eric::keySetting()
 {
 	if (_ericState != ERIC_RIGHT_DEAD && _ericState != ERIC_LEFT_DEAD)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH)
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT)
 		{
 			_speed = 1;
 			_ericState = ERIC_RIGHT_MOVE;
@@ -213,7 +219,7 @@ void eric::keySetting()
 				_ericMotion->start();
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
+		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_RIGHT_BUTT)
 		{
 			_speed = 1;
 			_ericState = ERIC_RIGHT_STOP;
@@ -226,7 +232,7 @@ void eric::keySetting()
 			}
 		}
 
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH)
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT)
 		{
 			_speed = 1;
 			_ericState = ERIC_LEFT_MOVE;
@@ -241,7 +247,7 @@ void eric::keySetting()
 				_ericMotion->start();
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP)
+		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_LEFT_BUTT)
 		{
 			_speed = 1;
 			_ericState = ERIC_LEFT_STOP;
@@ -364,6 +370,28 @@ void eric::leftJump(void* obj)
 {
 	eric* e = (eric*)obj;
 	if (e->getEricState() == ERIC_LEFT_JUMP)
+	{
+		e->setEricState(ERIC_LEFT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+		e->getEricMotion()->start();
+	}
+}
+
+void eric::rightButt(void * obj)
+{
+	eric* e = (eric*)obj;
+	if (e->getEricState() == ERIC_RIGHT_BUTT)
+	{
+		e->setEricState(ERIC_RIGHT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+		e->getEricMotion()->start();
+	}
+}
+
+void eric::leftButt(void * obj)
+{
+	eric* e = (eric*)obj;
+	if (e->getEricState() == ERIC_LEFT_BUTT)
 	{
 		e->setEricState(ERIC_LEFT_STOP);
 		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
