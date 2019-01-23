@@ -25,6 +25,12 @@ HRESULT playGround::init()
 	_stage1 = new stage1;
 	SCENEMANAGER->addScene("stage1", _stage1);
 
+	_gameOver = new gameOver;
+	SCENEMANAGER->addScene("gameOver", _gameOver);
+
+	_gameClear = new gameClear;
+	SCENEMANAGER->addScene("gameClear", _gameClear);
+
 	SCENEMANAGER->changeScene("stage1");
 
 	
