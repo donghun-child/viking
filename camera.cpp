@@ -118,6 +118,10 @@ void camera::changeMoving()
 
 	float elapsedTime = TIMEMANAGER->getElpasedTime();
 
+	if (_Distance == 0)
+	{
+		_time = 0.001f;
+	}
 	float moveSpeed = (elapsedTime / _time) * _Distance;
 
 	if (moveSpeed != 0)
