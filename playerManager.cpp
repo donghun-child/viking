@@ -117,6 +117,7 @@ HRESULT playerManager::init()
 	_isCameraMode = false;
 	_isLadderCollision = false;
 	_isButt = false;
+	_buttAngle = (PI / 180) * 150;
 
 	_deadTime = 0;
 	_moveWorldTime = TIMEMANAGER->getWorldTime();
@@ -144,6 +145,13 @@ void playerManager::update()
 		(*_arrow->getVArrowAddress())[i].viewY = (*_arrow->getVArrowAddress())[i].y - _camera->getCameraY();
 	}
 
+	//박치기하면 밀려남.
+	if (_eric->getEricState() == ERIC_RIGHT_BUTT || _eric->getEricState() == ERIC_LEFT_BUTT)
+	{
+		_x[ERIC] += cosf(_buttAngle) * 0.3f;
+		_y[ERIC] += -sinf(_buttAngle) * 0.3f;
+	}
+
 	//에릭의 점프
 	jumpGravity(_choice);
 
@@ -152,9 +160,9 @@ void playerManager::update()
 	//데드존 충돌
 	deadZoneCollision();
 	//픽셀충돌
+	pixelCollisionEmerald();
 	pixelCollisionGreen();
 	pixelCollisionYellow();
-	pixelCollisionEmerald();
 	pixelCollisionRed();
 	
 	//캐릭터 무브
@@ -306,11 +314,11 @@ void playerManager::render()
 	//sprintf_s(str, "_isDead[ERIC] : %d", _isDead[ERIC]);
 	//TextOut(getMemDC(), 300, 220, str, strlen(str));
 
-	//sprintf_s(str, "_isDead[BALEOG] : %d", _isDead[BALEOG]);
-	//TextOut(getMemDC(), 300, 240, str, strlen(str));
+	sprintf_s(str, "_isButt : %d", _isButt);
+	TextOut(getMemDC(), 300, 240, str, strlen(str));
 
-	//sprintf_s(str, "_isDead[OLAF] : %d", _isDead[OLAF]);
-	//TextOut(getMemDC(), 300, 260, str, strlen(str));
+	sprintf_s(str, "_buttAngle : %f", _buttAngle);
+	TextOut(getMemDC(), 300, 260, str, strlen(str));
 
 	sprintf_s(str, "_buttTime: %d", _buttTime);
 	TextOut(getMemDC(), 300, 280, str, strlen(str));
@@ -769,7 +777,16 @@ void playerManager::pixelCollisionGreen()
 				if (r == 0 && g == 255 && b == 0)
 				{
 					bottomcheck = true;
-					_y[ERIC] = i - 100;
+					if (_isButt == true)
+					{
+						_y[ERIC] = i - 150;
+						_isButt = false;
+						break;
+					}
+					else if (_isButt == false)
+					{
+						_y[ERIC] = i - 100;
+					}
 					_jumpNum = 1;
 					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
 					break;
@@ -815,9 +832,10 @@ void playerManager::pixelCollisionGreen()
 				{
 					_y[OLAF] = i - 100;
 
-
+					bottomcheck_2 = true;
 					break;
 				}
+				else bottomcheck_2 = false;
 			}
 		}
 	}
@@ -842,17 +860,18 @@ void playerManager::pixelCollisionYellow()
 				_wallcheck++;
 				_x[ERIC] = i;
 				leftcheck = true;
+
+				if (_eric->getEricState() == ERIC_LEFT_DASH)
+				{
+					_buttAngle = (PI / 180) * 60;
+					_eric->setEricState(ERIC_LEFT_BUTT);
+					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftButt"));
+					_eric->getEricMotion()->start();
+					_isButt = true;
+				}
 				break;
 			}
-			else
-				leftcheck = false;
-
-			if (_eric->getEricState() == ERIC_LEFT_DASH)
-			{
-				_eric->setEricState(ERIC_LEFT_BUTT);
-				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftButt"));
-				_eric->getEricMotion()->start();
-			}			
+			else leftcheck = false;		
 		}
 	}
 	//else if (select == 2)
@@ -918,30 +937,22 @@ void playerManager::pixelCollisionEmerald()
 
 			if (r == 0 && g == 255 && b == 255)
 			{
-
 				_x[ERIC] = i - 100;
 
 				rightcheck = true;
-				break;
-			}
-			else
-				rightcheck = false;
 
 				if (_eric->getEricState() == ERIC_RIGHT_DASH)
 				{
-					_isButt = true;
-				}
-				_buttTime++;
-				if (_isButt == true && _buttTime < 5)
-				{
+					_buttAngle = (PI / 180) * 150;
 					_eric->setEricState(ERIC_RIGHT_BUTT);
 					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightButt"));
 					_eric->getEricMotion()->start();
+					_isButt = true;
+					
 				}
-				else if (_buttTime > 10)
-				{
-					_buttTime = 0;
-				}		
+				break;
+			}
+			else rightcheck = false;
 		}
 	}
 	//else if (select == 2)

@@ -81,7 +81,7 @@ private:
 	bool _isButt; //박치기했니
 	int _buttTime;
 
-	float _buttAngle;
+	float _buttAngle; //박치기할때 밀려날 각도
 
 	//에릭체크
 	bool bottomcheck;

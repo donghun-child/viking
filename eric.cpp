@@ -67,7 +67,7 @@ HRESULT eric::init()
 	int right_Butt[] = {55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65};
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightButt", "eric", right_Butt, 11, 4, false, rightButt, this);
 
-	int left_Butt[] = {75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85};
+	int left_Butt[] = {76, 75, 74, 73, 72, 71, 70, 69, 68, 67, 66};
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftButt", "eric", left_Butt, 11, 4, false, leftButt, this);
 
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
@@ -190,8 +190,8 @@ void eric::render(float viewX, float viewY)
 	//sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	//TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	//TextOut(getMemDC(), 600, 140, str, strlen(str));
+	sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	TextOut(getMemDC(), 600, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
@@ -219,7 +219,7 @@ void eric::keySetting()
 				_ericMotion->start();
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_RIGHT_BUTT)
+		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT)
 		{
 			_speed = 1;
 			_ericState = ERIC_RIGHT_STOP;
@@ -247,7 +247,7 @@ void eric::keySetting()
 				_ericMotion->start();
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_LEFT_BUTT)
+		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_LEFT_BUTT && _ericState != ERIC_RIGHT_BUTT)
 		{
 			_speed = 1;
 			_ericState = ERIC_LEFT_STOP;
