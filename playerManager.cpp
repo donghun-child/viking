@@ -314,14 +314,14 @@ void playerManager::render()
 	//sprintf_s(str, "_isDead[ERIC] : %d", _isDead[ERIC]);
 	//TextOut(getMemDC(), 300, 220, str, strlen(str));
 
-	sprintf_s(str, "_isButt : %d", _isButt);
-	TextOut(getMemDC(), 300, 240, str, strlen(str));
+	//sprintf_s(str, "_isButt : %d", _isButt);
+	//TextOut(getMemDC(), 300, 240, str, strlen(str));
 
-	sprintf_s(str, "_buttAngle : %f", _buttAngle);
-	TextOut(getMemDC(), 300, 260, str, strlen(str));
+	//sprintf_s(str, "_buttAngle : %f", _buttAngle);
+	//TextOut(getMemDC(), 300, 260, str, strlen(str));
 
-	sprintf_s(str, "_buttTime: %d", _buttTime);
-	TextOut(getMemDC(), 300, 280, str, strlen(str));
+	//sprintf_s(str, "_buttTime: %d", _buttTime);
+	//TextOut(getMemDC(), 300, 280, str, strlen(str));
 }
 
 void playerManager::characterChoice()
