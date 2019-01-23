@@ -60,7 +60,7 @@ HRESULT olaf::init()
 	int rightDead[] = {112, 113, 114, 115, 116, 117, 118, 119};
 	KEYANIMANAGER->addArrayFrameAnimation("olafName", "rightDead", "olaf", rightDead, 8, 6, false);
 
-	int leftDead[] = {127, 126, 125, 124, 123, 122, 121, 120};
+	int leftDead[] = {126, 125, 124, 123, 122, 121, 120, 119};
 	KEYANIMANAGER->addArrayFrameAnimation("olafName", "leftDead", "olaf", leftDead, 8, 6, false);
 
 	_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
@@ -82,17 +82,6 @@ void olaf::update(float viewX, float viewY, float* x, float* y)
 	_olaf_x = viewX;
 	_olaf_y = viewY;
 
-	//f (_olafDirection == OLAF_DIRECTION_RIGHT_MOVE)
-	//
-	//	*x += _speed ;
-	//	
-	//
-	//lse if (_olafDirection == OLAF_DIRECTION_LEFT_MOVE)
-	//
-	//	*y -= _speed ;
-	//	
-	//
-
 	olafMovement();
 
 	KEYANIMANAGER->update();
@@ -113,147 +102,139 @@ void olaf::olafMovement()
 	//==========================실드가 앞에 있을때 ====================//
 	if (_changeMode == false)
 	{
-		if (_olafDirection == OLAF_DIRECTION_RIGHT_STOP)
+		if (_olafDirection != OLAF_DIRECTION_RIGHT_DEAD && _olafDirection != OLAF_DIRECTION_LEFT_DEAD)
 		{
-			if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+			if (_olafDirection == OLAF_DIRECTION_RIGHT_STOP)
 			{
-				_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD;
-				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShield");
+				if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+				{
+					_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD;
+					_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShield");
+					_olafMotion->start();
+					_changeMode = true;
+				}
+			}
+			else if (_olafDirection == OLAF_DIRECTION_LEFT_STOP)
+			{
+				if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+				{
+					_olafDirection = OLAF_DIRECTION_LEFT_SHIELD;
+					_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShield");
+					_olafMotion->start();
+					_changeMode = true;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightMove");
+				_olafMotion->start();
+			}
+			else if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+			{
+				_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShieldUpMove");
 				_olafMotion->start();
 				_changeMode = true;
 			}
-		}
-		else if (_olafDirection == OLAF_DIRECTION_LEFT_STOP)
-		{
-			if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+			if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_MOVE)
 			{
-				_olafDirection = OLAF_DIRECTION_LEFT_SHIELD;
-				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShield");
+				_olafDirection = OLAF_DIRECTION_RIGHT_STOP;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
+				_olafMotion->start();
+			}
+
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+			{
+				_olafDirection = OLAF_DIRECTION_LEFT_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftMove");
+				_olafMotion->start();
+			}
+			else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+			{
+				_olafDirection = OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShieldUpMove");
 				_olafMotion->start();
 				_changeMode = true;
 			}
+			if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_MOVE)
+			{
+				_olafDirection = OLAF_DIRECTION_LEFT_STOP;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
+				_olafMotion->start();
+			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
-		{
-			_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightMove");
-			_olafMotion->start();
-		}
-		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
-		{
-			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShieldUpMove");
-			_olafMotion->start();
-			_changeMode = true;
-		}
-		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_MOVE)
-		{
-			_olafDirection = OLAF_DIRECTION_RIGHT_STOP;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
-			_olafMotion->start();
-		}
-
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
-		{
-			_olafDirection = OLAF_DIRECTION_LEFT_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftMove");
-			_olafMotion->start();
-		}
-		else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
-		{
-			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShieldUpMove");
-			_olafMotion->start();
-			_changeMode = true;
-		}
-		if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_MOVE)
-		{
-			_olafDirection = OLAF_DIRECTION_LEFT_STOP;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
-			_olafMotion->start();
-		}
-
 	}
 
 
 	//=============실드가 머리 위에 있을때======================//
 	else if (_changeMode == true)
 	{
-		if (_olafDirection == OLAF_DIRECTION_RIGHT_SHIELD)
+		if (_olafDirection != OLAF_DIRECTION_RIGHT_DEAD && _olafDirection != OLAF_DIRECTION_LEFT_DEAD)
 		{
-
-			if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+			if (_olafDirection == OLAF_DIRECTION_RIGHT_SHIELD)
 			{
-				_olafDirection = OLAF_DIRECTION_RIGHT_STOP;
+
+				if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+				{
+					_olafDirection = OLAF_DIRECTION_RIGHT_STOP;
+					_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
+					_olafMotion->start();
+					_changeMode = false;
+				}
+			}
+			else if (_olafDirection == OLAF_DIRECTION_LEFT_SHIELD)
+			{
+				if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+				{
+					_olafDirection = OLAF_DIRECTION_LEFT_STOP;
+					_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
+					_olafMotion->start();
+					_changeMode = false;
+				}
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShieldUpMove");
+				_olafMotion->start();
+			}
+			else if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+			{
+				_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightMove");
+				_olafMotion->start();
+				_changeMode = false;
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE)
+			{
+				_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD;
 				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
 				_olafMotion->start();
-				_changeMode = false;
 			}
-		}
-		else if (_olafDirection == OLAF_DIRECTION_LEFT_SHIELD)
-		{
-			if (KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))
+
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
-				_olafDirection = OLAF_DIRECTION_LEFT_STOP;
-				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
+				_olafDirection = OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShieldUpMove");
+				_olafMotion->start();
+			}
+			else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
+			{
+				_olafDirection = OLAF_DIRECTION_LEFT_MOVE;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftMove");
 				_olafMotion->start();
 				_changeMode = false;
 			}
-		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
-		{
-			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShieldUpMove");
-			_olafMotion->start();
-		}
-		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
-		{
-			_olafDirection = OLAF_DIRECTION_RIGHT_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightMove");
-			_olafMotion->start();
-			_changeMode = false;
-		}
-		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE)
-		{
-			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
-			_olafMotion->start();
-		}
-
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
-		{
-			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShieldUpMove");
-			_olafMotion->start();
-		}
-		else if (KEYMANAGER->isStayKeyDown(VK_LEFT) && ((KEYMANAGER->isOnceKeyDown('F') || KEYMANAGER->isOnceKeyDown('D'))))
-		{
-			_olafDirection = OLAF_DIRECTION_LEFT_MOVE;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftMove");
-			_olafMotion->start();
-			_changeMode = false;
-		}
-		if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE)
-		{
-			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
-			_olafMotion->start();
+			if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE)
+			{
+				_olafDirection = OLAF_DIRECTION_LEFT_SHIELD;
+				_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
+				_olafMotion->start();
+			}
 		}
 	}
 
-
-	if (KEYMANAGER->isOnceKeyDown('E'))
-	{
-		_olafDirection = OLAF_DIRECTION_RIGHT_WALL_PUSH;
-		_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightPush");
-		_olafMotion->start();
-	}
-	if (KEYMANAGER->isOnceKeyDown('W'))
-	{
-		_olafDirection = OLAF_DIRECTION_LEFT_WALL_PUSH;
-		_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftPush");
-		_olafMotion->start();
-	}
 
 	//사다리 충돌했을경우 오르락 내리락 하기위함.
 	if (_isLadderCollision == true)

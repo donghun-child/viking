@@ -356,15 +356,15 @@ void playerManager::characterMove()
 				_moveWorldTime = TIMEMANAGER->getWorldTime();
 				SOUNDMANAGER->play("viking_Movement", 0.3f);
 			}
-			if (_choice == ERIC)
+			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
 				_x[ERIC] -= _eric->getSpeed();
 			}
-			else if (_choice == BALEOG)
+			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
 				_x[BALEOG] -= _baleog->getSpeed();
 			}
-			else if (_choice == OLAF)
+			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
 				_x[OLAF] -= _olaf->getSpeed();
 			}
@@ -376,16 +376,16 @@ void playerManager::characterMove()
 				_moveWorldTime = TIMEMANAGER->getWorldTime();
 				SOUNDMANAGER->play("viking_Movement", 0.3f);
 			}
-			if (_choice == ERIC)
+			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
 				_x[ERIC] += _eric->getSpeed();
 			}
-			else if (_choice == BALEOG)
+			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
 				_x[BALEOG] += _baleog->getSpeed();
 			
 			}
-			else if (_choice == OLAF)
+			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
 				_x[OLAF] += _olaf->getSpeed();
 			}
@@ -487,27 +487,25 @@ void playerManager::characterChange()
 {
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
-		//에릭이 안죽은상태일때만
 		if (_choice == ERIC )
 		{
-			//밸로그가 안죽은상태일때만 밸로그로
+			
 			if (_isDead[BALEOG] == false)
 			{
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
 			}
-			else if(_isDead[OLAF] == false)//밸로그가 죽었다면
+			else if(_isDead[OLAF] == false)
 			{
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
 				SOUNDMANAGER->play("UI_BaleogPic");
 			}
 		}
-		//밸로그가 안죽은 상태일때만
 		else if (_choice == BALEOG)
 		{
-			//올라프가 안죽은상태일때만 올라프로
+			
 			if (_isDead[OLAF] == false)
 			{
 				_choice = OLAF;
@@ -521,17 +519,15 @@ void playerManager::characterChange()
 				SOUNDMANAGER->play("UI_OlafPic");
 			}
 		}
-		//올라프가 안죽은 상태일때만
 		else if (_choice == OLAF)
 		{
-			//에릭이 안죽은상태일때만 에릭으로 바꿔라
 			if (_isDead[ERIC] == false)
 			{
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
 				SOUNDMANAGER->play("UI_OlafPic");
 			}
-			else if(_isDead[BALEOG] == false)//에릭이 죽었다면 밸로그로
+			else if(_isDead[BALEOG] == false)
 			{
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
@@ -546,10 +542,11 @@ void playerManager::ladderCollision()
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 5; j++)
-		{			
+		{	
+			//사다리 범위 안에 들어오면
 			if (_rc[i].left < _ladder[j].rc.right - 50 && _rc[i].right > _ladder[j].rc.left + 50 && _rc[i].top < _ladder[j].rc.bottom && _rc[i].bottom > _ladder[j].rc.top)
 			{
-				_ladderChoice = j;
+				_ladderChoice = j; //몇번째 사다리 충돌했는지 저장할 변수
 				//사다리 충돌
 				_baleog->setLadderCollision(true); 
 				_eric->setLadderCollision(true);
@@ -627,29 +624,32 @@ void playerManager::deadZoneCollision()
 {
 	if (_deadTime > 70)
 	{
-		if (_choice == ERIC)
+		if (_isDead[ERIC] == false || _isDead[BALEOG] == false || _isDead[OLAF] == false)
 		{
-			_deadTime = 0;
-			_choice = BALEOG;
-			_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
-			SOUNDMANAGER->play("UI_EricPic");
+			if (_choice == ERIC)
+			{
+				_deadTime = 0;
+				_choice = BALEOG;
+				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
+				SOUNDMANAGER->play("UI_EricPic");
 
-		}
-		else if (_choice == BALEOG)
-		{
-			_deadTime = 0;
-			_choice = OLAF;
-			_camera->cameraChange(_x[OLAF], _y[OLAF]);
-			SOUNDMANAGER->play("UI_BaleogPic");
+			}
+			else if (_choice == BALEOG)
+			{
+				_deadTime = 0;
+				_choice = OLAF;
+				_camera->cameraChange(_x[OLAF], _y[OLAF]);
+				SOUNDMANAGER->play("UI_BaleogPic");
 
-		}
-		else if (_choice == OLAF)
-		{
-			_deadTime = 0;
-			_choice = ERIC;
-			_camera->cameraChange(_x[ERIC], _y[ERIC]);
-			//SOUNDMANAGER->play("UI_OlafPic");
+			}
+			else if (_choice == OLAF)
+			{
+				_deadTime = 0;
+				_choice = ERIC;
+				_camera->cameraChange(_x[ERIC], _y[ERIC]);
+				SOUNDMANAGER->play("UI_OlafPic");
 
+			}
 		}
 	}
 	

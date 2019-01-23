@@ -63,10 +63,10 @@ HRESULT baleog::init()
 	int leftPush[] = {71, 70, 69, 68};
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftPush", "벨로그", leftPush, 4, 8, true);
 
-	int rightDead[] = {105, 106, 107, 108, 109, 110, 111, 112};
+	int rightDead[] = {104, 105, 106, 107, 108, 109, 110, 111};
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "rightDead", "벨로그", rightDead, 8, 6, false);
 
-	int leftDead[] = {119, 118, 117, 116, 115, 114, 113, 112};
+	int leftDead[] = {118, 117, 116, 115, 114, 113, 112, 111};
 	KEYANIMANAGER->addArrayFrameAnimation("벨로그캐릭터", "leftDead", "벨로그", leftDead, 8, 6, false);
 
 	_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
@@ -101,21 +101,6 @@ void baleog::update(float viewX, float viewY, float* x, float* y)
 	//검공격
 	swordAttack();
 
-	//switch (_baleogState)
-	//{
-	//case BALEOG_RIGHT_MOVE:
-	//	*x += _baleogPlayer.speed;
-	//	break;
-	//case BALEOG_LEFT_MOVE:
-	//	*x -= _baleogPlayer.speed;
-	//	break;
-	//case BALEOG_UP_MOVE:
-	//	if (KEYMANAGER->isStayKeyDown(VK_UP)) *y -= _baleogPlayer.speed;
-	//	break;
-	//case BALEOG_DOWN_MOVE:
-	//	if (KEYMANAGER->isStayKeyDown(VK_DOWN)) *y += _baleogPlayer.speed;
-	//	break;
-	//}
 
 	//검공격이나 화살공격하고 오른쪽키나 왼쪽키를 꾹눌러도 무브상태로 하기위함.
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && (_baleogState == BALEOG_RIGHT_STOP || _baleogState == BALEOG_LEFT_STOP))
@@ -154,30 +139,33 @@ void baleog::render(float viewX, float viewY)
 
 void baleog::keySetting()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO)
+	if (_baleogState != BALEOG_RIGHT_DEAD && _baleogState != BALEOG_LEFT_DEAD)
 	{
-		_baleogState = BALEOG_RIGHT_MOVE; //오른쪽 움직임 상태로 전환
-		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightMove"); //모션 바꿔주고
-		_baleogMotion->start(); //모션 시작
-	}
-	else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _baleogState != BALEOG_LEFT_MOVE && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_UP_MOVE && _baleogState != BALEOG_DOWN_MOVE)
-	{
-		_baleogState = BALEOG_RIGHT_STOP;
-		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
-		_baleogMotion->start();
-	}
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO)
+		{
+			_baleogState = BALEOG_RIGHT_MOVE; //오른쪽 움직임 상태로 전환
+			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightMove"); //모션 바꿔주고
+			_baleogMotion->start(); //모션 시작
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _baleogState != BALEOG_LEFT_MOVE && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_UP_MOVE && _baleogState != BALEOG_DOWN_MOVE)
+		{
+			_baleogState = BALEOG_RIGHT_STOP;
+			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop");
+			_baleogMotion->start();
+		}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO)
-	{
-		_baleogState = BALEOG_LEFT_MOVE;
-		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftMove");
-		_baleogMotion->start();
-	}
-	else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _baleogState != BALEOG_RIGHT_MOVE && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_UP_MOVE && _baleogState != BALEOG_DOWN_MOVE)
-	{
-		_baleogState = BALEOG_LEFT_STOP;
-		_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop");
-		_baleogMotion->start();
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO)
+		{
+			_baleogState = BALEOG_LEFT_MOVE;
+			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftMove");
+			_baleogMotion->start();
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _baleogState != BALEOG_RIGHT_MOVE && _baleogState != BALEOG_LEFT_ARROW_ATTACK && _baleogState != BALEOG_RIGHT_ARROW_ATTACK && _baleogState != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleogState != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleogState != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleogState != BALEOG_UP_MOVE && _baleogState != BALEOG_DOWN_MOVE)
+		{
+			_baleogState = BALEOG_LEFT_STOP;
+			_baleogMotion = KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop");
+			_baleogMotion->start();
+		}
 	}
 
 	//사다리 충돌했을경우만 오르락 내리락 하기위함.
