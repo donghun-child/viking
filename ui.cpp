@@ -148,7 +148,7 @@ void ui::render()
 		IMAGEMANAGER->findImage("box")->render(getMemDC(), _olafBox_X, _olafBox_Y);
 	}
 	uiItemRender();
-	char str[128];
+	//char str[128];
 	//sprintf_s(str, "에릭템넘버 : %d", _ericDead);
 	//TextOut(getMemDC(), 500, 100, str, strlen(str));
 	//sprintf_s(str, "템 2번자리 : %d", _ericItemFrameX[2]);

@@ -189,7 +189,7 @@ void eric::update(float viewX, float viewY, float* x, float* y)
 
 void eric::render(float viewX, float viewY)
 {
-	char str[128];
+	//char str[128];
 	//sprintf_s(str, "¿¡¸¯ÁÂÇ¥ : %f ", _eric_X);
 	//TextOut(getMemDC(), 200, 100, str, strlen(str));
 

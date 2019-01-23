@@ -308,7 +308,7 @@ void playerManager::render()
 
 	//Rectangle(getMemDC(), _camerc);
 	//_camera->render();
-	char str[100];
+	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
 
