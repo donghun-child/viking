@@ -35,7 +35,7 @@ enum BALEOGINFO // 벨로그 정보들
 {
 	BALEOG_X = WINSIZEX / 2,
 	BALEOG_Y = WINSIZEY / 2,
-	BALEOG_SPEED = 5,
+	BALEOG_SPEED = 0,
 };
 
 class baleog : public gameNode

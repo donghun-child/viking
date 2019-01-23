@@ -20,7 +20,7 @@ HRESULT olaf::init()
 	_olaf_x = 100;
 	_olaf_y = 100;
 
-	_speed = 5;
+	_speed = 0;
 	_olaf_rc = RectMakeCenter(_olaf_x, _olaf_y, _olafimg->getFrameWidth(), _olafimg->getFrameHeight());
 
 

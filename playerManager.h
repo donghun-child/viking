@@ -67,8 +67,8 @@ private:
 	bool _isGravity;
 
 	bool _isCameraMode;
-	bool _isLadderCollision;
-	bool _gravityStop;
+	bool _isLadderCollision[3];
+	bool _gravityStop[3];
 
 	int _ladderChoice;
 	int _wallcheck;

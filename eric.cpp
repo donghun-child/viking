@@ -196,8 +196,8 @@ void eric::render(float viewX, float viewY)
 	//sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	//TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-	sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	TextOut(getMemDC(), 600, 140, str, strlen(str));
+	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	//TextOut(getMemDC(), 600, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
@@ -270,24 +270,24 @@ void eric::keySetting()
 	//사다리 충돌했을경우만 위아래 움직이게함.
 	if (_isLadderCollision == true)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		if (KEYMANAGER->isOnceKeyDown(VK_UP) && _ericState != ERIC_FALL && _ericState != ERIC_RIGHT_FALL_DOWN)
 		{
 			_ericState = ERIC_UP_MOVE;
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "upMove");
 			_ericMotion->start();
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_UP) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE)
+		else if (KEYMANAGER->isOnceKeyUp(VK_UP) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_FALL && _ericState != ERIC_RIGHT_FALL_DOWN)
 		{
 			_ericMotion->pause();
 		}
 
-		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN) && _ericState != ERIC_FALL && _ericState != ERIC_RIGHT_FALL_DOWN)
 		{
 			_ericState = ERIC_DOWN_MOVE;
 			_ericMotion = KEYANIMANAGER->findAnimation("ericName", "downMove");
 			_ericMotion->start();
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_DOWN) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE)
+		else if (KEYMANAGER->isOnceKeyUp(VK_DOWN) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_FALL && _ericState != ERIC_RIGHT_FALL_DOWN)
 		{
 			_ericMotion->pause();
 		}

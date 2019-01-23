@@ -115,7 +115,7 @@ HRESULT playerManager::init()
 	_camera->init();
 
 	_isCameraMode = false;
-	_isLadderCollision = false;
+	_isLadderCollision[3] = false;
 	_isButt = false;
 	_buttAngle = (PI / 180) * 150;
 	_isFallDown = false;
@@ -323,7 +323,7 @@ void playerManager::render()
 	//sprintf_s(str, "_buttAngle : %f", _buttAngle);
 	//TextOut(getMemDC(), 300, 260, str, strlen(str));
 
-	sprintf_s(str, "_isFallDown: %d", _isFallDown);
+	sprintf_s(str, "_isLadderCollision: %d", _isLadderCollision);
 	TextOut(getMemDC(), 300, 280, str, strlen(str));
 }
 
@@ -374,20 +374,20 @@ void playerManager::characterMove()
 			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
 				_x[ERIC] -= _eric->getSpeed();
-				_gravityStop = false;
-				_isLadderCollision = false;
+				_gravityStop[ERIC] = false;
+				_isLadderCollision[ERIC] = false;
 			}
 			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
 				_x[BALEOG] -= _baleog->getSpeed();
-				_gravityStop = false;
-				_isLadderCollision = false;
+				_gravityStop[BALEOG] = false;
+				_isLadderCollision[BALEOG] = false;
 			}
 			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
 				_x[OLAF] -= _olaf->getSpeed();
-				_gravityStop = false;
-				_isLadderCollision = false;
+				_gravityStop[OLAF] = false;
+				_isLadderCollision[OLAF] = false;
 			}
 		}
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN && _eric->getEricState() != ERIC_FALL)
@@ -400,21 +400,21 @@ void playerManager::characterMove()
 			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
 				_x[ERIC] += _eric->getSpeed();
-				_gravityStop = false;
-				_isLadderCollision = false;
+				_gravityStop[ERIC] = false;
+				_isLadderCollision[ERIC] = false;
 			}
 			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
 				_x[BALEOG] += _baleog->getSpeed();
-				_gravityStop = false;
-				_isLadderCollision = false;
+				_gravityStop[BALEOG] = false;
+				_isLadderCollision[BALEOG] = false;
 			
 			}
 			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
 				_x[OLAF] += _olaf->getSpeed();
-				_gravityStop = false;
-				_isLadderCollision = false;
+				_gravityStop[OLAF] = false;
+				_isLadderCollision[OLAF] = false;
 			}
 		}
 		//벨로그 화살쏘는부분
@@ -573,6 +573,7 @@ void playerManager::ladderCollision()
 			//사다리 범위 안에 들어오면
 			if (_rc[i].left < _ladder[j].rc.right - 50 && _rc[i].right > _ladder[j].rc.left + 50 && _rc[i].top < _ladder[j].rc.bottom && _rc[i].bottom > _ladder[j].rc.top)
 			{
+				//낙하 부분
 				if (_rc[i].top > _ladder[j].rc.top && _rc[i].bottom < _ladder[j].rc.top + (_ladder[j].rc.bottom - _ladder[j].rc.top) / 2 && _rc[i].left <= _ladder[j].rc.right && _rc[i].right >= _ladder[j].rc.left)
 				{
 					if (_eric->getEricState() != ERIC_UP_MOVE && _eric->getEricState() != ERIC_DOWN_MOVE && _eric->getEricState() != ERIC_RIGHT_STOP && _eric->getEricState() != ERIC_LEFT_STOP && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN)
@@ -583,12 +584,10 @@ void playerManager::ladderCollision()
 						_isFallDown = true;
 					}
 				}
-				//낙하 부분
 				_ladderChoice = j; //몇번째 사다리 충돌했는지 저장할 변수
 				//사다리 충돌
-				_baleog->setLadderCollision(true); 
-				_eric->setLadderCollision(true);
-				_olaf->setLadderCollision(true);
+	
+		
 
 				if (_camera->getChange() == false)
 				{
@@ -596,21 +595,24 @@ void playerManager::ladderCollision()
 					{
 						if (_choice == ERIC)
 						{
-							_y[ERIC] -= 5;
-							_isLadderCollision = true;
-							_gravityStop = true; //중력 멈추고
+							_eric->setLadderCollision(true);
+							_y[ERIC] -= _eric->getSpeed() + 5;
+							_isLadderCollision[ERIC] = true;
+							_gravityStop[ERIC] = true; //중력 멈추고
 						}
 						else if (_choice == BALEOG)
 						{
-							_y[BALEOG] -= 5;
-							_isLadderCollision = true;
-							_gravityStop = true; //중력 멈추고
+							_baleog->setLadderCollision(true);
+							_y[BALEOG] -= _baleog->getSpeed() + 5;
+							_isLadderCollision[BALEOG] = true;
+							_gravityStop[BALEOG] = true; //중력 멈추고
 						}
 						else if (_choice == OLAF)
 						{
-							_y[OLAF] -= 5;
-							_isLadderCollision = true;
-							_gravityStop = true; //중력 멈추고
+							_olaf->setLadderCollision(true);
+							_y[OLAF] -= _olaf->getSpeed() + 5;
+							_isLadderCollision[OLAF] = true;
+							_gravityStop[OLAF] = true; //중력 멈추고
 						}
 					}
 
@@ -620,21 +622,24 @@ void playerManager::ladderCollision()
 						{
 							if (_choice == ERIC)
 							{
-								_y[ERIC] += 5;
-								_isLadderCollision = true;
-								_gravityStop = true; //중력 멈추고
+								_eric->setLadderCollision(true);
+								_y[ERIC] += _eric->getSpeed() + 5;
+								_isLadderCollision[ERIC] = true;
+								_gravityStop[ERIC] = true; //중력 멈추고
 							}
 							else if (_choice == BALEOG)
 							{
-								_y[BALEOG] += 5;
-								_isLadderCollision = true;
-								_gravityStop = true; //중력 멈추고
+								_baleog->setLadderCollision(true);
+								_y[BALEOG] += _baleog->getSpeed() + 5;
+								_isLadderCollision[BALEOG] = true;
+								_gravityStop[BALEOG] = true; //중력 멈추고
 							}
 							else if (_choice == OLAF)
 							{
-								_y[OLAF] += 5;
-								_isLadderCollision = true;
-								_gravityStop = true; //중력 멈추고
+								_olaf->setLadderCollision(true);
+								_y[OLAF] += _olaf->getSpeed() + 5;
+								_isLadderCollision[OLAF] = true;
+								_gravityStop[OLAF] = true; //중력 멈추고
 							}
 						}
 					}
@@ -645,11 +650,25 @@ void playerManager::ladderCollision()
 			{
 				if (_camera->getChange() == false)
 				{
-					_gravityStop = false;
-					_isLadderCollision = false;
-					_eric->setLadderCollision(false);
-					_baleog->setLadderCollision(false);
-					_olaf->setLadderCollision(false);
+					if(_choice == ERIC)
+					{
+						_isLadderCollision[ERIC] = false;
+						_gravityStop[ERIC] = false;
+						_eric->setLadderCollision(false);
+					}
+					else if (_choice == BALEOG)
+					{
+						_isLadderCollision[BALEOG] = false;
+						_gravityStop[BALEOG] = false;
+						_baleog->setLadderCollision(false);
+					}
+					else if (_choice == BALEOG)
+					{
+						_isLadderCollision[OLAF] = false;
+						_gravityStop[OLAF] = false;
+						_olaf->setLadderCollision(false);
+					}
+			
 				}
 			}
 
@@ -774,9 +793,9 @@ void playerManager::deadZoneCollision()
 void playerManager::pixelCollisionGreen()
 {
 	//위로 올라서게
-	if (!_isJump && !_isLadderCollision)
+	if (!_isJump)
 	{
-		//if (select == 1)
+		if (_isLadderCollision[ERIC] == false)
 		{
 			//에릭
 			for (int i = _prove_Y[ERIC] - 10; i < _prove_Y[ERIC] + 10; ++i)
@@ -817,7 +836,7 @@ void playerManager::pixelCollisionGreen()
 
 			}
 		}
-		//else if (select == 2)
+		if (_isLadderCollision[BALEOG] == false)
 		{
 			//벨로그
 			for (int i = _prove_Y[BALEOG] - 10; i < _prove_Y[BALEOG] + 10; ++i)
@@ -839,7 +858,7 @@ void playerManager::pixelCollisionGreen()
 					bottomcheck_1 = false;
 			}
 		}
-		//else if (select == 3)
+		if (_isLadderCollision[OLAF] == false)
 		{
 			//올라프
 			for (int i = _prove_Y[OLAF] - 10; i < _prove_Y[OLAF] + 10; ++i)
@@ -1045,6 +1064,32 @@ void playerManager::pixelCollisionRed()
 
 void playerManager::jumpGravity(int select)
 {
+
+	if (_isGravity)
+	{
+		if (_choice == ERIC)
+		{
+			if (_gravityStop[ERIC] == false)
+			{
+				_y[ERIC] += 7.f;
+				_jumpCount = 0;
+			}
+		}
+		else if (_choice == BALEOG)
+		{
+			if (_gravityStop[BALEOG] == false)
+			{
+				_y[BALEOG] += 7.f;
+			}
+		}
+		else if (_choice == OLAF)
+		{
+			if (_gravityStop[OLAF] == false)
+			{
+				_y[OLAF] += 7.f;
+			}
+		}
+	}
 	for (int i = 0; i < 3; ++i)
 	{
 		if (_isJump)
@@ -1063,14 +1108,7 @@ void playerManager::jumpGravity(int select)
 		{
 			_isGravity = true;
 		}
-		if (_isGravity)
-		{
-			if (_gravityStop == false)
-			{
-				_y[i] += 7.f;
-				_jumpCount = 0;
-			}
-		}
+
 
 		if (select == ERIC)
 		{
@@ -1358,7 +1396,7 @@ void playerManager::olafSHieldDownMove()
 
 		}
 		_y[OLAF] += 1;
-		_gravityStop = true;
+		_gravityStop[OLAF] = true;
 	}
 	else
 		shieldDowncount = 0;
