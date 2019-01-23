@@ -35,6 +35,7 @@ private:
 	RECT _end;
 	RECT temp;
 	bool _isGameClear;
+	bool _isMenu;
 
 public:
 	virtual HRESULT init();
