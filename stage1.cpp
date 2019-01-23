@@ -58,6 +58,7 @@ HRESULT stage1::init()
 
 	_redKey->createItem("item", 2930, 390, REDKEY, 0);
 	_redKey->createItem("item", 2450, 220, REDKEY, 0);
+	_redKey->createItem("item", 1450, 230, REDKEY, 0);
 	_redLock->createItem("item", 1100, 760, REDLOCK, 0);
 	_dari->createItem("dari", 870, 675, 0, 0);
 	_banana->createItem("item", 1435, 1670, BANANA, 0);

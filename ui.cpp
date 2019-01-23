@@ -479,21 +479,13 @@ void ui::uiEricItemSave()
 {
 	if (_itemCollision)
 	{
-		if (_ericItemFrameX[0] == 0)
+		for (int i = 0; i < 4; i++)
 		{
-			_ericItemFrameX[0] = _setEricFrameX;
-		}
-		else if (_ericItemFrameX[1] == 0)
-		{
-			_ericItemFrameX[1] = _setEricFrameX;
-		}
-		else if (_ericItemFrameX[2] == 0)
-		{
-			_ericItemFrameX[2] = _setEricFrameX;
-		}
-		else if (_ericItemFrameX[3] == 0)
-		{
-			_ericItemFrameX[3] = _setEricFrameX;
+			if (_ericItemFrameX[i] == 0)
+			{
+				_ericItemFrameX[i] = _setEricFrameX;
+				break;
+			}
 		}
 		_itemCollision = false;
 	}
@@ -503,21 +495,13 @@ void ui::uiBaleogItemSave()
 {
 	if (_itemCollision)
 	{
-		if (_baleogItemFrameX[0] == 0)
+		for (int i = 0; i < 4; i++)
 		{
-			_baleogItemFrameX[0] = _setBaleogFrameX;
-		}
-		else if (_baleogItemFrameX[1] == 0)
-		{
-			_baleogItemFrameX[1] = _setBaleogFrameX;
-		}
-		else if (_baleogItemFrameX[2] == 0)
-		{
-			_baleogItemFrameX[2] = _setBaleogFrameX;
-		}
-		else if (_baleogItemFrameX[3] == 0)
-		{
-			_baleogItemFrameX[3] = _setBaleogFrameX;
+			if (_baleogItemFrameX[i] == 0)
+			{
+				_baleogItemFrameX[i] = _setBaleogFrameX;
+				break;
+			}
 		}
 		_itemCollision = false;
 	}
@@ -527,24 +511,17 @@ void ui::uiOlafItemSave()
 {
 	if (_itemCollision)
 	{
-		if (_olafItemFrameX[0] == 0)
+		for (int i = 0; i < 4; i++)
 		{
-			_olafItemFrameX[0] = _setOlafFrameX;
-		}
-		else if (_olafItemFrameX[1] == 0)
-		{
-			_olafItemFrameX[1] = _setOlafFrameX;
-		}
-		else if (_olafItemFrameX[2] == 0)
-		{
-			_olafItemFrameX[2] = _setOlafFrameX;
-		}
-		else if (_olafItemFrameX[3] == 0)
-		{
-			_olafItemFrameX[3] = _setOlafFrameX;
+			if (_olafItemFrameX[i] == 0)
+			{
+				_olafItemFrameX[i] = _setOlafFrameX;
+				break;
+			}
 		}
 		_itemCollision = false;
 	}
+
 }
 //인벤에 있는 아이템 프레임을 이용하여 활성화
 void ui::uiItemRender()
