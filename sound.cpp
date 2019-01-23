@@ -42,7 +42,7 @@ HRESULT sound::init()
 	SOUNDMANAGER->addSound("viking_GameStart", "sound/viking_GameStart.mp3", false, false);
 	SOUNDMANAGER->addSound("viking_Movement", "sound/viking_Movement.mp3", false, false);
 	SOUNDMANAGER->addSound("eric_Walk", "sound/eric_Walk.mp3", false, false);
-	SOUNDMANAGER->addSound("ending", "sound/±èÁ¶ÇÑ You are my gril.mp3", true, true);
+	SOUNDMANAGER->addSound("ending", "sound/ending.mp3", true, true);
 	
 	
 	return S_OK;
