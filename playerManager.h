@@ -75,11 +75,11 @@ private:
 
 	int _deadTime;
 	float _deadTum;
-	bool _isDead[3];
+	bool _isDead[3]; //3개 캐릭터 죽었니
 	float _moveTime, _moveWorldTime;
 
 	bool _isButt; //박치기했니
-	int _buttTime;
+	bool _isFallDown; //낙하하다가 박치기했니
 
 	float _buttAngle; //박치기할때 밀려날 각도
 

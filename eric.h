@@ -20,6 +20,7 @@ enum ERICSTATE
 	ERIC_RIGHT_BUTT, //오른쪽 박치기
 	ERIC_LEFT_BUTT, //왼쪽 박치기
 	ERIC_FALL, //낙하
+	ERIC_RIGHT_FALL_DOWN, //낙하하고 떨어지면 쿵
 
 };
 class eric : public gameNode
@@ -57,6 +58,7 @@ public:
 	static void leftJump(void* obj);
 	static void rightButt(void* obj);
 	static void leftButt(void* obj);
+	static void rightCrash(void* obj);
 
 	ERICSTATE getEricState() {return _ericState;}
 	void setEricState(ERICSTATE state) {_ericState = state;}

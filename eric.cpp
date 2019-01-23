@@ -73,6 +73,9 @@ HRESULT eric::init()
 	int fall[] = {10};
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "fall", "eric", fall, 1, 1, false);
 
+	int rightFallDown[] = { 57, 58, 59, 60, 61, 62, 63, 64, 65 };
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "rightFallDown", "eric", rightFallDown, 9, 4, false, rightCrash, this);
+
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
 	_speed = 0;
@@ -193,8 +196,8 @@ void eric::render(float viewX, float viewY)
 	//sprintf_s(str, "사다리충돌 : %d ", _isLadderCollision);
 	//TextOut(getMemDC(), 200, 120, str, strlen(str));
 
-	//sprintf_s(str, "에릭 상태 : %d ", _ericState);
-	//TextOut(getMemDC(), 600, 140, str, strlen(str));
+	sprintf_s(str, "에릭 상태 : %d ", _ericState);
+	TextOut(getMemDC(), 600, 140, str, strlen(str));
 
 	//sprintf_s(str, "에릭 가속도 : %f ", _acceleration);
 	//TextOut(getMemDC(), 200, 610, str, strlen(str));
@@ -208,7 +211,7 @@ void eric::keySetting()
 {
 	if (_ericState != ERIC_RIGHT_DEAD && _ericState != ERIC_LEFT_DEAD)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT)
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT) && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT && _ericState != ERIC_RIGHT_FALL_DOWN && _ericState != ERIC_FALL)
 		{
 			_speed = 1;
 			_ericState = ERIC_RIGHT_MOVE;
@@ -222,7 +225,7 @@ void eric::keySetting()
 				_ericMotion->start();
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT)
+		else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _ericState != ERIC_LEFT_MOVE && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT && _ericState != ERIC_FALL && _ericState != ERIC_RIGHT_FALL_DOWN)
 		{
 			_speed = 1;
 			_ericState = ERIC_RIGHT_STOP;
@@ -235,7 +238,7 @@ void eric::keySetting()
 			}
 		}
 
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT)
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT) && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_LEFT_BUTT && _ericState != ERIC_RIGHT_FALL_DOWN && _ericState != ERIC_FALL)
 		{
 			_speed = 1;
 			_ericState = ERIC_LEFT_MOVE;
@@ -250,7 +253,7 @@ void eric::keySetting()
 				_ericMotion->start();
 			}
 		}
-		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_LEFT_BUTT && _ericState != ERIC_RIGHT_BUTT)
+		else if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _ericState != ERIC_RIGHT_MOVE && _ericState != ERIC_RIGHT_DASH && _ericState != ERIC_LEFT_DASH && _ericState != ERIC_UP_MOVE && _ericState != ERIC_DOWN_MOVE && _ericState != ERIC_RIGHT_JUMP && _ericState != ERIC_LEFT_JUMP && _ericState != ERIC_LEFT_BUTT && _ericState != ERIC_RIGHT_BUTT && _ericState != ERIC_FALL && _ericState != ERIC_RIGHT_FALL_DOWN)
 		{
 			_speed = 1;
 			_ericState = ERIC_LEFT_STOP;
@@ -398,6 +401,17 @@ void eric::leftButt(void * obj)
 	{
 		e->setEricState(ERIC_LEFT_STOP);
 		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+		e->getEricMotion()->start();
+	}
+}
+
+void eric::rightCrash(void * obj)
+{
+	eric* e = (eric*)obj;
+	if (e->getEricState() == ERIC_RIGHT_FALL_DOWN)
+	{
+		e->setEricState(ERIC_RIGHT_STOP);
+		e->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
 		e->getEricMotion()->start();
 	}
 }

@@ -118,6 +118,7 @@ HRESULT playerManager::init()
 	_isLadderCollision = false;
 	_isButt = false;
 	_buttAngle = (PI / 180) * 150;
+	_isFallDown = false;
 
 	_deadTime = 0;
 	_moveWorldTime = TIMEMANAGER->getWorldTime();
@@ -293,7 +294,7 @@ void playerManager::render()
 
 	//Rectangle(getMemDC(), _camerc);
 	//_camera->render();
-	//char str[100];
+	char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
 
@@ -319,8 +320,8 @@ void playerManager::render()
 	//sprintf_s(str, "_buttAngle : %f", _buttAngle);
 	//TextOut(getMemDC(), 300, 260, str, strlen(str));
 
-	//sprintf_s(str, "_buttTime: %d", _buttTime);
-	//TextOut(getMemDC(), 300, 280, str, strlen(str));
+	sprintf_s(str, "_isFallDown: %d", _isFallDown);
+	TextOut(getMemDC(), 300, 280, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -360,7 +361,7 @@ void playerManager::characterMove()
 {
 	if (_camera->getChange() == false)
 	{
-		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT)
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN && _eric->getEricState() != ERIC_FALL)
 		{
 			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
 			{
@@ -386,7 +387,7 @@ void playerManager::characterMove()
 				_isLadderCollision = false;
 			}
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT)
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_RIGHT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_ONE && _baleog->getBaleogState() != BALEOG_LEFT_SWORD_ATTACK_TWO && _baleog->getBaleogState() != BALEOG_RIGHT_ARROW_ATTACK && _baleog->getBaleogState() != BALEOG_LEFT_ARROW_ATTACK && _eric->getEricState() != ERIC_RIGHT_BUTT && _eric->getEricState() != ERIC_LEFT_BUTT && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN && _eric->getEricState() != ERIC_FALL)
 		{
 			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
 			{
@@ -569,6 +570,17 @@ void playerManager::ladderCollision()
 			//사다리 범위 안에 들어오면
 			if (_rc[i].left < _ladder[j].rc.right - 50 && _rc[i].right > _ladder[j].rc.left + 50 && _rc[i].top < _ladder[j].rc.bottom && _rc[i].bottom > _ladder[j].rc.top)
 			{
+				if (_rc[i].top > _ladder[j].rc.top && _rc[i].bottom < _ladder[j].rc.top + (_ladder[j].rc.bottom - _ladder[j].rc.top) / 2 && _rc[i].left <= _ladder[j].rc.right && _rc[i].right >= _ladder[j].rc.left)
+				{
+					if (_eric->getEricState() != ERIC_UP_MOVE && _eric->getEricState() != ERIC_DOWN_MOVE && _eric->getEricState() != ERIC_RIGHT_STOP && _eric->getEricState() != ERIC_LEFT_STOP && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN)
+					{
+						_eric->setEricState(ERIC_FALL);
+						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "fall"));
+						_eric->getEricMotion()->start();
+						_isFallDown = true;
+					}
+				}
+				//낙하 부분
 				_ladderChoice = j; //몇번째 사다리 충돌했는지 저장할 변수
 				//사다리 충돌
 				_baleog->setLadderCollision(true); 
@@ -623,9 +635,7 @@ void playerManager::ladderCollision()
 							}
 						}
 					}
-
 				}
-
 			}
 			else if	(!(_rc[_choice].left < _ladder[_ladderChoice].rc.right - 50 && _rc[_choice].right > _ladder[_ladderChoice].rc.left + 50 && _rc[_choice].top < _ladder[_ladderChoice].rc.bottom && _rc[_choice].bottom > _ladder[_ladderChoice].rc.top))
 			//else if (!IntersectRect(&temp, &_rc[_choice], &_ladder[_ladderChoice].rc))
@@ -639,6 +649,7 @@ void playerManager::ladderCollision()
 					_olaf->setLadderCollision(false);
 				}
 			}
+
 		}
 	}
 }
@@ -788,15 +799,15 @@ void playerManager::pixelCollisionGreen()
 					}
 					_jumpNum = 1;
 					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
+					if (_isFallDown == true && _eric->getEricState() == ERIC_FALL)
+					{
+						_eric->setEricState(ERIC_RIGHT_FALL_DOWN);
+						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightFallDown"));
+						_eric->getEricMotion()->start();
+						_isFallDown = false;
+					}
 					break;
 				}
-				//else if (!(r == 0 && g == 255 && b == 0))
-				//{
-				//	_eric->setEricState(ERIC_FALL);
-				//	_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "fall"));
-				//	_eric->getEricMotion()->start();
-				//	break;
-				//}
 				else
 					bottomcheck = false;
 
@@ -1211,8 +1222,6 @@ void playerManager::ericwallcheck()
 	else
 		checkjumpcount = 0;
 }
-
-
 
 void playerManager::baleogwallcheck()
 {
