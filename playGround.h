@@ -30,7 +30,11 @@ private:
 	sound* _sound;
 
 	int _gameOverCount;
-	int _gameOverNum;
+	bool _isGameOver;
+
+	RECT _end;
+	RECT temp;
+	bool _isGameClear;
 
 public:
 	virtual HRESULT init();

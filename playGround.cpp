@@ -34,7 +34,9 @@ HRESULT playGround::init()
 	SCENEMANAGER->changeScene("stage1");
 
 	_gameOverCount = 0;
-	_gameOverNum = 0;
+	_isGameOver = false;
+	_isGameClear = false;
+	
 	
 	return S_OK;
 }
@@ -55,13 +57,15 @@ void playGround::update()
 {
 	gameNode::update();
 	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) PostQuitMessage(0);
+
+	_end = RectMake(2580 - _stage1->getPlayerManager()->getCamera()->getCameraX(), 1130 - _stage1->getPlayerManager()->getCamera()->getCameraY(), 130, 130);
 	
 	if (_menu->getMenuQuit())
 	{
 		SCENEMANAGER->changeScene("stage1");
 	}
 	
-	if (_gameOverNum == 0)
+	if (_isGameOver == false)
 	{
 		if (_stage1->getPlayerManager()->getEricDead() == true &&
 			_stage1->getPlayerManager()->getBaleogDead() == true &&
@@ -70,9 +74,18 @@ void playGround::update()
 			_gameOverCount++;
 			if (_gameOverCount == 80)
 			{
-				_gameOverNum = 1;
+				_isGameOver = true;
 				SCENEMANAGER->changeScene("gameOver");
 			}
+		}
+	}
+	if (_isGameClear == false)
+	{
+		if (IntersectRect(&temp, &_stage1->getPlayerManager()->getEricRect(), &_end) && IntersectRect(&temp, &_stage1->getPlayerManager()->getBaleogRect(), &_end) && IntersectRect(&temp, &_stage1->getPlayerManager()->getOlafRect(), &_end))
+		{
+			_isGameClear = true;
+
+			SCENEMANAGER->changeScene("gameClear");
 		}
 	}
 	
@@ -91,6 +104,7 @@ void playGround::render()
 	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//===========================================================
 	SCENEMANAGER->render();
+	//Rectangle(getMemDC(), _end);
 
 
 	TIMEMANAGER->render(getMemDC());
