@@ -1,9 +1,6 @@
 #pragma once
-#include "gameNode.h"
-
-class gameOver : public gameNode
+class gameOver
 {
-
 
 public:
 	gameOver();

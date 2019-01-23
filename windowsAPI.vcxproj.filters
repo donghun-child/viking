@@ -195,6 +195,12 @@
     <ClInclude Include="sound.h">
       <Filter>PlayGround\sound</Filter>
     </ClInclude>
+    <ClInclude Include="gameOver.h">
+      <Filter>PlayGround\sceen</Filter>
+    </ClInclude>
+    <ClInclude Include="gameClear.h">
+      <Filter>PlayGround\sceen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -298,6 +304,12 @@
     </ClCompile>
     <ClCompile Include="sound.cpp">
       <Filter>PlayGround\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="gameOver.cpp">
+      <Filter>PlayGround\sceen</Filter>
+    </ClCompile>
+    <ClCompile Include="gameClear.cpp">
+      <Filter>PlayGround\sceen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

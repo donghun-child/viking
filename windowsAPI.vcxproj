@@ -157,7 +157,9 @@
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="eric.h" />
+    <ClInclude Include="gameClear.h" />
     <ClInclude Include="gameNode.h" />
+    <ClInclude Include="gameOver.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="iniDataManager.h" />
@@ -197,7 +199,9 @@
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="eric.cpp" />
+    <ClCompile Include="gameClear.cpp" />
     <ClCompile Include="gameNode.cpp" />
+    <ClCompile Include="gameOver.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="iniDataManager.cpp" />

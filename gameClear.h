@@ -1,10 +1,6 @@
 #pragma once
-#include "gameNode.h"
-
-class gameClear : public gameNode
+class gameClear
 {
-
-
 public:
 	gameClear();
 	~gameClear();
