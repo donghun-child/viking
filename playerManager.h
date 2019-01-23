@@ -166,5 +166,9 @@ public:
 
 	eric* getEric() {return _eric;}
 	void setJumpNum(int jumpNum) {_jumpNum = jumpNum;}
+
+	bool getEricDead() {return _isDead[ERIC]; }
+	bool getBaleogDead() {return _isDead[BALEOG]; }
+	bool getOlafDead() {return _isDead[OLAF]; }
 };
 

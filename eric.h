@@ -19,6 +19,7 @@ enum ERICSTATE
 	ERIC_LEFT_DEAD,
 	ERIC_RIGHT_BUTT, //오른쪽 박치기
 	ERIC_LEFT_BUTT, //왼쪽 박치기
+	ERIC_FALL, //낙하
 
 };
 class eric : public gameNode

@@ -154,7 +154,6 @@ void playerManager::update()
 
 	//에릭의 점프
 	jumpGravity(_choice);
-
 	//사다리 충돌
 	ladderCollision();
 	//데드존 충돌
@@ -275,10 +274,10 @@ void playerManager::render()
 	//	Rectangle(getMemDC(), _ladder[i].rc);
 	//}
 	//데드존 렉트
-	for (int i = 0; i < 3; i++)
-	{
-		Rectangle(getMemDC(), _deadZone[i].rc);
-	}
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	Rectangle(getMemDC(), _deadZone[i].rc);
+	//}
 	for (int i = 0; i < _arrow->getVArrow().size(); i++)
 	{
 		_arrow->render((*_arrow->getVArrowAddress())[i].viewX, (*_arrow->getVArrowAddress())[i].viewY);
@@ -294,7 +293,7 @@ void playerManager::render()
 
 	//Rectangle(getMemDC(), _camerc);
 	//_camera->render();
-	char str[100];
+	//char str[100];
 	//sprintf_s(str, "_x : %d", _x[0]);
 	//TextOut(getMemDC(), 300, 100, str, strlen(str));
 
@@ -791,8 +790,17 @@ void playerManager::pixelCollisionGreen()
 					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
 					break;
 				}
+				//else if (!(r == 0 && g == 255 && b == 0))
+				//{
+				//	_eric->setEricState(ERIC_FALL);
+				//	_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "fall"));
+				//	_eric->getEricMotion()->start();
+				//	break;
+				//}
 				else
 					bottomcheck = false;
+
+
 			}
 		}
 		//else if (select == 2)

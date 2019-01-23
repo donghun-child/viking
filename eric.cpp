@@ -70,6 +70,9 @@ HRESULT eric::init()
 	int left_Butt[] = {76, 75, 74, 73, 72, 71, 70, 69, 68, 67, 66};
 	KEYANIMANAGER->addArrayFrameAnimation("ericName", "leftButt", "eric", left_Butt, 11, 4, false, leftButt, this);
 
+	int fall[] = {10};
+	KEYANIMANAGER->addArrayFrameAnimation("ericName", "fall", "eric", fall, 1, 1, false);
+
 	_ericMotion = KEYANIMANAGER->findAnimation("ericName", "rightStop");
 
 	_speed = 0;
