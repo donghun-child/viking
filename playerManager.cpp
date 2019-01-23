@@ -111,6 +111,8 @@ HRESULT playerManager::init()
 	_jumpNum = 1;
 	_choice = ERIC;
 
+	_ericSound = _baleogSound =  _olafSound = 0;
+
 	_camera = new camera;
 	_camera->init();
 
@@ -123,6 +125,8 @@ HRESULT playerManager::init()
 	_deadTime = 0;
 	_moveWorldTime = TIMEMANAGER->getWorldTime();
 	_moveTime = 0.45f;
+
+	_soundOldtime = GetTickCount();
 
 	return S_OK;
 }
@@ -369,7 +373,10 @@ void playerManager::characterMove()
 			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
 			{
 				_moveWorldTime = TIMEMANAGER->getWorldTime();
-				SOUNDMANAGER->play("viking_Movement", 0.3f);
+				if (_eric->getEricState() != ERIC_RIGHT_JUMP && _eric->getEricState() != ERIC_LEFT_JUMP)
+				{
+					SOUNDMANAGER->play("viking_Movement", 0.3f);
+				}
 			}
 			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
@@ -395,7 +402,10 @@ void playerManager::characterMove()
 			if (_moveTime + _moveWorldTime <= TIMEMANAGER->getWorldTime())
 			{
 				_moveWorldTime = TIMEMANAGER->getWorldTime();
-				SOUNDMANAGER->play("viking_Movement", 0.3f);
+				if (_eric->getEricState() != ERIC_RIGHT_JUMP && _eric->getEricState() != ERIC_LEFT_JUMP)
+				{
+					SOUNDMANAGER->play("viking_Movement", 0.3f);
+				}
 			}
 			if (_choice == ERIC && _eric->getEricState() != ERIC_RIGHT_DEAD && _eric->getEricState() != ERIC_LEFT_DEAD)
 			{
@@ -516,7 +526,25 @@ void playerManager::characterChange()
 	{
 		if (_choice == ERIC )
 		{
-			
+			_baleogSound = RND->getFromIntTo(0, 5);
+			switch (_baleogSound)
+			{
+				case 0:
+					SOUNDMANAGER->play("baleog");
+					break;
+				case 1:
+					SOUNDMANAGER->play("baleog_2");
+					break;
+				case 2:
+					SOUNDMANAGER->play("baleog_3");
+					break;
+				case 3:
+					SOUNDMANAGER->play("baleog_4");
+					break;
+				case 4:
+					SOUNDMANAGER->play("baleog_5");
+					break;
+			}
 			if (_isDead[BALEOG] == false)
 			{
 				_choice = BALEOG;
@@ -532,7 +560,25 @@ void playerManager::characterChange()
 		}
 		else if (_choice == BALEOG)
 		{
-			
+			_olafSound = RND->getFromIntTo(0, 5);
+			switch (_olafSound)
+			{
+			case 0:
+				SOUNDMANAGER->play("olaf");
+				break;
+			case 1:
+				SOUNDMANAGER->play("olaf_2");
+				break;
+			case 2:
+				SOUNDMANAGER->play("olaf_3");
+				break;
+			case 3:
+				SOUNDMANAGER->play("olaf_4");
+				break;
+			case 4:
+				SOUNDMANAGER->play("olaf_5");
+				break;
+			}
 			if (_isDead[OLAF] == false)
 			{
 				_choice = OLAF;
@@ -548,6 +594,25 @@ void playerManager::characterChange()
 		}
 		else if (_choice == OLAF)
 		{
+			_ericSound = RND->getFromIntTo(0, 5);
+			switch (_ericSound)
+			{
+			case 0:
+				SOUNDMANAGER->play("eric");
+				break;
+			case 1:
+				SOUNDMANAGER->play("eric_2");
+				break;
+			case 2:
+				SOUNDMANAGER->play("eric_3");
+				break;
+			case 3:
+				SOUNDMANAGER->play("eric_4");
+				break;
+			case 4:
+				SOUNDMANAGER->play("eric_5");
+				break;
+			}
 			if (_isDead[ERIC] == false)
 			{
 				_choice = ERIC;
@@ -573,22 +638,19 @@ void playerManager::ladderCollision()
 			//사다리 범위 안에 들어오면
 			if (_rc[i].left < _ladder[j].rc.right - 50 && _rc[i].right > _ladder[j].rc.left + 50 && _rc[i].top < _ladder[j].rc.bottom && _rc[i].bottom > _ladder[j].rc.top)
 			{
-				//낙하 부분
-				if (_rc[i].top > _ladder[j].rc.top && _rc[i].bottom < _ladder[j].rc.top + (_ladder[j].rc.bottom - _ladder[j].rc.top) / 2 && _rc[i].left <= _ladder[j].rc.right && _rc[i].right >= _ladder[j].rc.left)
-				{
-					if (_eric->getEricState() != ERIC_UP_MOVE && _eric->getEricState() != ERIC_DOWN_MOVE && _eric->getEricState() != ERIC_RIGHT_STOP && _eric->getEricState() != ERIC_LEFT_STOP && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN)
-					{
-						_eric->setEricState(ERIC_FALL);
-						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "fall"));
-						_eric->getEricMotion()->start();
-						_isFallDown = true;
-					}
-				}
+				//낙하 부분 삭제
+				//if (_rc[i].top > _ladder[j].rc.top && _rc[i].bottom < _ladder[j].rc.top + (_ladder[j].rc.bottom - _ladder[j].rc.top) / 2 && _rc[i].left <= _ladder[j].rc.right && _rc[i].right >= _ladder[j].rc.left)
+				//{
+				//	if (_eric->getEricState() != ERIC_UP_MOVE && _eric->getEricState() != ERIC_DOWN_MOVE && _eric->getEricState() != ERIC_RIGHT_STOP && _eric->getEricState() != ERIC_LEFT_STOP && _eric->getEricState() != ERIC_RIGHT_FALL_DOWN)
+				//	{
+				//		_eric->setEricState(ERIC_FALL);
+				//		_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "fall"));
+				//		_eric->getEricMotion()->start();
+				//		_isFallDown = true;
+				//	}
+				//}
 				_ladderChoice = j; //몇번째 사다리 충돌했는지 저장할 변수
 				//사다리 충돌
-	
-		
-
 				if (_camera->getChange() == false)
 				{
 					if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -821,13 +883,14 @@ void playerManager::pixelCollisionGreen()
 					}
 					_jumpNum = 1;
 					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
-					if (_isFallDown == true && _eric->getEricState() == ERIC_FALL)
-					{
-						_eric->setEricState(ERIC_RIGHT_FALL_DOWN);
-						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightFallDown"));
-						_eric->getEricMotion()->start();
-						_isFallDown = false;
-					}
+					//낙하하고 떨어질때 충돌 삭제
+					//if (_isFallDown == true && _eric->getEricState() == ERIC_FALL)
+					//{
+					//	_eric->setEricState(ERIC_RIGHT_FALL_DOWN);
+					//	_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightFallDown"));
+					//	_eric->getEricMotion()->start();
+					//	_isFallDown = false;
+					//}
 					break;
 				}
 				else
@@ -1064,7 +1127,6 @@ void playerManager::pixelCollisionRed()
 
 void playerManager::jumpGravity(int select)
 {
-
 	if (_isGravity)
 	{
 		if (_choice == ERIC)

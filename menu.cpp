@@ -26,7 +26,7 @@ HRESULT menu::init()
 	_padeIn = true;
 	_padeOut = false;
 
-	SOUNDMANAGER->play("opening_bgm");
+	//SOUNDMANAGER->play("opening_bgm");
 
 	return S_OK;
 }

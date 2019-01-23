@@ -73,6 +73,9 @@ private:
 	int _ladderChoice;
 	int _wallcheck;
 
+	int _ericSound, _baleogSound, _olafSound;
+	int _soundOldtime;
+
 	int _deadTime;
 	float _deadTum;
 	bool _isDead[3]; //3개 캐릭터 죽었니
