@@ -63,18 +63,15 @@ void playGround::update()
 	
 	if (_gameOverNum == 0)
 	{
-		if (_gameOverCount < 66)
+		if (_stage1->getPlayerManager()->getEricDead() == true &&
+			_stage1->getPlayerManager()->getBaleogDead() == true &&
+			_stage1->getPlayerManager()->getOlafDead() == true)
 		{
-			if (_stage1->getPlayerManager()->getEricDead() == true &&
-				_stage1->getPlayerManager()->getBaleogDead() == true &&
-				_stage1->getPlayerManager()->getOlafDead() == true)
+			_gameOverCount++;
+			if (_gameOverCount == 80)
 			{
-				_gameOverCount++;
-				if (_gameOverCount == 65)
-				{
-					_gameOverNum = 1;
-					SCENEMANAGER->changeScene("gameOver");
-				}
+				_gameOverNum = 1;
+				SCENEMANAGER->changeScene("gameOver");
 			}
 		}
 	}
