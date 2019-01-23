@@ -416,8 +416,43 @@ void stage1::dariOn()
 	{
 		//다리가 다 놓여진후 건널수있게용
 		_dariCount++;
+		if (_dariCount <= 50)
+		{
+			for (int i = 0; i < _dari->getVItem().size(); ++i)
+			{
+				//에릭
+				if (IntersectRect(&temp, &(*_dari->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
+				{
+					if ((*_dari->getVItemAddress())[i].rc.right > _playerManager->getEricRect().left)
+					{
+						_dariRightTum = (*_dari->getVItemAddress())[i].rc.right - _playerManager->getEricRect().left;
 
-		if (_dariCount > 70)
+						_playerManager->setEricX(_playerManager->getEricX() + _dariRightTum);
+					}
+				}
+				//벨로그
+				if (IntersectRect(&temp, &(*_dari->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
+				{
+					if ((*_dari->getVItemAddress())[i].rc.right > _playerManager->getBaleogRect().left)
+					{
+						_dariRightTum = (*_dari->getVItemAddress())[i].rc.right - _playerManager->getBaleogRect().left;
+
+						_playerManager->setBalogX(_playerManager->getBalogX() + _dariRightTum);
+					}
+				}
+				//올라프
+				if (IntersectRect(&temp, &(*_dari->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
+				{
+					if ((*_dari->getVItemAddress())[i].rc.right > _playerManager->getOlafRect().left)
+					{
+						_dariRightTum = (*_dari->getVItemAddress())[i].rc.right - _playerManager->getOlafRect().left;
+
+						_playerManager->setOlafX(_playerManager->getOlafX() + _dariRightTum);
+					}
+				}
+			}
+		}
+		if (_dariCount > 50)
 		{
 			for (int i = 0; i < _dari->getVItem().size(); ++i)
 			{
@@ -465,6 +500,7 @@ void stage1::dariOn()
 		else
 		{
 			_redKeyOn = false;
+			_dariCount = 0;
 		}
 	}
 }

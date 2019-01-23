@@ -52,6 +52,7 @@ private:
 	float _oldTime;
 	int _dariCount;
 	float _dariTum;
+	float _dariRightTum;
 
 public:
 	stage1();
