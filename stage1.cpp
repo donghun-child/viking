@@ -106,8 +106,8 @@ void stage1::update()
 		createBubble();
 		itemCollision();
 		dariOn();
-		characterCollision();
 	}
+	characterCollision();
 	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
 
@@ -148,8 +148,8 @@ void stage1::render()
 	_ui->render();
 
 	char str[100];
-	sprintf_s(str, "플레이어 x : %d", _currentFrameX);
-	TextOut(getMemDC(), 300, 30, str, strlen(str));
+	//sprintf_s(str, "플레이어 x : %d", );
+	//TextOut(getMemDC(), 300, 30, str, strlen(str));
 	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
 	//TextOut(getMemDC(), 300, 40, str, strlen(str));
 	//sprintf_s(str, "카메라 X : %f", _playerManager->getCamera()->getCameraX());
@@ -521,22 +521,21 @@ void stage1::characterCollision()
 	//에릭 벨로그 충돌
 	if (IntersectRect(&temp, &_playerManager->getEricRect(), &_playerManager->getBaleogRect()))
 	{
-
-
+		_ui->ericItemTrade(BALEOG);
+		//_ui->baleogItemTrade(ERIC);
 	}
 	//에릭 올라프 충돌
 	if (IntersectRect(&temp, &_playerManager->getEricRect(), &_playerManager->getOlafRect()))
 	{
-
-
+		_ui->ericItemTrade(OLAF);
+		//_ui->olafItemTrade(ERIC);
 	}
 	//벨로그 올라프 충돌
 	if (IntersectRect(&temp, &_playerManager->getBaleogRect(), &_playerManager->getOlafRect()))
 	{
-
-
+		//_ui->olafItemTrade(BALEOG);
+		//_ui->baleogItemTrade(OLAF);
 	}
-
 }
 
 

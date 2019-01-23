@@ -18,7 +18,7 @@ private:
 	int _baleogItemFrameX[4], _baleogItemFrameY[4];
 	int _olafItemFrameX[4], _olafItemFrameY[4];
 	int _deleteItemFrameX;
-	int _saveFrameX, _itemMove;
+	int _saveFrameX, _itemMove, _saveTradeFrameX;
 	int _setEricFrameX, _setBaleogFrameX, _setOlafFrameX;
 
 	bool _ericCursor, _baleogCursor, _olafCursor;	//Ä¿¼­ ±ôºýÀÓ
@@ -26,6 +26,7 @@ private:
 	bool _uiItemBling;
 	bool _itemCollision;
 	bool _itemUse;
+	bool _itemTrade;
 
 	int _ericItemNumber, _baleogItemNumber, _olafItemNumber;
 
@@ -47,6 +48,9 @@ public:
 	void uiItemRender();
 	void vikingItemNumber(int choice);
 	void itemUse(bool redKey, int choice);
+	void ericItemTrade(int name);
+	//void baleogItemTrade(int name);
+	//void olafItemTrade(int name);
 
 
 	int getEricLife() { return _ericLife; }				// 35¾¿ »¬¶§¸¶´Ù life ÇÏ³ª¾¿ ÁÙ¾îµë~
