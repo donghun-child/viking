@@ -250,6 +250,9 @@ void playerManager::update()
 		_camerc_y -= 15;
 	}
 
+	ericwallcheck();
+	baleogwallcheck();
+	olafwallcheck();
 }
 
 void playerManager::render()
@@ -765,11 +768,14 @@ void playerManager::pixelCollisionGreen()
 
 				if (r == 0 && g == 255 && b == 0)
 				{
+					bottomcheck = true;
 					_y[ERIC] = i - 100;
 					_jumpNum = 1;
 					_eric->setIsJumpMotion(false); //픽셀충돌하면 점프모션 꺼라
 					break;
 				}
+				else
+					bottomcheck = false;
 			}
 		}
 		//else if (select == 2)
@@ -785,10 +791,13 @@ void playerManager::pixelCollisionGreen()
 
 				if (r == 0 && g == 255 && b == 0)
 				{
+					bottomcheck_1 = true;
 					_y[BALEOG] = i - 100;
 
 					break;
 				}
+				else
+					bottomcheck_1 = false;
 			}
 		}
 		//else if (select == 3)
@@ -805,8 +814,8 @@ void playerManager::pixelCollisionGreen()
 				if (r == 0 && g == 255 && b == 0)
 				{
 					_y[OLAF] = i - 100;
-						
-					
+
+
 					break;
 				}
 			}
@@ -830,29 +839,20 @@ void playerManager::pixelCollisionYellow()
 
 			if (r == 255 && g == 255 && b == 0)
 			{
+				_wallcheck++;
 				_x[ERIC] = i;
-				if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-				{
-					_eric->setEricState(ERIC_LEFT_WALL_PUSH);
-					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftPush"));
-					_eric->getEricMotion()->start();
-				}
-				else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
-				{
-					_eric->setEricState(ERIC_LEFT_STOP);
-					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
-					_eric->getEricMotion()->start();
-				}
-				if (_eric->getEricState() == ERIC_LEFT_DASH)
-				{
-					_eric->setEricState(ERIC_LEFT_BUTT);
-					_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftButt"));
-					_eric->getEricMotion()->start();
-				}
-
+				leftcheck = true;
 				break;
 			}
+			else
+				leftcheck = false;
 
+			if (_eric->getEricState() == ERIC_LEFT_DASH)
+			{
+				_eric->setEricState(ERIC_LEFT_BUTT);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftButt"));
+				_eric->getEricMotion()->start();
+			}			
 		}
 	}
 	//else if (select == 2)
@@ -868,21 +868,13 @@ void playerManager::pixelCollisionYellow()
 
 			if (r == 255 && g == 255 && b == 0)
 			{
+				leftcheck_1 = true;
 				_x[BALEOG] = i;
-				if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-				{
-					_baleog->setBaleogState(BALEOG_LEFT_WALL_PUSH);
-					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftPush"));
-					_baleog->getBaleogMotion()->start();
-				}
-				else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
-				{
-					_baleog->setBaleogState(BALEOG_LEFT_STOP);
-					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
-					_baleog->getBaleogMotion()->start();
-				}
+
 				break;
 			}
+			else
+				leftcheck_1 = false;
 		}
 	}
 	//else if (select == 3)
@@ -900,21 +892,12 @@ void playerManager::pixelCollisionYellow()
 			{
 				_x[OLAF] = i;
 
-				if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-				{
-					_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_WALL_PUSH);
-					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftPush"));
-					_olaf->getOlafMotion()->start();
-				}
-				else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
-				{
-					_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
-					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
-					_olaf->getOlafMotion()->start();
-				}
-			
+				leftcheck_2 = true;
+
 				break;
 			}
+			else
+				leftcheck_2 = false;
 		}
 	}
 }
@@ -935,29 +918,18 @@ void playerManager::pixelCollisionEmerald()
 
 			if (r == 0 && g == 255 && b == 255)
 			{
+
 				_x[ERIC] = i - 100;
-				_wallcheck++;
+
+				rightcheck = true;
+				break;
+			}
+			else
+				rightcheck = false;
 
 				if (_eric->getEricState() == ERIC_RIGHT_DASH)
 				{
 					_isButt = true;
-				}
-
-				if (_isJump == false && _isButt == false)
-				{
-					if (_wallcheck < 5)
-					{
-						_eric->setEricState(ERIC_RIGHT_WALL_PUSH);
-						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightPush"));
-						_eric->getEricMotion()->start();
-					}
-					else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
-					{
-						_eric->setEricState(ERIC_RIGHT_STOP);
-						_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
-						_eric->getEricMotion()->start();
-						_wallcheck = 0;
-					}
 				}
 				_buttTime++;
 				if (_isButt == true && _buttTime < 5)
@@ -969,12 +941,8 @@ void playerManager::pixelCollisionEmerald()
 				else if (_buttTime > 10)
 				{
 					_buttTime = 0;
-				}
-		
-				break;
-			}
+				}		
 		}
-
 	}
 	//else if (select == 2)
 	{
@@ -991,21 +959,12 @@ void playerManager::pixelCollisionEmerald()
 			{
 				_x[BALEOG] = i - 100;
 
-				if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-				{
-					_baleog->setBaleogState(BALEOG_RIGHT_WALL_PUSH);
-					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightPush"));
-					_baleog->getBaleogMotion()->start();
-				}
-				else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
-				{
-					_baleog->setBaleogState(BALEOG_RIGHT_STOP);
-					_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop"));
-					_baleog->getBaleogMotion()->start();
-				}
+				rightcheck_1 = true;
 
 				break;
 			}
+			else
+				rightcheck_1 = false;
 		}
 	}
 	//else if (select == 3)
@@ -1023,21 +982,11 @@ void playerManager::pixelCollisionEmerald()
 			{
 				_x[OLAF] = i - 100;
 
-				if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-				{
-					_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_WALL_PUSH);
-					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightPush"));
-					_olaf->getOlafMotion()->start();
-						
-				}
-				else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
-				{
-					_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
-					_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
-					_olaf->getOlafMotion()->start();
-				}
+				rightcheck_2 = true;
 				break;
 			}
+			else
+				rightcheck_2 = false;
 		}
 	}
 }
@@ -1157,4 +1106,179 @@ void playerManager::baleogArrow()
 			}
 		}
 	}
+}
+
+void playerManager::ericwallcheck()
+{
+	//왼쪽 벽
+	if (bottomcheck == true && rightcheck == true)
+	{
+		_wallcheck++;
+
+		if (_wallcheck < 5 && _eric->getEricState() == ERIC_RIGHT_MOVE)
+		{
+			_eric->setEricState(ERIC_RIGHT_WALL_PUSH);
+			_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightPush"));
+			_eric->getEricMotion()->start();
+		}
+		else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+		{
+			_eric->setEricState(ERIC_RIGHT_STOP);
+			_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightStop"));
+			_eric->getEricMotion()->start();
+
+		}
+	}
+	else
+		_wallcheck = 0;
+	//=============================================//
+	//오른벽
+	if (bottomcheck == true && leftcheck == true)
+	{
+
+
+		if (_wallcheck < 5 && _eric->getEricState() == ERIC_LEFT_MOVE)
+		{
+			_eric->setEricState(ERIC_LEFT_WALL_PUSH);
+			_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftPush"));
+			_eric->getEricMotion()->start();
+		}
+		else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
+		{
+			_eric->setEricState(ERIC_LEFT_STOP);
+			_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftStop"));
+			_eric->getEricMotion()->start();
+
+		}
+	}
+	else
+		_wallcheck = 0;
+
+
+	//=============================================//
+	//오른쪽 미는모션중에 점프할때
+	if (_eric->getEricState() == ERIC_RIGHT_WALL_PUSH)
+	{
+		if (_isJump == true)
+		{
+			checkjumpcount++;
+
+			if (checkjumpcount < 5)
+			{
+				_eric->setEricState(ERIC_RIGHT_JUMP);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightJump"));
+				_eric->getEricMotion()->start();
+			}
+		}
+	}
+	else
+		checkjumpcount = 0;
+	//===============================================//
+	//왼쪽 미는모션중에 점프할때
+	if (_eric->getEricState() == ERIC_LEFT_WALL_PUSH)
+	{
+		if (_isJump == true)
+		{
+			checkjumpcount++;
+
+			if (checkjumpcount < 5)
+			{
+				_eric->setEricState(ERIC_LEFT_JUMP);
+				_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftJump"));
+				_eric->getEricMotion()->start();
+			}
+		}
+	}
+	else
+		checkjumpcount = 0;
+}
+
+
+
+void playerManager::baleogwallcheck()
+{
+	if (bottomcheck_1 == true && rightcheck_1 == true)
+	{
+		_wallcheck++;
+
+		if (_wallcheck < 5 && _baleog->getBaleogState() == BALEOG_RIGHT_MOVE)
+		{
+			_baleog->setBaleogState(BALEOG_RIGHT_WALL_PUSH);
+			_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightPush"));
+			_baleog->getBaleogMotion()->start();
+		}
+		else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+		{
+			_baleog->setBaleogState(BALEOG_RIGHT_STOP);
+			_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightStop"));
+			_baleog->getBaleogMotion()->start();
+		}
+	}
+	else
+		_wallcheck = 0;
+	//=============================================//
+	//오른벽
+	if (bottomcheck_1 == true && leftcheck_1 == true)
+	{
+		_wallcheck++;
+
+		if (_wallcheck < 5 && _baleog->getBaleogState() == BALEOG_LEFT_MOVE)
+		{
+			_baleog->setBaleogState(BALEOG_LEFT_WALL_PUSH);
+			_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftPush"));
+			_baleog->getBaleogMotion()->start();
+		}
+		else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+		{
+			_baleog->setBaleogState(BALEOG_LEFT_STOP);
+			_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftStop"));
+			_baleog->getBaleogMotion()->start();
+		}
+	}
+	else
+		_wallcheck = 0;
+}
+
+void playerManager::olafwallcheck()
+{
+	if (bottomcheck_2 == true && rightcheck_2 == true)
+	{
+		_wallcheck++;
+
+		if (_wallcheck < 5 && _baleog->getBaleogState() == BALEOG_RIGHT_MOVE)
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_WALL_PUSH);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightPush"));
+			_olaf->getOlafMotion()->start();
+		}
+		else if ((KEYMANAGER->isOnceKeyUp(VK_RIGHT)))
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_STOP);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafRightStop"));
+			_olaf->getOlafMotion()->start();
+		}
+	}
+	else
+		_wallcheck = 0;
+	//=============================================//
+	//오른벽
+	if (bottomcheck_2 == true && leftcheck_2 == true)
+	{
+		_wallcheck++;
+
+		if (_wallcheck < 5 && _baleog->getBaleogState() == BALEOG_LEFT_MOVE)
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_WALL_PUSH);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftPush"));
+			_olaf->getOlafMotion()->start();
+		}
+		else if ((KEYMANAGER->isOnceKeyUp(VK_LEFT)))
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_STOP);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafLeftStop"));
+			_olaf->getOlafMotion()->start();
+		}
+	}
+	else
+		_wallcheck = 0;
 }

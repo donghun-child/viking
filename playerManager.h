@@ -83,6 +83,20 @@ private:
 
 	float _buttAngle;
 
+	//에릭체크
+	bool bottomcheck;
+	bool rightcheck;
+	bool leftcheck;
+	//벨로그체크
+	bool bottomcheck_1;
+	bool rightcheck_1;
+	bool leftcheck_1;
+	//올라프체크
+	bool bottomcheck_2;
+	bool rightcheck_2;
+	bool leftcheck_2;
+
+	int checkjumpcount;
 public:
 	playerManager();
 	~playerManager();
@@ -114,6 +128,11 @@ public:
 
 	//벨로그 화살
 	void baleogArrow();
+
+	void ericwallcheck();
+	void baleogwallcheck();
+	void olafwallcheck();
+
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 	void getItemLinkAddress(item* item) { _item = item; }
