@@ -154,8 +154,8 @@ void stage1::render()
 	_ui->render();
 
 	char str[100];
-	sprintf_s(str, "플레이어 x : %d", _playerManager->getEricDead());
-	TextOut(getMemDC(), 300, 30, str, strlen(str));
+	//sprintf_s(str, "플레이어 x : %d", _playerManager->getEricDead());
+	//TextOut(getMemDC(), 300, 30, str, strlen(str));
 	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
 	//TextOut(getMemDC(), 300, 40, str, strlen(str));
 	//sprintf_s(str, "카메라 X : %f", _playerManager->getCamera()->getCameraX());
