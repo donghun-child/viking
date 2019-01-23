@@ -3,6 +3,10 @@
 
 class gameClear : public gameNode
 {
+	image* _bg;
+	float _worldTime;
+	float _nextTime;
+	int picture;
 
 
 public:

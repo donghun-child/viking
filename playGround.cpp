@@ -58,8 +58,8 @@ void playGround::update()
 	gameNode::update();
 	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) PostQuitMessage(0);
 
-	_end = RectMake(2580 - _stage1->getPlayerManager()->getCamera()->getCameraX(), 1130 - _stage1->getPlayerManager()->getCamera()->getCameraY(), 130, 130);
 	
+
 	if (_menu->getMenuQuit())
 	{
 		SCENEMANAGER->changeScene("stage1");
@@ -83,12 +83,15 @@ void playGround::update()
 	{
 		if (IntersectRect(&temp, &_stage1->getPlayerManager()->getEricRect(), &_end) && IntersectRect(&temp, &_stage1->getPlayerManager()->getBaleogRect(), &_end) && IntersectRect(&temp, &_stage1->getPlayerManager()->getOlafRect(), &_end))
 		{
-			_isGameClear = true;
-
+	
 			SCENEMANAGER->changeScene("gameClear");
+			_isGameClear = true;
 		}
 	}
-	
+	if (_isGameClear == false)
+	{
+		_end = RectMake(2580 - _stage1->getPlayerManager()->getCamera()->getCameraX(), 1130 - _stage1->getPlayerManager()->getCamera()->getCameraY(), 130, 130);
+	}
 
 	SCENEMANAGER->update();
 
