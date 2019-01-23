@@ -25,6 +25,7 @@ private:
 	bool _fKeyMod;
 	bool _uiItemBling;
 	bool _itemCollision;
+	bool _itemUse;
 
 	int _ericItemNumber, _baleogItemNumber, _olafItemNumber;
 
@@ -45,11 +46,13 @@ public:
 	void uiOlafItemSave();
 	void uiItemRender();
 	void vikingItemNumber(int choice);
+	void itemUse(bool redKey, int choice);
 
 
 	int getEricLife() { return _ericLife; }				// 35씩 뺄때마다 life 하나씩 줄어듬~
 	int getBaleogLife() { return _baleogLife; }
 	int getOlafLife() { return _olafLife; }
+	bool getItemUse() { return _itemUse; }
 
 	int getEricItemNumber() { return _ericItemNumber;  }
 	int getBaleogItemNumber() { return _baleogItemNumber; }

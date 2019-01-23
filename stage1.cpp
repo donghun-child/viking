@@ -256,20 +256,44 @@ void stage1::itemCollision()
 		//에릭
 		if (IntersectRect(&temp, &(*_redLock->getVItemAddress())[i].rc, &_playerManager->getEricRect()))
 		{
-
-
+			//다리 내리고 올리는 키
+			if (KEYMANAGER->isOnceKeyDown('E'))
+			{
+				if (!_redKeyOn)
+				{
+					_redKeyOn = true;
+					_ui->itemUse(_redKeyOn, _playerManager->getChoice());
+					_redKeyOn = false;
+				}
+			}
 		}
 		//벨로그
 		if (IntersectRect(&temp, &(*_redLock->getVItemAddress())[i].rc, &_playerManager->getBaleogRect()))
 		{
-
-
+			//다리 내리고 올리는 키
+			if (KEYMANAGER->isOnceKeyDown('E'))
+			{
+				if (!_redKeyOn)
+				{
+					_redKeyOn = true;
+					_ui->itemUse(_redKeyOn, _playerManager->getChoice());
+					_redKeyOn = false;
+				}
+			}
 		}
 		//올라프
 		if (IntersectRect(&temp, &(*_redLock->getVItemAddress())[i].rc, &_playerManager->getOlafRect()))
 		{
-
-
+			//다리 내리고 올리는 키
+			if (KEYMANAGER->isOnceKeyDown('E'))
+			{
+				if (!_redKeyOn)
+				{
+					_redKeyOn = true;
+					_ui->itemUse(_redKeyOn, _playerManager->getChoice());
+					_redKeyOn = false;
+				}
+			}
 		}
 	}
 	//바나나 충돌
@@ -382,7 +406,7 @@ void stage1::itemCollision()
 void stage1::dariOn()
 {
 	//다리 내리기
-	if (_redKeyOn)
+	if (_ui->getItemUse())
 	{
 		for (int i = 0; i < _dari->getVItem().size(); ++i)
 		{
@@ -412,7 +436,7 @@ void stage1::dariOn()
 	}
 
 	//다리 건너기
-	if (_redKeyOn)
+	if (_ui->getItemUse())
 	{
 		//다리가 다 놓여진후 건널수있게용
 		_dariCount++;
@@ -452,19 +476,6 @@ void stage1::dariOn()
 					}
 				}
 			}
-		}
-	}
-
-	//다리 내리고 올리는 키
-	if (KEYMANAGER->isOnceKeyDown('E'))
-	{
-		if (!_redKeyOn)
-		{
-			_redKeyOn = true;
-		}
-		else
-		{
-			_redKeyOn = false;
 		}
 	}
 }

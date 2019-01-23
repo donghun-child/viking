@@ -52,6 +52,8 @@ HRESULT ui::init()
 
 	_itemCollision = false;
 
+	_itemUse = false;
+
 	_ericItemNumber = _baleogItemNumber = _olafItemNumber = 0;
 
 	_deleteItemFrameX = 7;
@@ -141,12 +143,12 @@ void ui::render()
 	}
 	uiItemRender();
 	char str[128];
-	//sprintf_s(str, "아이템 : %d", _uiItemBling);
-	//TextOut(getMemDC(), 500, 100, str, strlen(str));
-	//sprintf_s(str, "충돌 : %d", _itemCollision);
-	//TextOut(getMemDC(), 600, 100, str, strlen(str));
-	//sprintf_s(str, "올라프템번 : %d", _olafItemNumber);
-	//TextOut(getMemDC(), 700, 100, str, strlen(str));
+	sprintf_s(str, "에릭템넘버 : %d", _ericItemNumber);
+	TextOut(getMemDC(), 500, 100, str, strlen(str));
+	sprintf_s(str, "템 2번자리 : %d", _ericItemFrameX[2]);
+	TextOut(getMemDC(), 600, 100, str, strlen(str));
+	sprintf_s(str, "템사용여부 : %d", _itemUse);
+	TextOut(getMemDC(), 700, 100, str, strlen(str));
 }
 //프로필 업데이트
 void ui::profileUpdate(int choice)
@@ -571,6 +573,88 @@ void ui::vikingItemNumber(int choice)
 		else if (_olafBox_X == 814 && _olafBox_Y == 734)
 		{
 			_olafItemNumber = 3;
+		}
+	}
+}
+//바이킹 레드키 아이템 사용
+void ui::itemUse(bool redKey, int choice)
+{
+	if (choice == 0)
+	{
+		if (redKey)
+		{
+			if (_ericItemNumber == 0 && _ericItemFrameX[0] == 1)
+			{
+				_ericItemFrameX[0] = 0;
+				_itemUse = true;
+			}
+			else if (_ericItemNumber == 1 && _ericItemFrameX[1] == 1)
+			{
+				_ericItemFrameX[1] = 0;
+				_itemUse = true;
+			}
+			else if (_ericItemNumber == 2 && _ericItemFrameX[2] == 1)
+			{
+				_ericItemFrameX[2] = 0;
+				_itemUse = true;
+			}
+			else if (_ericItemNumber == 3 && _ericItemFrameX[3] == 1)
+			{
+				_ericItemFrameX[3] = 0;
+				_itemUse = true;
+			}
+		}
+	}
+	else if (choice == 1)
+	{
+		if (redKey)
+		{
+			if (_baleogItemNumber == 0 && _baleogItemFrameX[0] == 1)
+			{
+				_baleogItemFrameX[0] = 0;
+				_itemUse = true;
+			}
+			else if (_baleogItemNumber == 1 && _baleogItemFrameX[1] == 1)
+			{
+				_baleogItemFrameX[1] = 0;
+				_itemUse = true;
+			}
+			else if (_baleogItemNumber == 2 && _baleogItemFrameX[2] == 1)
+			{
+				_baleogItemFrameX[2] = 0;
+				_itemUse = true;
+			}
+			else if (_baleogItemNumber == 3 && _baleogItemFrameX[3] == 1)
+			{
+				_baleogItemFrameX[3] = 0;
+				_itemUse = true;
+			}
+		}
+	}
+	else if (choice == 2)
+	{
+		if (redKey)
+		{
+			if (_olafItemNumber == 0 && _olafItemFrameX[0] == 1)
+			{
+				_olafItemFrameX[0] = 0;
+				_itemUse = true;
+			}
+			else if (_olafItemNumber == 1 && _olafItemFrameX[1] == 1)
+			{
+				_olafItemFrameX[1] = 0;
+				_itemUse = true;
+			}
+			else if (_olafItemNumber == 2 && _olafItemFrameX[2] == 1)
+			{
+				_olafItemFrameX[2] = 0;
+				_itemUse = true;
+			}
+			else if (_olafItemNumber == 3 && _olafItemFrameX[3] == 1)
+			{
+				_olafItemFrameX[3] = 0;
+				_itemUse = true;
+			}
 		}
 	}
 }
