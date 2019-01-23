@@ -97,6 +97,8 @@ private:
 	bool leftcheck_2;
 
 	int checkjumpcount;
+	int ShieldUpcount;
+	int shieldDowncount;
 public:
 	playerManager();
 	~playerManager();
@@ -133,6 +135,8 @@ public:
 	void baleogwallcheck();
 	void olafwallcheck();
 
+	void olafShieldUpMove();
+	void olafSHieldDownMove();
 
 	void getCameraAddressLink(camera* camera) { _camera = camera; }
 	void getItemLinkAddress(item* item) { _item = item; }

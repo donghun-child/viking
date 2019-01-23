@@ -261,6 +261,8 @@ void playerManager::update()
 	ericwallcheck();
 	baleogwallcheck();
 	olafwallcheck();
+	olafShieldUpMove();
+	olafSHieldDownMove();
 }
 
 void playerManager::render()
@@ -1310,3 +1312,66 @@ void playerManager::olafwallcheck()
 	else
 		_wallcheck = 0;
 }
+
+void playerManager::olafShieldUpMove()
+{
+	if (bottomcheck_2 == false && KEYMANAGER->isStayKeyDown(VK_RIGHT) && _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE)
+	{
+		ShieldUpcount++;
+
+		if (ShieldUpcount < 5)
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafShieldUpRightGravity"));
+			_olaf->getOlafMotion()->start();
+		}
+	}
+	else
+		ShieldUpcount = 0;
+
+	if (bottomcheck_2 == false && KEYMANAGER->isStayKeyDown(VK_LEFT) && _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE)
+	{
+		if (ShieldUpcount < 5)
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_SHIELD_UP_GRAVITY);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafShieldUpLeftGravity"));
+			_olaf->getOlafMotion()->start();
+		}
+	}
+	else
+		ShieldUpcount = 0;
+
+}
+
+void playerManager::olafSHieldDownMove()
+{
+	if (bottomcheck_2 == false && KEYMANAGER->isStayKeyDown(VK_RIGHT) && _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE)
+	{
+		shieldDowncount++;
+
+		if (shieldDowncount < 5)
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_SHIELD_DOWN_GRAVITY);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafShieldDownRightGravity"));
+			_olaf->getOlafMotion()->start();
+
+		}
+		_y[OLAF] += 1;
+		_gravityStop = true;
+	}
+	else
+		shieldDowncount = 0;
+
+	if (bottomcheck_2 == false && KEYMANAGER->isStayKeyDown(VK_LEFT) && _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE)
+	{
+		if (shieldDowncount < 5)
+		{
+			_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_SHIELD_DOWN_GRAVITY);
+			_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "olafShieldDownLeftGravity"));
+			_olaf->getOlafMotion()->start();
+		}
+	}
+	else
+		shieldDowncount = 0;
+}
+
