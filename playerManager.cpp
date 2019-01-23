@@ -299,17 +299,17 @@ void playerManager::render()
 	//sprintf_s(str, "_deadTime : %d", _deadTime);
 	//TextOut(getMemDC(), 300, 200, str, strlen(str));
 
-	sprintf_s(str, "_isDead[ERIC] : %d", _isDead[ERIC]);
-	TextOut(getMemDC(), 300, 220, str, strlen(str));
+	//sprintf_s(str, "_isDead[ERIC] : %d", _isDead[ERIC]);
+	//TextOut(getMemDC(), 300, 220, str, strlen(str));
 
-	sprintf_s(str, "_isDead[BALEOG] : %d", _isDead[BALEOG]);
-	TextOut(getMemDC(), 300, 240, str, strlen(str));
+	//sprintf_s(str, "_isDead[BALEOG] : %d", _isDead[BALEOG]);
+	//TextOut(getMemDC(), 300, 240, str, strlen(str));
 
-	sprintf_s(str, "_isDead[OLAF] : %d", _isDead[OLAF]);
-	TextOut(getMemDC(), 300, 260, str, strlen(str));
+	//sprintf_s(str, "_isDead[OLAF] : %d", _isDead[OLAF]);
+	//TextOut(getMemDC(), 300, 260, str, strlen(str));
 
-	sprintf_s(str, "_choice: %d", _choice);
-	TextOut(getMemDC(), 300, 280, str, strlen(str));
+	//sprintf_s(str, "_choice: %d", _choice);
+	//TextOut(getMemDC(), 300, 280, str, strlen(str));
 }
 
 void playerManager::characterChoice()
