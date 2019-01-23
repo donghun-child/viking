@@ -323,8 +323,8 @@ void playerManager::render()
 	//sprintf_s(str, "_buttAngle : %f", _buttAngle);
 	//TextOut(getMemDC(), 300, 260, str, strlen(str));
 
-	sprintf_s(str, "_isLadderCollision: %d", _isLadderCollision);
-	TextOut(getMemDC(), 300, 280, str, strlen(str));
+	//sprintf_s(str, "_isLadderCollision: %d", _isLadderCollision);
+	//TextOut(getMemDC(), 300, 280, str, strlen(str));
 }
 
 void playerManager::characterChoice()
@@ -379,13 +379,13 @@ void playerManager::characterMove()
 			}
 			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
-				_x[BALEOG] -= _baleog->getSpeed();
+				_x[BALEOG] -= _baleog->getSpeed() + 5;
 				_gravityStop[BALEOG] = false;
 				_isLadderCollision[BALEOG] = false;
 			}
 			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
-				_x[OLAF] -= _olaf->getSpeed();
+				_x[OLAF] -= _olaf->getSpeed() + 5;
 				_gravityStop[OLAF] = false;
 				_isLadderCollision[OLAF] = false;
 			}
@@ -405,14 +405,14 @@ void playerManager::characterMove()
 			}
 			else if (_choice == BALEOG && _baleog->getBaleogState() != BALEOG_RIGHT_DEAD && _baleog->getBaleogState() != BALEOG_LEFT_DEAD)
 			{
-				_x[BALEOG] += _baleog->getSpeed();
+				_x[BALEOG] += _baleog->getSpeed() + 5;
 				_gravityStop[BALEOG] = false;
 				_isLadderCollision[BALEOG] = false;
 			
 			}
 			else if (_choice == OLAF && _olaf->getOlafDirection() != OLAF_DIRECTION_RIGHT_DEAD && _olaf->getOlafDirection() != OLAF_DIRECTION_LEFT_DEAD)
 			{
-				_x[OLAF] += _olaf->getSpeed();
+				_x[OLAF] += _olaf->getSpeed() + 5;
 				_gravityStop[OLAF] = false;
 				_isLadderCollision[OLAF] = false;
 			}
