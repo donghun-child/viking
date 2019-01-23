@@ -222,7 +222,7 @@ void olaf::olafMovement()
 		if (KEYMANAGER->isOnceKeyUp(VK_RIGHT) && _olafDirection == OLAF_DIRECTION_RIGHT_SHIELD_UP_MOVE)
 		{
 			_olafDirection = OLAF_DIRECTION_RIGHT_SHIELD;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightStop");
+			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightShield");
 			_olafMotion->start();
 		}
 
@@ -242,7 +242,7 @@ void olaf::olafMovement()
 		if (KEYMANAGER->isOnceKeyUp(VK_LEFT) && _olafDirection == OLAF_DIRECTION_LEFT_SHIELD_UP_MOVE)
 		{
 			_olafDirection = OLAF_DIRECTION_LEFT_SHIELD;
-			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftStop");
+			_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftShield");
 			_olafMotion->start();
 		}
 	}
