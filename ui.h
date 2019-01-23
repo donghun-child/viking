@@ -27,6 +27,7 @@ private:
 	bool _itemCollision;
 	bool _itemUse;
 	bool _itemTrade;
+	bool _ericDead, _baleogDead, _olafDead;
 
 	int _ericItemNumber, _baleogItemNumber, _olafItemNumber;
 
@@ -41,6 +42,8 @@ public:
 	void update(int choice, bool uiChange);
 	void render();
 	void profileUpdate(int choice);					//프로필 이미지 변경할 때
+	void profileDead();
+
 	void keyControl(int choice);
 	void uiEricItemSave();
 	void uiBaleogItemSave();
@@ -65,8 +68,9 @@ public:
 	void setEricFrameX(int currentFrameX) { _setEricFrameX = currentFrameX;}
 	void setBaleogFrameX(int currentFrameX) { _setBaleogFrameX = currentFrameX; }
 	void setOlafFrameX(int currentFrameX) { _setOlafFrameX = currentFrameX; }
-
 	void setItemCollision(bool itemCOllision) { _itemCollision = itemCOllision; }
-
+	void setEricDead(bool dead) { _ericDead = dead; }
+	void setBaleogDead(bool dead) { _baleogDead = dead; }
+	void setOlafDead(bool dead) { _olafDead = dead; }
 };
 

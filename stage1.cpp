@@ -109,7 +109,12 @@ void stage1::update()
 	}
 	characterCollision();
 	_ui->update(_playerManager->getChoice(), _uiChange);
+	_ui->setEricDead(_playerManager->getEricDead());
+	_ui->setBaleogDead(_playerManager->getBaleogDead());
+	_ui->setOlafDead(_playerManager->getOlafDead());
 	_ui->profileUpdate(_playerManager->getChoice());
+
+	
 
 	
 
@@ -148,8 +153,8 @@ void stage1::render()
 	_ui->render();
 
 	char str[100];
-	//sprintf_s(str, "플레이어 x : %d", );
-	//TextOut(getMemDC(), 300, 30, str, strlen(str));
+	sprintf_s(str, "플레이어 x : %d", _playerManager->getEricDead());
+	TextOut(getMemDC(), 300, 30, str, strlen(str));
 	//sprintf_s(str, "플레이어 y : %f", _playerManager->getEricY());
 	//TextOut(getMemDC(), 300, 40, str, strlen(str));
 	//sprintf_s(str, "카메라 X : %f", _playerManager->getCamera()->getCameraX());

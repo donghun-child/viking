@@ -57,6 +57,8 @@ HRESULT ui::init()
 
 	_itemTrade = false;
 
+	_ericDead = _baleogDead = _olafDead = false;
+
 	_ericItemNumber = _baleogItemNumber = _olafItemNumber = 0;
 
 	_deleteItemFrameX = 7;
@@ -75,6 +77,7 @@ void ui::update(int choice, bool uiChange)
 {
 	_choice = choice;
 	vikingItemNumber(_choice);
+	profileDead();
 	if (_choice == 0)
 	{
 		uiEricItemSave();
@@ -146,42 +149,79 @@ void ui::render()
 	}
 	uiItemRender();
 	char str[128];
-	sprintf_s(str, "에릭템넘버 : %d", _itemTrade);
+	sprintf_s(str, "에릭템넘버 : %d", _ericDead);
 	TextOut(getMemDC(), 500, 100, str, strlen(str));
-	sprintf_s(str, "템 2번자리 : %d", _ericItemFrameX[2]);
-	TextOut(getMemDC(), 600, 100, str, strlen(str));
-	sprintf_s(str, "템사용여부 : %d", _itemUse);
-	TextOut(getMemDC(), 700, 100, str, strlen(str));
+	//sprintf_s(str, "템 2번자리 : %d", _ericItemFrameX[2]);
+	//TextOut(getMemDC(), 600, 100, str, strlen(str));
+	//sprintf_s(str, "템사용여부 : %d", _itemUse);
+	//TextOut(getMemDC(), 700, 100, str, strlen(str));
 }
 //프로필 업데이트
 void ui::profileUpdate(int choice)
 {
 	_choice = choice;
-	if (choice == 0)
+	if (choice == 0 && !_ericDead)
 	{
 		_ericCurrentX = _ericCurrentY = 0;
-		_baleogCurrentX = 1;
-		_baleogCurrentY = 1;
-		_olafCurrentX = 2;
-		_olafCurrentY = 1;
 	}
-	else if (choice == 1)
+	else if(!_ericDead)
 	{
 		_ericCurrentX = 0;
 		_ericCurrentY = 1;
+	}
+	else
+	{
+		_ericCurrentX = 0;
+		_ericCurrentY = 2;
+
+	}
+	if (choice == 1 && !_baleogDead)
+	{
 		_baleogCurrentX = 1;
 		_baleogCurrentY = 0;
+	}
+	else if(!_baleogDead)
+	{
+		_baleogCurrentX = 1;
+		_baleogCurrentY = 1;
+	}
+	else
+	{
+		_baleogCurrentX = 1;
+		_baleogCurrentY = 2;
+	}
+	if (choice == 2 && !_olafDead)
+	{
+		_olafCurrentX = 2;
+		_olafCurrentY = 0;
+	}
+	else if(!_olafDead)
+	{
 		_olafCurrentX = 2;
 		_olafCurrentY = 1;
 	}
-	else if (choice == 2)
+	else
+	{
+		_olafCurrentX = 2;
+		_olafCurrentY = 2;
+	}
+}
+void ui::profileDead()
+{
+	if (_ericDead)
 	{
 		_ericCurrentX = 0;
-		_ericCurrentY = 1;
+		_ericCurrentY = 2;
+	}
+	if (_baleogDead)
+	{
 		_baleogCurrentX = 1;
-		_baleogCurrentY = 1;
+		_baleogCurrentY = 2;
+	}
+	if (_olafDead)
+	{
 		_olafCurrentX = 2;
-		_olafCurrentY = 0;
+		_olafCurrentY = 2;
 	}
 }
 //키 컨트롤
