@@ -71,5 +71,7 @@ public:
 
 	void dariOn();
 
+	void characterCollision();
+
 };
 

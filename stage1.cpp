@@ -106,6 +106,7 @@ void stage1::update()
 		createBubble();
 		itemCollision();
 		dariOn();
+		characterCollision();
 	}
 	_ui->update(_playerManager->getChoice(), _uiChange);
 	_ui->profileUpdate(_playerManager->getChoice());
@@ -513,6 +514,29 @@ void stage1::dariOn()
 			}
 		}
 	}
+}
+
+void stage1::characterCollision()
+{
+	//에릭 벨로그 충돌
+	if (IntersectRect(&temp, &_playerManager->getEricRect(), &_playerManager->getBaleogRect()))
+	{
+
+
+	}
+	//에릭 올라프 충돌
+	if (IntersectRect(&temp, &_playerManager->getEricRect(), &_playerManager->getOlafRect()))
+	{
+
+
+	}
+	//벨로그 올라프 충돌
+	if (IntersectRect(&temp, &_playerManager->getBaleogRect(), &_playerManager->getOlafRect()))
+	{
+
+
+	}
+
 }
 
 
