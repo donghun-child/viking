@@ -787,13 +787,13 @@ void playerManager::deadZoneCollision()
 						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[ERIC] = _y[ERIC] - _deadTum;
 
-						if (_eric->getEricState() == ERIC_RIGHT_MOVE || _eric->getEricState() == ERIC_RIGHT_STOP)
+						if (_eric->getEricState() == ERIC_RIGHT_MOVE || _eric->getEricState() == ERIC_RIGHT_STOP || _eric->getEricState() == ERIC_RIGHT_JUMP || _eric->getEricState() == ERIC_LEFT_JUMP)
 						{
 							_eric->setEricState(ERIC_RIGHT_DEAD);
 							_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightDead"));
 							_eric->getEricMotion()->start();
 						}
-						else if (_eric->getEricState() == ERIC_LEFT_MOVE || _eric->getEricState() == ERIC_LEFT_STOP)
+						else if (_eric->getEricState() == ERIC_LEFT_MOVE || _eric->getEricState() == ERIC_LEFT_STOP || _eric->getEricState() == ERIC_RIGHT_JUMP || _eric->getEricState() == ERIC_LEFT_JUMP)
 						{
 							_eric->setEricState(ERIC_LEFT_DEAD);
 							_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftDead"));
@@ -833,13 +833,13 @@ void playerManager::deadZoneCollision()
 						_deadTum = _rc[_choice].bottom - _deadZone[j].rc.top;
 						_y[OLAF] = _y[OLAF] - _deadTum;
 
-						if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_STOP)
+						if (_olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_STOP || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_DOWN_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_UP_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_DOWN_GRAVITY)
 						{
 							_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_DEAD);
 							_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "rightDead"));
 							_olaf->getOlafMotion()->start();
 						}
-						else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_STOP)
+						else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_STOP || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_DOWN_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_UP_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_DOWN_GRAVITY)
 						{
 							_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_DEAD);
 							_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "leftDead"));
