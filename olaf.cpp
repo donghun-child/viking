@@ -242,18 +242,18 @@ void olaf::olafMovement()
 	}
 
 
-	if (KEYMANAGER->isOnceKeyDown('E'))
-	{
-		_olafDirection = OLAF_DIRECTION_RIGHT_WALL_PUSH;
-		_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightPush");
-		_olafMotion->start();
-	}
-	if (KEYMANAGER->isOnceKeyDown('W'))
-	{
-		_olafDirection = OLAF_DIRECTION_LEFT_WALL_PUSH;
-		_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftPush");
-		_olafMotion->start();
-	}
+	//if (KEYMANAGER->isOnceKeyDown('E'))
+	//{
+	//	_olafDirection = OLAF_DIRECTION_RIGHT_WALL_PUSH;
+	//	_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafRightPush");
+	//	_olafMotion->start();
+	//}
+	//if (KEYMANAGER->isOnceKeyDown('W'))
+	//{
+	//	_olafDirection = OLAF_DIRECTION_LEFT_WALL_PUSH;
+	//	_olafMotion = KEYANIMANAGER->findAnimation("olafName", "olafLeftPush");
+	//	_olafMotion->start();
+	//}
 
 	//사다리 충돌했을경우 오르락 내리락 하기위함.
 	if (_isLadderCollision == true)
