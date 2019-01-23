@@ -757,6 +757,8 @@ void playerManager::deadZoneCollision()
 				_choice = BALEOG;
 				_camera->cameraChange(_x[BALEOG], _y[BALEOG]);
 				SOUNDMANAGER->play("UI_EricPic");
+				_x[ERIC] = 0;
+				_y[ERIC] = 0;
 
 			}
 			else if (_choice == BALEOG)
@@ -765,6 +767,8 @@ void playerManager::deadZoneCollision()
 				_choice = OLAF;
 				_camera->cameraChange(_x[OLAF], _y[OLAF]);
 				SOUNDMANAGER->play("UI_BaleogPic");
+				_x[BALEOG] = 0;
+				_y[BALEOG] = 0;
 
 			}
 			else if (_choice == OLAF)
@@ -773,6 +777,8 @@ void playerManager::deadZoneCollision()
 				_choice = ERIC;
 				_camera->cameraChange(_x[ERIC], _y[ERIC]);
 				SOUNDMANAGER->play("UI_OlafPic");
+				_x[OLAF] = 0;
+				_y[OLAF] = 0;
 
 			}
 		}
@@ -799,12 +805,14 @@ void playerManager::deadZoneCollision()
 							_eric->setEricState(ERIC_RIGHT_DEAD);
 							_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "rightDead"));
 							_eric->getEricMotion()->start();
+	
 						}
 						else if (_eric->getEricState() == ERIC_LEFT_MOVE || _eric->getEricState() == ERIC_LEFT_STOP || _eric->getEricState() == ERIC_RIGHT_JUMP || _eric->getEricState() == ERIC_LEFT_JUMP)
 						{
 							_eric->setEricState(ERIC_LEFT_DEAD);
 							_eric->setEricMotion(KEYANIMANAGER->findAnimation("ericName", "leftDead"));
 							_eric->getEricMotion()->start();
+
 						}
 					}
 				}
@@ -822,12 +830,14 @@ void playerManager::deadZoneCollision()
 							_baleog->setBaleogState(BALEOG_RIGHT_DEAD);
 							_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "rightDead"));
 							_baleog->getBaleogMotion()->start();
+
 						}
 						else if (_baleog->getBaleogState() == BALEOG_LEFT_MOVE || _baleog->getBaleogState() == BALEOG_LEFT_STOP)
 						{
 							_baleog->setBaleogState(BALEOG_LEFT_DEAD);
 							_baleog->setBaleogMotion(KEYANIMANAGER->findAnimation("벨로그캐릭터", "leftDead"));
 							_baleog->getBaleogMotion()->start();
+
 						}
 					}
 				}
@@ -845,12 +855,14 @@ void playerManager::deadZoneCollision()
 							_olaf->setOlafDirection(OLAF_DIRECTION_RIGHT_DEAD);
 							_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "rightDead"));
 							_olaf->getOlafMotion()->start();
+
 						}
 						else if (_olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_MOVE || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_STOP || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_UP_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_RIGHT_SHIELD_DOWN_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_UP_GRAVITY || _olaf->getOlafDirection() == OLAF_DIRECTION_LEFT_SHIELD_DOWN_GRAVITY)
 						{
 							_olaf->setOlafDirection(OLAF_DIRECTION_LEFT_DEAD);
 							_olaf->setOlafMotion(KEYANIMANAGER->findAnimation("olafName", "leftDead"));
 							_olaf->getOlafMotion()->start();
+
 						}
 					}
 				}
